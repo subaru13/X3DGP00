@@ -1,13 +1,9 @@
-@ library directory
-・External\\lib\\debug(debug)
-・External\\lib\\release(release)
-
-@ lib file (embedded)
+@ Should be added lib file (embedded)
 ・d3d11.lib
 ・dxgi.lib
 ・Shlwapi.lib
 
-@ lib file (external)
+@ Should be added lib file (external)
 ・DirectXTK.lib(debug)
 ・zlib-md.lib(debug)
 ・libxml2-md.lib(debug)
@@ -19,5 +15,9 @@
 ・libfbxsdk-md.lib(release)
 
 
-@ include directory
-・External\\include
+@ Should be added include file (external)
+・WICTextureLoader.h
+・DDSTextureLoader.h
+・ImGui Relation
+・fbxsdk Relation
+・cereal Relation
