@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Development">
+      <UniqueIdentifier>{b37c9e56-6992-497a-ae76-e7aedf3c05fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C8H10N4O2">
+      <UniqueIdentifier>{b4381057-7932-4e6c-acfe-95b9a690afaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C8H10N4O2\Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="C8H10N4O2\Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="C8H10N4O2\Shaders">
+      <UniqueIdentifier>{9f64f4ff-d9e0-43d7-88e1-13e6d3656a89}</UniqueIdentifier>
+      <Extensions>hlsl;hlsli</Extensions>
+    </Filter>
+    <Filter Include="C8H10N4O2\Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="C8H10N4O2\External">
+      <UniqueIdentifier>{9422ab8f-e518-4f49-b924-dbc644492fbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C8H10N4O2\External\ImGui">
+      <UniqueIdentifier>{dd7f09d4-2867-443c-bac5-ae53cf2be547}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C8H10N4O2\External\DirectXTK">
+      <UniqueIdentifier>{09dde6fc-de80-4331-9b2a-a0dc84813cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C8H10N4O2\Shaders\sprite">
+      <UniqueIdentifier>{bfa58204-8fa6-4443-a861-82a48af5081f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C8H10N4O2\Shaders\sprite_batch">
+      <UniqueIdentifier>{4d73bc24-da57-4754-b80a-fadc4819b0ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C8H10N4O2\Shaders\geometry_primitive">
+      <UniqueIdentifier>{a0deb50d-ef9e-4a02-9296-2012c9481518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C8H10N4O2\Shaders\skinnd_mesh">
+      <UniqueIdentifier>{965d4872-ae2c-4a16-9b1c-441a14e6f2fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Development\ソースファイル">
+      <UniqueIdentifier>{d9abddd3-33be-434a-b714-6bba202a2b9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Development\ヘッダーファイル">
+      <UniqueIdentifier>{42ea281f-a037-449c-80c3-6a3cea13e030}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Development\シェーダーファイル">
+      <UniqueIdentifier>{ea96b2a0-c128-4fda-928d-734efc504c7a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C8H10N4O2\function\main.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\sprite.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\sprite_batch.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\ASCII_Font.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\CreateComObjectHelpar.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\framework.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui.cpp">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui_draw.cpp">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui_impl_dx11.cpp">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui_impl_win32.cpp">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui_ja_gryph_ranges.cpp">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui_widgets.cpp">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\geometry_primitive.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\SceneConstantBuffer.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\skinned_mesh.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\SceneManager.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Development\ソースファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C8H10N4O2\function\framework.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\high_resolution_timer.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\misc.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\pBlendState.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\SimpleSound.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\sprite.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\sprite_batch.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\Arithmetic.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\ASCII_Font.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\ConstantBuffer.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\CreateComObjectHelpar.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\include.h">
+      <Filter>C8H10N4O2</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\resource\resource.h">
+      <Filter>C8H10N4O2\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\FrameworkConfig.h">
+      <Filter>C8H10N4O2</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\External\Include\imgui\imconfig.h">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\External\Include\imgui\imgui.h">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\External\Include\imgui\imgui_impl_dx11.h">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\External\Include\imgui\imgui_impl_win32.h">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\External\Include\imgui\imgui_internal.h">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\External\Include\imgui\imstb_rectpack.h">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\External\Include\imgui\imstb_textedit.h">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\External\Include\imgui\imstb_truetype.h">
+      <Filter>C8H10N4O2\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\External\Include\DirectXTK\DDSTextureLoader.h">
+      <Filter>C8H10N4O2\External\DirectXTK</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\External\Include\DirectXTK\WICTextureLoader.h">
+      <Filter>C8H10N4O2\External\DirectXTK</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\geometry_primitive.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\MyHandy.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\SceneConstantBuffer.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\pRasterizerState.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\pDepthStencilState.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\skinned_mesh.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\SceneManager.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C8H10N4O2\resource\3dgp.aps">
+      <Filter>C8H10N4O2\Resources</Filter>
+    </None>
+    <None Include="C8H10N4O2\shader\sprite.hlsli">
+      <Filter>C8H10N4O2\Shaders\sprite</Filter>
+    </None>
+    <None Include="C8H10N4O2\shader\sprite_batch.hlsli">
+      <Filter>C8H10N4O2\Shaders\sprite_batch</Filter>
+    </None>
+    <None Include="C8H10N4O2\shader\scene_constant.hlsli">
+      <Filter>C8H10N4O2\Shaders</Filter>
+    </None>
+    <None Include="C8H10N4O2\shader\geometry_primitive.hlsli">
+      <Filter>C8H10N4O2\Shaders\geometry_primitive</Filter>
+    </None>
+    <None Include="C8H10N4O2\shader\skinned_mesh.hlsli">
+      <Filter>C8H10N4O2\Shaders\skinnd_mesh</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C8H10N4O2\resource\3dgp.rc">
+      <Filter>C8H10N4O2\Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C8H10N4O2\resource\directx.ico">
+      <Filter>C8H10N4O2\Resources</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="C8H10N4O2\Files_to_link.txt">
+      <Filter>C8H10N4O2</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="C8H10N4O2\shader\sprite_ps.hlsl">
+      <Filter>C8H10N4O2\Shaders\sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\sprite_vs.hlsl">
+      <Filter>C8H10N4O2\Shaders\sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\sprite_batch_ps.hlsl">
+      <Filter>C8H10N4O2\Shaders\sprite_batch</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\sprite_batch_vs.hlsl">
+      <Filter>C8H10N4O2\Shaders\sprite_batch</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\geometry_primitive_ps.hlsl">
+      <Filter>C8H10N4O2\Shaders\geometry_primitive</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\geometry_primitive_vs.hlsl">
+      <Filter>C8H10N4O2\Shaders\geometry_primitive</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\skinned_mesh_vs.hlsl">
+      <Filter>C8H10N4O2\Shaders\skinnd_mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\skinned_mesh_ps.hlsl">
+      <Filter>C8H10N4O2\Shaders\skinnd_mesh</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

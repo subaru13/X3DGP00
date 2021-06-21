@@ -1,0 +1,23 @@
+@ library directory
+・External\\lib\\debug(debug)
+・External\\lib\\release(release)
+
+@ lib file (embedded)
+・d3d11.lib
+・dxgi.lib
+・Shlwapi.lib
+
+@ lib file (external)
+・DirectXTK.lib(debug)
+・zlib-md.lib(debug)
+・libxml2-md.lib(debug)
+・libfbxsdk-md.lib(debug)
+
+・DirectXTK.lib(release)
+・zlib-md.lib(release)
+・libxml2-md.lib(release)
+・libfbxsdk-md.lib(release)
+
+
+@ include directory
+・External\\include
