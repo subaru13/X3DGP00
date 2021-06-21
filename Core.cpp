@@ -51,7 +51,7 @@ void Initialization_Process_Before_Loop(ID3D11Device* device)
 *********************************************************************/
 void Update_Process(float elapsed_time)
 {
-
+	
 }
 
 /*********************************************************************
@@ -61,7 +61,7 @@ void Update_Process(float elapsed_time)
 *********************************************************************/
 void Drawing_Process(ID3D11DeviceContext* immediate_context, float elapsed_time)
 {	
-	
+
 }
 
 /*********************************************************************

@@ -36,6 +36,10 @@ public:
 	/// スプライトを表示します。
 	/// </summary>
 	/// <param name="immediate_context">有効なコンテキスト</param>
+	/// <param name="external_pixel_shader">
+	/// 適用するピクセルシェーダー
+	/// NULLで規定のシェーダー
+	/// </param>
 	/// <param name="pos">表示座標</param>
 	/// <param name="size">表示サイズ</param>
 	/// <param name="texpos">テクスチャの切り取り開始位置</param>
@@ -43,6 +47,7 @@ public:
 	/// <param name="angle">回転角度(ラジアン)</param>
 	/// <param name="color">表示色</param>
 	void render(ID3D11DeviceContext* immediate_context,
+		ID3D11PixelShader** external_pixel_shader,
 		FLOAT2 pos,
 		FLOAT2 size,
 		FLOAT2 texpos = {},
@@ -50,6 +55,23 @@ public:
 		float angle = 0.0f,
 		FLOAT4 color = { 1.0f,1.0f,1.0f,1.0f });
 	
+	/// <summary>
+	/// 画面全体に描画します。
+	/// </summary>
+	/// <param name="immediate_context">有効なコンテキスト</param>
+	/// <param name="external_pixel_shader">
+	/// 適用するピクセルシェーダー
+	/// NULLで規定のシェーダー
+	/// </param>
+	/// <param name="texpos">テクスチャの切り取り開始位置</param>
+	/// <param name="texsize">テクスチャの切り取りサイズ</param>
+	/// <param name="color">表示色</param>
+	void quad(ID3D11DeviceContext* immediate_context,
+		ID3D11PixelShader** external_pixel_shader,
+		FLOAT2 texpos = {},
+		FLOAT2 texsize = {},
+		FLOAT4 color = { 1.0f,1.0f,1.0f,1.0f });
+
 	/// <summary>
 	/// テクスチャの大きさを取得します。
 	/// </summary>

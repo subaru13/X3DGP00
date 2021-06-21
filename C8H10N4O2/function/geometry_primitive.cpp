@@ -113,7 +113,7 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config):
 
 }
 
-void GeometryPrimitive::render(ID3D11DeviceContext* immediate_context, const FLOAT4X4& world, const FLOAT4& material_color)
+void GeometryPrimitive::render(ID3D11DeviceContext* immediate_context, ID3D11PixelShader** external_pixel_shader, const FLOAT4X4& world, const FLOAT4& material_color)
 {
 	assert(immediate_context && "The context is invalid.");
 	uint32_t stride{ sizeof(vertex) };
@@ -124,7 +124,14 @@ void GeometryPrimitive::render(ID3D11DeviceContext* immediate_context, const FLO
 	immediate_context->IASetInputLayout(input_layout.Get());
 	
 	immediate_context->VSSetShader(vertex_shader.Get(), nullptr, 0);
-	immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
+	if (external_pixel_shader)
+	{
+		immediate_context->PSSetShader((*external_pixel_shader), nullptr, 0);
+	}
+	else
+	{
+		immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
+	}
 	
 	constants data{ world, material_color };
 	constant_buffer = data;

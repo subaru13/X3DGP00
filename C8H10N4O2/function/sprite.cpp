@@ -114,10 +114,14 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* file_name)
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 }
 
-void Sprite::render(ID3D11DeviceContext* immediate_context,
-	FLOAT2 pos, FLOAT2 size,
-	FLOAT2 texpos, FLOAT2 texsize,
-	float angle, FLOAT4 color)
+void Sprite::render(ID3D11DeviceContext* immediate_context, 
+	ID3D11PixelShader** external_pixel_shader, 
+	FLOAT2 pos, 
+	FLOAT2 size,
+	FLOAT2 texpos, 
+	FLOAT2 texsize, 
+	float angle,
+	FLOAT4 color)
 {
 	assert(immediate_context && "The context is invalid.");
 
@@ -195,9 +199,25 @@ void Sprite::render(ID3D11DeviceContext* immediate_context,
 	immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	immediate_context->IASetInputLayout(input_layout.Get());
 	immediate_context->VSSetShader(vertex_shader.Get(), nullptr, 0);
-	immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
+	if (external_pixel_shader)
+	{
+		immediate_context->PSSetShader((*external_pixel_shader), nullptr, 0);
+	}
+	else
+	{
+		immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
+	}
 	constant_buffer.data = color;
 	constant_buffer.send(immediate_context, 0, 0, 1);
 	immediate_context->PSSetShaderResources(0, 1, shader_resource_view.GetAddressOf());
 	immediate_context->Draw(4, 0);
+}
+
+void Sprite::quad(ID3D11DeviceContext* immediate_context, ID3D11PixelShader** external_pixel_shader, FLOAT2 texpos, FLOAT2 texsize, FLOAT4 color)
+{
+	assert(immediate_context && "The context is invalid.");
+	D3D11_VIEWPORT viewport{};
+	UINT num_viewports{ 1 };
+	immediate_context->RSGetViewports(&num_viewports, &viewport);
+	render(immediate_context, external_pixel_shader, { 0.0f,0.0f }, { viewport.Width,viewport.Height }, texpos, texsize, 0.0f, color);
 }

@@ -109,12 +109,19 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t
 	
 }
 
-void SpriteBatch::begin(ID3D11DeviceContext* immediate_context)
+void SpriteBatch::begin(ID3D11DeviceContext* immediate_context,ID3D11PixelShader** external_pixel_shader)
 {
 	assert(immediate_context && "The context is invalid.");
 	vertices.clear();
 	immediate_context->VSSetShader(vertex_shader.Get(), nullptr, 0);
-	immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
+	if (external_pixel_shader)
+	{
+		immediate_context->PSSetShader((*external_pixel_shader), nullptr, 0);
+	}
+	else
+	{
+		immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
+	}
 	immediate_context->PSSetShaderResources(0, 1, shader_resource_view.GetAddressOf());
 }
 

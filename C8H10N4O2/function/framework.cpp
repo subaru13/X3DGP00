@@ -97,66 +97,32 @@ Framework::Framework(HWND hwnd)
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 	}
 
-	D3D11_SAMPLER_DESC sampler_desc = {};
-	{
-		//WRAP
-		sampler_desc = {};
-		sampler_desc.Filter = D3D11_FILTER_ANISOTROPIC;
-		sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampler_desc.MipLODBias = 0;
-		sampler_desc.MaxAnisotropy = 16;
-		sampler_desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-		sampler_desc.BorderColor[0] = 0.0f;
-		sampler_desc.BorderColor[1] = 0.0f;
-		sampler_desc.BorderColor[2] = 0.0f;
-		sampler_desc.BorderColor[3] = 1.0f;
-		sampler_desc.MinLOD = 0;
-		sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
-		hr = d3d11_device->CreateSamplerState(&sampler_desc, d3d11_sampler_states[SAMPLER_STATE::SS_WRAP].ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-	}
-	{
-		//CLAMP
-		sampler_desc = {};
-		sampler_desc.Filter = D3D11_FILTER_ANISOTROPIC;
-		sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-		sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-		sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-		sampler_desc.MipLODBias = 0;
-		sampler_desc.MaxAnisotropy = 16;
-		sampler_desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-		sampler_desc.BorderColor[0] = 0.0f;
-		sampler_desc.BorderColor[1] = 0.0f;
-		sampler_desc.BorderColor[2] = 0.0f;
-		sampler_desc.BorderColor[3] = 1.0f;
-		sampler_desc.MinLOD = 0;
-		sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
-		hr = d3d11_device->CreateSamplerState(&sampler_desc, d3d11_sampler_states[SAMPLER_STATE::SS_CLAMP].ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-	}
-	{
-		//BORDER
-		sampler_desc = {};
-		sampler_desc.Filter = D3D11_FILTER_ANISOTROPIC;
-		sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
-		sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
-		sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
-		sampler_desc.MipLODBias = 0;
-		sampler_desc.MaxAnisotropy = 16;
-		sampler_desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-		sampler_desc.BorderColor[0] = 0.0f;
-		sampler_desc.BorderColor[1] = 0.0f;
-		sampler_desc.BorderColor[2] = 0.0f;
-		sampler_desc.BorderColor[3] = 1.0f;
-		sampler_desc.MinLOD = 0;
-		sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
-		hr = d3d11_device->CreateSamplerState(&sampler_desc, d3d11_sampler_states[SAMPLER_STATE::SS_BORDER].ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-	}
+	D3D11_SAMPLER_DESC sampler_desc;
+	sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+	sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampler_desc.MipLODBias = 0;
+	sampler_desc.MaxAnisotropy = 16;
+	sampler_desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	sampler_desc.BorderColor[0] = 0;
+	sampler_desc.BorderColor[1] = 0;
+	sampler_desc.BorderColor[2] = 0;
+	sampler_desc.BorderColor[3] = 0;
+	sampler_desc.MinLOD = 0;
+	sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
+	hr = d3d11_device->CreateSamplerState(&sampler_desc, d3d11_sampler_states[SS_POINT].ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
-	d3d11_context->PSSetSamplers(0, 1, d3d11_sampler_states[SS_WRAP].GetAddressOf());
+	sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	hr = d3d11_device->CreateSamplerState(&sampler_desc, d3d11_sampler_states[SS_LINEAR].ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+
+	sampler_desc.Filter = D3D11_FILTER_ANISOTROPIC;
+	hr = d3d11_device->CreateSamplerState(&sampler_desc, d3d11_sampler_states[SS_ANISOTROPIC].ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+
+	d3d11_context->PSSetSamplers(0, 1, d3d11_sampler_states[SS_POINT].GetAddressOf());
 
 	//Viewport settings
 	{

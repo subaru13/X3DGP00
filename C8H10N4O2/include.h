@@ -22,3 +22,4 @@
 #include "function/SceneConstantBuffer.h"
 #include "function/skinned_mesh.h"
 #include "function/SceneManager.h"
+#include "function/CreateComObjectHelpar.h"

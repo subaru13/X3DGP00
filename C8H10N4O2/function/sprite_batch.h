@@ -37,7 +37,11 @@ public:
 	/// ここでシェーダーとSRVを設定している。
 	/// </summary>
 	/// <param name="immediate_context">有効なコンテキスト</param>
-	void begin(ID3D11DeviceContext* immediate_context);
+	/// <param name="external_pixel_shader">
+	/// 適用するピクセルシェーダー
+	/// NULLで規定のシェーダー
+	/// </param>
+	void begin(ID3D11DeviceContext* immediate_context, ID3D11PixelShader** external_pixel_shader = NULL);
 	/// <summary>
 	/// 描画するデータの書き込み
 	/// </summary>

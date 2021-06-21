@@ -266,10 +266,15 @@ public:
 	/// スキンドメッシュを描画します。
 	/// </summary>
 	/// <param name="immediate_context">有効なコンテキスト</param>
+	/// <param name="external_pixel_shader">
+	/// 適用するピクセルシェーダー
+	/// NULLで規定のシェーダー
+	/// </param>
 	/// <param name="world">ワールド変換行列</param>
 	/// <param name="keyframe">キーフレーム</param>
 	/// <param name="material_color">色</param>
 	void render(ID3D11DeviceContext* immediate_context,
+		ID3D11PixelShader** external_pixel_shader,
 		const FLOAT4X4& world,
 		const Animation::keyframe* keyframe = nullptr, 
 		const FLOAT4& material_color = { 1,1,1,1 });

@@ -29,7 +29,7 @@ extern ImWchar glyphRangesJapanese[];
 
 using namespace Microsoft::WRL;
 
-enum SAMPLER_STATE { SS_WRAP, SS_CLAMP, SS_BORDER, };
+enum SAMPLER_STATE { SS_POINT, SS_LINEAR, SS_ANISOTROPIC };
 
 class Framework final
 {
@@ -267,4 +267,4 @@ private:
 	}
 };
 
-#define QuitMainLoop	PostQuitMessage(0)
+#define QuitMainLoop		PostQuitMessage(0)

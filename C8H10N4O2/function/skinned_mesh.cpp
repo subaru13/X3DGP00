@@ -148,6 +148,7 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device,
 }
 
 void SkinnedMesh::render(ID3D11DeviceContext* immediate_context,
+	ID3D11PixelShader** external_pixel_shader,
 	const FLOAT4X4& world,
 	const Animation::keyframe* keyframe,
 	const FLOAT4& material_color)
@@ -162,7 +163,14 @@ void SkinnedMesh::render(ID3D11DeviceContext* immediate_context,
 		immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		immediate_context->IASetInputLayout(input_layout.Get());
 		immediate_context->VSSetShader(vertex_shader.Get(), nullptr, 0);
-		immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
+		if (external_pixel_shader)
+		{
+			immediate_context->PSSetShader((*external_pixel_shader), nullptr, 0);
+		}
+		else
+		{
+			immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
+		}
 
 		constants data;
 		if (keyframe && keyframe->nodes.size() > 0)

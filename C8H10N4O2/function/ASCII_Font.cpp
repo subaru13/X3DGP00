@@ -40,7 +40,7 @@ FLOAT2 ASCII::print(ID3D11DeviceContext* immediate_context, ASCII::Handle handle
 
     const SprData& choice = datas.at(handle);
 
-    choice.spr->begin(immediate_context);
+    choice.spr->begin(immediate_context, NULL);
 
     FLOAT2 tex_size = choice.spr->getTextrueSize() / choice.size_per_char;
     FLOAT2 size = choice.size_per_char * scale;
