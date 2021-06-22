@@ -227,15 +227,15 @@ HRESULT load_texture_from_file(ID3D11Device* device,const wchar_t* file_name,
 
     std::filesystem::path file_pass = file_name;
 
-    file_pass.replace_extension("json");
+    file_pass.replace_extension("dds");
     if (!std::filesystem::exists(file_pass))
     {
-
+        file_pass = file_name;
     }
 
 
     ComPtr<ID3D11Resource> resource;
-    auto it = srv_cache.find(file_name);
+    auto it = srv_cache.find(file_pass.c_str());
     if (it != srv_cache.end())
     {
         *shader_resource_view = it->second.Get();
@@ -243,18 +243,18 @@ HRESULT load_texture_from_file(ID3D11Device* device,const wchar_t* file_name,
     }
     else
     {
-        std::wstring extension = PathFindExtensionW(file_name);
+        std::wstring extension = PathFindExtensionW(file_pass.c_str());
         if (extension == L".dds")
         {
-            hr = DirectX::CreateDDSTextureFromFile(device, file_name, &resource, shader_resource_view);
+            hr = DirectX::CreateDDSTextureFromFile(device, file_pass.c_str(), &resource, shader_resource_view);
         }
         else
         {
-            hr = DirectX::CreateWICTextureFromFile(device, file_name, &resource, shader_resource_view);
+            hr = DirectX::CreateWICTextureFromFile(device, file_pass.c_str(), &resource, shader_resource_view);
         }
         _ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
-        srv_cache.insert(std::make_pair(file_name, *shader_resource_view));
+        srv_cache.insert(std::make_pair(file_pass.c_str(), *shader_resource_view));
     }
 
     if (resource == nullptr)
@@ -268,6 +268,14 @@ HRESULT load_texture_from_file(ID3D11Device* device,const wchar_t* file_name,
     texture2d->GetDesc(texture2d_desc);
 
     return hr;
+}
+
+ID3D11ShaderResourceView* query_texture(ID3D11Device* device, const wchar_t* filename)
+{
+    D3D11_TEXTURE2D_DESC texture2d_desc{};
+    ID3D11ShaderResourceView* shader_resource_view = nullptr;
+    HRESULT hr = load_texture_from_file(device, filename, &shader_resource_view, &texture2d_desc);
+    return shader_resource_view;
 }
 
 void ClearComObjectCache()

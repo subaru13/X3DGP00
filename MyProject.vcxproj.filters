@@ -106,6 +106,9 @@
     <ClCompile Include="Core.cpp">
       <Filter>Development\ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\OffScreen.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C8H10N4O2\function\framework.h">
@@ -199,6 +202,9 @@
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
     <ClInclude Include="C8H10N4O2\function\SceneManager.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\OffScreen.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
   </ItemGroup>

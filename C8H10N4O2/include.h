@@ -23,3 +23,4 @@
 #include "function/skinned_mesh.h"
 #include "function/SceneManager.h"
 #include "function/CreateComObjectHelpar.h"
+#include "function/OffScreen.h"

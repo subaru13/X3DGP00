@@ -729,7 +729,7 @@ void SkinnedMesh::fetch_animations(FbxScene* fbx_scene, std::vector<Animation>& 
 	}
 }
 
-bool KeyFrameManager::_canChange(std::shared_ptr<SkinnedMesh> _owner, int _clip)const
+bool Keyframe::_canChange(std::shared_ptr<SkinnedMesh> _owner, int _clip)const
 {
 	if (_clip < 0)return false;
 	const std::vector<Animation>& animations{ _owner->getAnimationClips() };
@@ -738,14 +738,14 @@ bool KeyFrameManager::_canChange(std::shared_ptr<SkinnedMesh> _owner, int _clip)
 
 
 
-KeyFrameManager::KeyFrameManager(std::shared_ptr<SkinnedMesh> owner)
+Keyframe::Keyframe(std::shared_ptr<SkinnedMesh> owner)
 	:owner(owner), keyframe(), clip_index(-1), 
 	animation_tick(0.0f),loop_flg(false),end_flg(true)
 {
 	//assert(this->owner.expired() == false && "Owner is absent.");
 }
 
-bool KeyFrameManager::setOwner(std::shared_ptr<SkinnedMesh> owner)
+bool Keyframe::setOwner(std::shared_ptr<SkinnedMesh> owner)
 {
 	if (this->owner.expired())
 	{
@@ -756,7 +756,7 @@ bool KeyFrameManager::setOwner(std::shared_ptr<SkinnedMesh> owner)
 	return false;
 }
 
-bool KeyFrameManager::change(int clip, bool loop)
+bool Keyframe::change(int clip, bool loop)
 {
 	if (owner.expired())return false;
 	if (clip < 0)
@@ -780,13 +780,13 @@ bool KeyFrameManager::change(int clip, bool loop)
 	return result;
 }
 
-void KeyFrameManager::resetAnimationTick()
+void Keyframe::resetAnimationTick()
 {
 	animation_tick = 0.0f;
 }
 
 
-bool KeyFrameManager::blend(int clip, int frame, float factor)
+bool Keyframe::blend(int clip, int frame, float factor)
 {
 	if (owner.expired())return false;
 	if (clip_index < 0)return false;
@@ -824,7 +824,7 @@ bool KeyFrameManager::blend(int clip, int frame, float factor)
 	return result;
 }
 
-bool KeyFrameManager::blend(int clip1, int frame1, int clip2, int frame2, float factor)
+bool Keyframe::blend(int clip1, int frame1, int clip2, int frame2, float factor)
 {
 	if (owner.expired())return false;
 	std::shared_ptr<SkinnedMesh> ownerPtr = owner.lock();
@@ -851,7 +851,7 @@ bool KeyFrameManager::blend(int clip1, int frame1, int clip2, int frame2, float 
 	return result;
 }
 
-void KeyFrameManager::update(float elapsed_time)
+void Keyframe::update(float elapsed_time)
 {
 	if (owner.expired())return;
 	if (end_flg)return;
@@ -881,7 +881,7 @@ void KeyFrameManager::update(float elapsed_time)
 	keyframe = animation.sequence.at(frame_index);
 }
 
-void KeyFrameManager::updateAndBlend(float elapsed_time, int clip, int frame, float factor)
+void Keyframe::updateAndBlend(float elapsed_time, int clip, int frame, float factor)
 {
 	if (owner.expired())return;
 	if (end_flg)return;
@@ -923,7 +923,7 @@ void KeyFrameManager::updateAndBlend(float elapsed_time, int clip, int frame, fl
 	}
 }
 
-void KeyFrameManager::reset()
+void Keyframe::reset()
 {
 	change(-1);
 	owner.reset();

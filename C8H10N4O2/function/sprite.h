@@ -29,8 +29,21 @@ private:
 	Sprite& operator =(Sprite&) = delete;
 public:
 	
-	Sprite(ID3D11Device* device, const wchar_t* file_name = nullptr);
+	Sprite(ID3D11Device* device, const wchar_t* file_name = L"\0");
+	Sprite(ID3D11Device* device, ID3D11ShaderResourceView* new_shader_resource_view);
 	virtual ~Sprite() = default;
+
+	/// <summary>
+	/// シェーダーリソースビューを結びつけます
+	/// </summary>
+	/// <param name="new_shader_resource_view">シェーダーリソースビュー</param>
+	/// <returns>成功すればtrue</returns>
+	bool attach(ID3D11ShaderResourceView* new_shader_resource_view);
+
+	/// <summary>
+	/// シェーダーリソースビューを取得します。
+	/// </summary>
+	ID3D11ShaderResourceView* getShaderResourceView() { return shader_resource_view.Get(); }
 
 	/// <summary>
 	/// スプライトを表示します。

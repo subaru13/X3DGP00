@@ -332,7 +332,7 @@ protected:
 	std::vector<Animation> animation_clips;
 };
 
-class KeyFrameManager
+class Keyframe
 {
 private:
 	std::weak_ptr<SkinnedMesh>  owner;
@@ -344,7 +344,7 @@ private:
 
 	bool _canChange(std::shared_ptr<SkinnedMesh> _owner,int _clip)const;
 public:
-	KeyFrameManager(std::shared_ptr<SkinnedMesh> owner = nullptr);
+	Keyframe(std::shared_ptr<SkinnedMesh> owner = nullptr);
 	/// <summary>
 	/// オーナーが不在の場合のみオーナーを設定します。
 	/// </summary>

@@ -91,22 +91,154 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t
 	}
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 	
-	bool isDummy = !isExistFileW(file_name);
-
-	if (isDummy)
+	if (file_name == nullptr)
 	{
-		hr = make_dummy_texture(device, shader_resource_view.GetAddressOf());
+		hr = make_dummy_texture(device, shader_resource_view.ReleaseAndGetAddressOf());
 		textrue_size = { 1.0f,1.0f };
 	}
 	else
 	{
-		D3D11_TEXTURE2D_DESC texture2d_desc{};
-		hr = load_texture_from_file(device, file_name, shader_resource_view.GetAddressOf(), &texture2d_desc);
-		textrue_size = { static_cast<float>(texture2d_desc.Width),static_cast<float>(texture2d_desc.Height) };
+		bool isDummy = !isExistFileW(file_name);
+		if (isDummy)
+		{
+			hr = make_dummy_texture(device, shader_resource_view.ReleaseAndGetAddressOf());
+			textrue_size = { 1.0f,1.0f };
+		}
+		else
+		{
+			D3D11_TEXTURE2D_DESC texture2d_desc{};
+			hr = load_texture_from_file(device, file_name, shader_resource_view.ReleaseAndGetAddressOf(), &texture2d_desc);
+			textrue_size = { static_cast<float>(texture2d_desc.Width),static_cast<float>(texture2d_desc.Height) };
+		}
 	}
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
 	
+}
+
+SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, ID3D11ShaderResourceView* new_shader_resource_view)
+	:vertex_buffer(nullptr), pixel_shader(nullptr),
+	input_layout(nullptr), vertex_shader(nullptr),
+	shader_resource_view(new_shader_resource_view), textrue_size(0, 0),
+	max_vertices(max_sprites * 6)
+{
+	assert(device && "The device is invalid.");
+	HRESULT hr = S_OK;
+	std::unique_ptr<vertex[]> vertices{ std::make_unique<vertex[]>(max_vertices) };
+	D3D11_BUFFER_DESC buffer_desc{};
+	buffer_desc.ByteWidth = static_cast<UINT>(sizeof(vertex) * max_vertices);
+	buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
+	buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	buffer_desc.MiscFlags = 0;
+	buffer_desc.StructureByteStride = 0;
+	D3D11_SUBRESOURCE_DATA subresource_data{};
+	subresource_data.pSysMem = vertices.get();
+	subresource_data.SysMemPitch = 0;
+	subresource_data.SysMemSlicePitch = 0;
+	hr = device->CreateBuffer(&buffer_desc, &subresource_data, vertex_buffer.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+
+	std::string cso_pass = combinePathsA(CSO_FILE_DIRECTORY, "sprite_batch_ps.cso");
+	if (isExistFileA(cso_pass))
+	{
+		hr = load_pixel_shader(device, cso_pass, pixel_shader.ReleaseAndGetAddressOf());
+	}
+	else
+	{
+		std::string ps =
+			"struct VS_OUT\n"
+			"{\n"
+			"	float4 position : SV_POSITION;\n"
+			"	float2 texcoord : TEXCOORD;\n"
+			"	float4 color    : COLOR;\n"
+			"};\n"
+			"Texture2D diffuse_map : register(t0);\n"
+			"SamplerState diffuse_map_sampler_state : register(s0);\n"
+			"float4 main(VS_OUT pin) : SV_TARGET\n"
+			"{\n"
+			"return diffuse_map.Sample(diffuse_map_sampler_state, pin.texcoord) * pin.color;\n"
+			"}\n";
+		hr = create_pixel_shader(device, ps, pixel_shader.ReleaseAndGetAddressOf());
+	}
+
+	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
+	{
+		{ "POSITION",	0,	 DXGI_FORMAT_R32G32B32_FLOAT,		0,	D3D11_APPEND_ALIGNED_ELEMENT,	D3D11_INPUT_PER_VERTEX_DATA,	0 },
+		{ "TEXCOORD",	0,	 DXGI_FORMAT_R32G32_FLOAT,			0,	D3D11_APPEND_ALIGNED_ELEMENT,	D3D11_INPUT_PER_VERTEX_DATA,	0 },
+		{ "COLOR",		0,	 DXGI_FORMAT_R32G32B32A32_FLOAT,	0,	D3D11_APPEND_ALIGNED_ELEMENT,	D3D11_INPUT_PER_VERTEX_DATA,	0 },
+	};
+
+	cso_pass = combinePathsA(CSO_FILE_DIRECTORY, "sprite_batch_vs.cso");
+	if (isExistFileA(cso_pass))
+	{
+		hr = load_vertex_shader(device, cso_pass,
+			vertex_shader.ReleaseAndGetAddressOf(), input_layout.ReleaseAndGetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
+	}
+	else
+	{
+
+		std::string vs =
+			"struct VS_OUT\n"
+			"{\n"
+			"	float4 position : SV_POSITION;\n"
+			"	float2 texcoord : TEXCOORD;\n"
+			"	float4 color    : COLOR;\n"
+			"};\n"
+			"VS_OUT main(float4 position : POSITION,float4 color : COLOR,float2 texcoord : TEXCOORD)\n"
+			"{\n"
+			"	VS_OUT vout;\n"
+			"	vout.position = position;\n"
+			"	vout.color    = color;\n"
+			"	vout.texcoord = texcoord;\n"
+			"	return vout;\n"
+			"}\n";
+
+
+		hr = create_vertex_shader(device, vs,
+			vertex_shader.ReleaseAndGetAddressOf(), input_layout.ReleaseAndGetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
+	}
+	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+
+	if (shader_resource_view == nullptr)
+	{
+		hr = make_dummy_texture(device, shader_resource_view.ReleaseAndGetAddressOf());
+		textrue_size = { 1.0f,1.0f };
+	}
+	else
+	{
+		HRESULT hr = S_OK;
+		ComPtr<ID3D11Resource> resource;
+		shader_resource_view->GetResource(&resource);
+		ComPtr<ID3D11Texture2D> texture2d;
+		hr = resource->QueryInterface<ID3D11Texture2D>(&texture2d);
+		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		D3D11_TEXTURE2D_DESC texture2d_desc{};
+		texture2d->GetDesc(&texture2d_desc);
+		textrue_size = { static_cast<float>(texture2d_desc.Width),static_cast<float>(texture2d_desc.Height) };
+	}
+	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+}
+
+bool SpriteBatch::attach(ID3D11ShaderResourceView* new_shader_resource_view)
+{
+	if (new_shader_resource_view)
+	{
+		shader_resource_view.Attach(new_shader_resource_view);
+		HRESULT hr = S_OK;
+		ComPtr<ID3D11Resource> resource;
+		shader_resource_view->GetResource(&resource);
+		ComPtr<ID3D11Texture2D> texture2d;
+		hr = resource->QueryInterface<ID3D11Texture2D>(&texture2d);
+		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		D3D11_TEXTURE2D_DESC texture2d_desc{};
+		texture2d->GetDesc(&texture2d_desc);
+		textrue_size = { static_cast<float>(texture2d_desc.Width),static_cast<float>(texture2d_desc.Height) };
+		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		return true;
+	}
+	return false;
 }
 
 void SpriteBatch::begin(ID3D11DeviceContext* immediate_context,ID3D11PixelShader** external_pixel_shader)

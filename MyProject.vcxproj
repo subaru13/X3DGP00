@@ -198,6 +198,7 @@
     <ClCompile Include="C8H10N4O2\function\framework.cpp" />
     <ClCompile Include="C8H10N4O2\function\geometry_primitive.cpp" />
     <ClCompile Include="C8H10N4O2\function\main.cpp" />
+    <ClCompile Include="C8H10N4O2\function\OffScreen.cpp" />
     <ClCompile Include="C8H10N4O2\function\SceneConstantBuffer.cpp" />
     <ClCompile Include="C8H10N4O2\function\SceneManager.cpp" />
     <ClCompile Include="C8H10N4O2\function\skinned_mesh.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="C8H10N4O2\function\high_resolution_timer.h" />
     <ClInclude Include="C8H10N4O2\function\misc.h" />
     <ClInclude Include="C8H10N4O2\function\MyHandy.h" />
+    <ClInclude Include="C8H10N4O2\function\OffScreen.h" />
     <ClInclude Include="C8H10N4O2\function\pBlendState.h" />
     <ClInclude Include="C8H10N4O2\function\pDepthStencilState.h" />
     <ClInclude Include="C8H10N4O2\function\pRasterizerState.h" />

@@ -31,6 +31,19 @@ private:
 	SpriteBatch& operator =(SpriteBatch&) = delete;
 public:
 	SpriteBatch(ID3D11Device* device,size_t max_sprites, const wchar_t* file_name = nullptr);
+	SpriteBatch(ID3D11Device* device, size_t max_sprites, ID3D11ShaderResourceView* new_shader_resource_view);
+
+	/// <summary>
+	/// シェーダーリソースビューを結びつけます
+	/// </summary>
+	/// <param name="new_shader_resource_view">シェーダーリソースビュー</param>
+	/// <returns>成功すればtrue</returns>
+	bool attach(ID3D11ShaderResourceView* new_shader_resource_view);
+
+	/// <summary>
+	/// シェーダーリソースビューを取得します。
+	/// </summary>
+	ID3D11ShaderResourceView* getShaderResourceView() { return shader_resource_view.Get(); }
 
 	/// <summary>
 	/// 描画の開始処理

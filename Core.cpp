@@ -34,6 +34,11 @@
 
 *********************************************************************/
 
+std::shared_ptr<Sprite> s;
+std::shared_ptr<OffScreen> o;
+
+
+
 
 /*********************************************************************
 			＠ゲームループ前に行う初期化処理
@@ -41,7 +46,8 @@
 *********************************************************************/
 void Initialization_Process_Before_Loop(ID3D11Device* device)
 {
-
+	s = std::make_shared<Sprite>(device, L"data/rice.dds");
+	o = std::make_shared<OffScreen>(device, (UINT)s->getTextrueSize().x, (UINT)s->getTextrueSize().y);
 }
 
 /*********************************************************************
@@ -61,6 +67,13 @@ void Update_Process(float elapsed_time)
 *********************************************************************/
 void Drawing_Process(ID3D11DeviceContext* immediate_context, float elapsed_time)
 {	
+	ID3D11ShaderResourceView* null_srv = NULL;
+	immediate_context->PSSetShaderResources(0, 1, &null_srv);
+	o->clear(immediate_context);
+	o->active(immediate_context);
+	s->render(immediate_context, NULL, {}, s->getTextrueSize());
+	o->deactive(immediate_context);
+	o->quad(immediate_context);
 
 }
 
