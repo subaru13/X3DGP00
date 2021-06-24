@@ -177,6 +177,12 @@ void Framework::render()
 	d3d11_context->ClearDepthStencilView(d3d11_depth_view.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	d3d11_context->OMSetRenderTargets(1, d3d11_render_view.GetAddressOf(), d3d11_depth_view.Get());
+
+	ID3D11ShaderResourceView* null_srv[128] = { nullptr };
+
+	d3d11_context->PSSetShaderResources(0, 128, null_srv);
+
+
 	float elapsed_time = tictoc.time_interval();
 	SceneManager::getInstance()->render(d3d11_context.Get(), elapsed_time);
 	Drawing_Process(d3d11_context.Get(),elapsed_time);

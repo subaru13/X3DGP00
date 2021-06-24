@@ -440,7 +440,7 @@ public:
 	/// <summary>
 	/// 現在のキーフレームを取得します。
 	/// </summary>
-	const Animation::keyframe* getKeyframe()const { return owner.expired() ? nullptr : &keyframe; }
+	const Animation::keyframe* getData()const { return owner.expired() ? nullptr : &keyframe; }
 
 	/// <summary>
 	/// オーナーの開放などをします。

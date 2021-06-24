@@ -3,3 +3,8 @@ imgui.ini
 C8H10N4O2/External/
 data/
 x64/
+deferred.cso
+deferred.hlsl
+mrt.cso
+mrt.hlsl
+test.h
