@@ -268,5 +268,8 @@
     <FxCompile Include="C8H10N4O2\shader\skinned_mesh_ps.hlsl">
       <Filter>C8H10N4O2\Shaders\skinnd_mesh</Filter>
     </FxCompile>
+    <FxCompile Include="test.hlsl">
+      <Filter>Development\シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
