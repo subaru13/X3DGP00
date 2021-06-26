@@ -2,6 +2,7 @@
 struct VS_OUT
 {
 	float4 position : SV_POSITION;
+	float4 world_position : POSITION;
 	float4 normal    : NORMAL;
 };
 cbuffer object_constant : register(b0)

@@ -207,9 +207,6 @@
     <ClInclude Include="C8H10N4O2\function\OffScreen.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="test.h">
-      <Filter>Development\ヘッダーファイル</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="C8H10N4O2\resource\3dgp.aps">
@@ -270,15 +267,6 @@
     </FxCompile>
     <FxCompile Include="C8H10N4O2\shader\skinned_mesh_ps.hlsl">
       <Filter>C8H10N4O2\Shaders\skinnd_mesh</Filter>
-    </FxCompile>
-    <FxCompile Include="test.hlsl">
-      <Filter>Development\シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="mrt.hlsl">
-      <Filter>Development\シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="deferred.hlsl">
-      <Filter>Development\シェーダーファイル</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

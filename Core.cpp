@@ -13,7 +13,7 @@
 	Initialization_Process_Before_Loop
 			↓
 	Debug_Mode_Initialization_Process_Before_Loop(デバック時のみ)
-			↓	(ループ開始) 
+			↓	(ループ開始)
 	SceneManager::edit
 			↓
 	Update_Process
@@ -25,7 +25,7 @@
 	Drawing_Process
 			↓
 	Debug_Mode_Drawing_Process(デバック時のみ)
-			↓	(ループ終了) 
+			↓	(ループ終了)
 	SceneManager::release
 			↓
 	End_Process_After_The_Loop_ends
@@ -34,14 +34,13 @@
 
 *********************************************************************/
 
-
 /*********************************************************************
 			＠ゲームループ前に行う初期化処理
 			シーンの追加などを記入してください。
 *********************************************************************/
 void Initialization_Process_Before_Loop(ID3D11Device* device)
 {
-	
+
 }
 
 /*********************************************************************
@@ -60,7 +59,7 @@ void Update_Process(float elapsed_time)
 			常時描画したい処理はこちらに記入してください。
 *********************************************************************/
 void Drawing_Process(ID3D11DeviceContext* immediate_context, float elapsed_time)
-{	
+{
 
 }
 

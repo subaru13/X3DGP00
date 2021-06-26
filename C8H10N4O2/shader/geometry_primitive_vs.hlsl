@@ -4,6 +4,7 @@ VS_OUT main(float4 position : POSITION,float4 normal : NORMAL)
 {
 	VS_OUT vout;
 	vout.position = mul(position,mul(world,view_projection));
+	vout.world_position = mul(position, world);
 	normal.w = 0;
 	vout.normal = mul(normal,world);
 	return vout;
