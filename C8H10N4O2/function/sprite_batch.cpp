@@ -1,10 +1,8 @@
 #include "sprite_batch.h"
-#include <assert.h>
-#include <sstream>
-#include "misc.h"
-#include "CreateComObjectHelpar.h"
-#include "MyHandy.h"
 #include "../FrameworkConfig.h"
+#include "CreateComObjectHelpar.h"
+#include "misc.h"
+#include "MyHandy.h"
 
 SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t* file_name)
 	:vertex_buffer(nullptr), pixel_shader(nullptr),
@@ -28,7 +26,7 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t
 	subresource_data.SysMemSlicePitch = 0;
 	hr = device->CreateBuffer(&buffer_desc, &subresource_data, vertex_buffer.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-	
+
 	std::string cso_pass = combinePathsA(CSO_FILE_DIRECTORY, "sprite_batch_ps.cso");
 	if (isExistFileA(cso_pass))
 	{
@@ -90,7 +88,7 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t
 			vertex_shader.ReleaseAndGetAddressOf(), input_layout.ReleaseAndGetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
 	}
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-	
+
 	if (file_name == nullptr)
 	{
 		hr = make_dummy_texture(device, shader_resource_view.ReleaseAndGetAddressOf());
@@ -113,7 +111,7 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t
 	}
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
-	
+
 }
 
 SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, ID3D11ShaderResourceView* new_shader_resource_view)
@@ -308,7 +306,7 @@ void SpriteBatch::render(ID3D11DeviceContext* immediate_context,
 	y2 = 1.0f - 2.0f * y2 / viewport.Height;
 	x3 = 2.0f * x3 / viewport.Width - 1.0f;
 	y3 = 1.0f - 2.0f * y3 / viewport.Height;
-	
+
 	FLOAT2 texcoord[4] = {};
 	texcoord[0] = { texpos.x,texpos.y };
 	texcoord[1] = { texpos.x + texsize.x,texpos.y };
@@ -351,5 +349,5 @@ void SpriteBatch::end(ID3D11DeviceContext* immediate_context)
 	immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	immediate_context->IASetInputLayout(input_layout.Get());
 	immediate_context->Draw(static_cast<UINT>(vertex_count), 0);
-	
+
 }

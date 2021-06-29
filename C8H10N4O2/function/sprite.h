@@ -28,7 +28,7 @@ private:
 	Sprite(Sprite&) = delete;
 	Sprite& operator =(Sprite&) = delete;
 public:
-	
+
 	Sprite(ID3D11Device* device, const wchar_t* file_name = L"\0");
 	Sprite(ID3D11Device* device, ID3D11ShaderResourceView* new_shader_resource_view);
 	virtual ~Sprite() = default;
@@ -67,7 +67,7 @@ public:
 		FLOAT2 texsize = {},
 		float angle = 0.0f,
 		FLOAT4 color = { 1.0f,1.0f,1.0f,1.0f });
-	
+
 	/// <summary>
 	/// 画面全体に描画します。
 	/// </summary>
@@ -89,5 +89,5 @@ public:
 	/// テクスチャの大きさを取得します。
 	/// </summary>
 	const FLOAT2& getTextrueSize()const { return textrue_size; }
-	
+
 };

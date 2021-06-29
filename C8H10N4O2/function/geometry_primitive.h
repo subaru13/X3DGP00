@@ -7,11 +7,20 @@
 
 using namespace Microsoft::WRL;
 
-enum GP_SHAPE
+//プリミティブの形状
+enum class GP_SHAPE
+	:unsigned char
 {
-	GP_CUBE,GP_SPHERE,GP_CYLINDER
+	GP_CUBE,//六面体
+	GP_SPHERE,//球
+	GP_CYLINDER//円柱
 };
 
+/*
+	ジオメトリプリミティブの構成になります。
+	const GP_SHAPE	shape		-> プリミティブの形状 GP_SHAPE 列挙型を参照してください。
+	const UINT		division	-> 球(円柱)の分割数 数値が大きいほど滑らかになります。
+*/
 struct GP_CONFIG
 {
 	const GP_SHAPE	shape;
@@ -57,7 +66,7 @@ public:
 	/// <param name="material_color">色</param>
 	virtual void render(ID3D11DeviceContext* immediate_context,
 		ID3D11PixelShader** external_pixel_shader,
-		const FLOAT4X4& world, 
+		const FLOAT4X4& world,
 		const FLOAT4& material_color = {1,1,1,1});
 
 	/// <summary>

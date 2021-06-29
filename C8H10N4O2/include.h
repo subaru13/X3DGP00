@@ -12,15 +12,11 @@
 
 //DefaultFunctions
 #include "function/framework.h"
-#include "function/sprite.h"
-#include "function/sprite_batch.h"
-#include "function/ConstantBuffer.h"
+#include "function/MakeInterface.h"
+#include "function/geometry_primitive.h"
 #include "function/ASCII_Font.h"
 #include "function/Arithmetic.h"
 #include "function/SimpleSound.h"
-#include "function/geometry_primitive.h"
 #include "function/SceneConstantBuffer.h"
-#include "function/skinned_mesh.h"
 #include "function/SceneManager.h"
 #include "function/CreateComObjectHelpar.h"
-#include "function/OffScreen.h"

@@ -3,7 +3,7 @@
 #include <d3d11.h>
 #include <assert.h>
 #include "misc.h"
-enum RASTERIZER_FILL { RS_SOLID, RS_WIREFRAME };
+enum class RASTERIZER_FILL { RS_SOLID, RS_WIREFRAME };
 class RasterizerStates
 {
 private:
@@ -22,28 +22,28 @@ public:
 		rasterizer_desc.ScissorEnable = FALSE;
 		rasterizer_desc.MultisampleEnable = FALSE;
 		rasterizer_desc.AntialiasedLineEnable = FALSE;
-		HRESULT hr = device->CreateRasterizerState(&rasterizer_desc, states[RS_SOLID][FALSE].GetAddressOf());
+		HRESULT hr = device->CreateRasterizerState(&rasterizer_desc, states[static_cast<int>(RASTERIZER_FILL::RS_SOLID)][FALSE].ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-		
+
 		rasterizer_desc.FillMode = D3D11_FILL_SOLID;
 		rasterizer_desc.CullMode = D3D11_CULL_BACK;
 		rasterizer_desc.FrontCounterClockwise = TRUE;
 		rasterizer_desc.AntialiasedLineEnable = FALSE;
-		hr = device->CreateRasterizerState(&rasterizer_desc, states[RS_SOLID][TRUE].GetAddressOf());
+		hr = device->CreateRasterizerState(&rasterizer_desc, states[static_cast<int>(RASTERIZER_FILL::RS_SOLID)][TRUE].ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-		
+
 		rasterizer_desc.FillMode = D3D11_FILL_WIREFRAME;
 		rasterizer_desc.CullMode = D3D11_CULL_BACK;
 		rasterizer_desc.FrontCounterClockwise = FALSE;
 		rasterizer_desc.AntialiasedLineEnable = TRUE;
-		hr = device->CreateRasterizerState(&rasterizer_desc, states[RS_WIREFRAME][FALSE].GetAddressOf());
+		hr = device->CreateRasterizerState(&rasterizer_desc, states[static_cast<int>(RASTERIZER_FILL::RS_WIREFRAME)][FALSE].ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
 		rasterizer_desc.FillMode = D3D11_FILL_WIREFRAME;
 		rasterizer_desc.CullMode = D3D11_CULL_BACK;
 		rasterizer_desc.FrontCounterClockwise = TRUE;
 		rasterizer_desc.AntialiasedLineEnable = TRUE;
-		hr = device->CreateRasterizerState(&rasterizer_desc, states[RS_WIREFRAME][TRUE].GetAddressOf());
+		hr = device->CreateRasterizerState(&rasterizer_desc, states[static_cast<int>(RASTERIZER_FILL::RS_WIREFRAME)][TRUE].ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 	}
 

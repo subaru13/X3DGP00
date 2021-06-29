@@ -82,7 +82,7 @@ struct Animation
 			}
 		};
 		std::vector<node> nodes;
-		
+
 		template < class T>
 		void serialize(T& archive)
 		{
@@ -276,7 +276,7 @@ public:
 	void render(ID3D11DeviceContext* immediate_context,
 		ID3D11PixelShader** external_pixel_shader,
 		const FLOAT4X4& world,
-		const Animation::keyframe* keyframe = nullptr, 
+		const Animation::keyframe* keyframe = nullptr,
 		const FLOAT4& material_color = { 1,1,1,1 });
 	/// <summary>
 	/// キーフレームの情報を更新します。
@@ -295,7 +295,7 @@ public:
 	/// </summary>
 	/// <param name="keyframes">ブレンドする2つのキーフレーム</param>
 	/// <param name="factor">
-	/// ブレンドの割合 
+	/// ブレンドの割合
 	/// 0に近いほど1つ目のキーフレームが使用されます。
 	/// </param>
 	/// <param name="keyframe">合成したキーフレーム</param>
@@ -409,7 +409,7 @@ public:
 	/// 0に近いほど1つ目のキーフレームが使用されます。
 	/// </param>
 	void updateAndBlend(float elapsed_time, int clip, int frame, float factor);
-	
+
 	/// <summary>
 	/// アニメーションティックをリセットします。
 	/// </summary>

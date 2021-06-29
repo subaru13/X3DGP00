@@ -136,10 +136,11 @@ void OffScreen::_depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 
 OffScreen::OffScreen(ID3D11Device* device, LINK_DESTINATION _link_destination, UINT w, UINT h, DXGI_FORMAT format, bool need_renderer)
 	:link_destination(_link_destination), associated_shader_resource_view(nullptr), render_traget_view(nullptr), depth_stencil_view(nullptr),
-	original_render_traget_view(nullptr), original_depth_stencil_view(nullptr),renderer(nullptr)
+	original_render_traget_view(nullptr), original_depth_stencil_view(nullptr),renderer(nullptr),
+	viewport(),original_viewport(),num_views(ARRAYSIZE(original_viewport))
 {
 	assert(device && "The device is invalid.");
-	
+
 	switch (link_destination)
 	{
 	case OffScreen::LINK_DESTINATION::RENDER_TARGET:
@@ -151,6 +152,13 @@ OffScreen::OffScreen(ID3D11Device* device, LINK_DESTINATION _link_destination, U
 	default:
 		break;
 	}
+
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = static_cast<float>(w);
+	viewport.Height = static_cast<float>(h);
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
 
 	if (need_renderer)
 	{
@@ -169,6 +177,9 @@ void OffScreen::clear(ID3D11DeviceContext* immediate_context, FLOAT4 color)
 void OffScreen::active(ID3D11DeviceContext* immediate_context, bool usu_depth)
 {
 	assert(immediate_context && "The context is invalid.");
+	num_views = ARRAYSIZE(original_viewport);
+	immediate_context->RSGetViewports(&num_views, original_viewport);
+	immediate_context->RSSetViewports(1, &viewport);
 	immediate_context->OMGetRenderTargets(1, original_render_traget_view.ReleaseAndGetAddressOf(),
 		original_depth_stencil_view.ReleaseAndGetAddressOf());
 	immediate_context->OMSetRenderTargets(1, render_traget_view.GetAddressOf(), usu_depth ? depth_stencil_view.Get() : nullptr);
@@ -178,6 +189,7 @@ void OffScreen::deactive(ID3D11DeviceContext* immediate_context)
 {
 	assert(immediate_context && "The context is invalid.");
 	immediate_context->OMSetRenderTargets(1, original_render_traget_view.GetAddressOf(), original_depth_stencil_view.Get());
+	immediate_context->RSSetViewports(num_views, original_viewport);
 }
 
 void OffScreen::quad(ID3D11DeviceContext* immediate_context, ID3D11PixelShader** external_pixel_shader)

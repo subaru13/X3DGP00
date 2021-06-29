@@ -87,7 +87,7 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device,
 	:constant_buffer(device)
 {
 	assert(device && "The device is invalid.");
-	
+
 	std::filesystem::path cereal_filename(fbx_filename);
 	cereal_filename.replace_extension("json");
 	if (std::filesystem::exists(cereal_filename))
@@ -739,7 +739,7 @@ bool Keyframe::_canChange(std::shared_ptr<SkinnedMesh> _owner, int _clip)const
 
 
 Keyframe::Keyframe(std::shared_ptr<SkinnedMesh> owner)
-	:owner(owner), keyframe(), clip_index(-1), 
+	:owner(owner), keyframe(), clip_index(-1),
 	animation_tick(0.0f),loop_flg(false),end_flg(true)
 {
 	//assert(this->owner.expired() == false && "Owner is absent.");
@@ -817,7 +817,7 @@ bool Keyframe::blend(int clip, int frame, float factor)
 			&animation[0]->sequence.at(frame_index),
 			&animation[1]->sequence.at(frame % animation[1]->sequence.size())
 		};
-		
+
 		ownerPtr->blend_animations(keyframes, factor, keyframe);
 		ownerPtr->update_keyframe(keyframe);
 	}

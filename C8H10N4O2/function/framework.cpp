@@ -24,9 +24,9 @@ Framework::Framework(HWND hwnd)
 {
 	assert(instance == nullptr && "No more instances can be created.");
 	instance = this;
-	
+
 	HRESULT hr{ S_OK };
-	
+
 	hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_MULTITHREADED);
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
@@ -57,7 +57,7 @@ Framework::Framework(HWND hwnd)
 		hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, create_device_flags,
 			&feature_levels, 1, D3D11_SDK_VERSION, &swap_chain_desc,
 			idxgi_swapchain.ReleaseAndGetAddressOf(),
-			d3d11_device.ReleaseAndGetAddressOf(), 
+			d3d11_device.ReleaseAndGetAddressOf(),
 			NULL, d3d11_context.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 	}
@@ -88,7 +88,7 @@ Framework::Framework(HWND hwnd)
 		texture2d_desc.MiscFlags = 0;
 		hr = d3d11_device->CreateTexture2D(&texture2d_desc, NULL, depth_stencil_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-		
+
 		D3D11_DEPTH_STENCIL_VIEW_DESC depth_stencil_view_desc{};
 		depth_stencil_view_desc.Format = texture2d_desc.Format;
 		depth_stencil_view_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
@@ -97,50 +97,25 @@ Framework::Framework(HWND hwnd)
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 	}
 
-	D3D11_SAMPLER_DESC sampler_desc;
-	sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-	sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampler_desc.MipLODBias = 0;
-	sampler_desc.MaxAnisotropy = 16;
-	sampler_desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	sampler_desc.BorderColor[0] = 0;
-	sampler_desc.BorderColor[1] = 0;
-	sampler_desc.BorderColor[2] = 0;
-	sampler_desc.BorderColor[3] = 0;
-	sampler_desc.MinLOD = 0;
-	sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
-	hr = d3d11_device->CreateSamplerState(&sampler_desc, d3d11_sampler_states[SS_POINT].ReleaseAndGetAddressOf());
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-
-	sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	hr = d3d11_device->CreateSamplerState(&sampler_desc, d3d11_sampler_states[SS_LINEAR].ReleaseAndGetAddressOf());
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-
-	sampler_desc.Filter = D3D11_FILTER_ANISOTROPIC;
-	hr = d3d11_device->CreateSamplerState(&sampler_desc, d3d11_sampler_states[SS_ANISOTROPIC].ReleaseAndGetAddressOf());
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-
-	d3d11_context->PSSetSamplers(0, 1, d3d11_sampler_states[SS_POINT].GetAddressOf());
 
 	//Viewport settings
 	{
-		D3D11_VIEWPORT viewport{};
-		viewport.TopLeftX = 0;
-		viewport.TopLeftY = 0;
-		viewport.Width = static_cast<float>(SCREEN_WIDTH);
-		viewport.Height = static_cast<float>(SCREEN_HEIGHT);
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
-		d3d11_context->RSSetViewports(1, &viewport);
+		d3d11_viewport.TopLeftX = 0;
+		d3d11_viewport.TopLeftY = 0;
+		d3d11_viewport.Width = static_cast<float>(SCREEN_WIDTH);
+		d3d11_viewport.Height = static_cast<float>(SCREEN_HEIGHT);
+		d3d11_viewport.MinDepth = 0.0f;
+		d3d11_viewport.MaxDepth = 1.0f;
+		d3d11_context->RSSetViewports(1, &d3d11_viewport);
 	}
 	d3d11_blend_states = std::make_unique<BlendStates>(d3d11_device.Get());
 	d3d11_context->OMSetBlendState(d3d11_blend_states->at(BLEND_STATE::BS_ALPHA), nullptr, 0xFFFFFFFF);
 	d3d11_depth_stencil_states = std::make_unique<DepthStencilStates>(d3d11_device.Get());
 	d3d11_context->OMSetDepthStencilState(d3d11_depth_stencil_states->at(DEPTH_STENCIL_STATE::DS_FALSE), 1);
 	d3d11_rasterizer_states = std::make_unique<RasterizerStates>(d3d11_device.Get());
-	d3d11_context->RSSetState(d3d11_rasterizer_states->at(RS_SOLID, FALSE));
+	d3d11_context->RSSetState(d3d11_rasterizer_states->at(RASTERIZER_FILL::RS_SOLID, FALSE));
+	d3d11_sampler_states = std::make_unique<SamplerStates>(d3d11_device.Get());
+	d3d11_context->PSSetSamplers(0, 1, instance->d3d11_sampler_states->at(SAMPLER_STATE::SS_POINT));
 }
 
 bool Framework::initialize()
@@ -172,7 +147,7 @@ void Framework::render()
 
 	HRESULT hr{ S_OK };
 
-	
+
 	d3d11_context->ClearRenderTargetView(d3d11_render_view.Get(), FILL_COLOR);
 	d3d11_context->ClearDepthStencilView(d3d11_depth_view.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -194,7 +169,7 @@ void Framework::render()
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 #endif
-	
+
 	hr = idxgi_swapchain->Present(SYNC_INTERVAL, 0);
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 }

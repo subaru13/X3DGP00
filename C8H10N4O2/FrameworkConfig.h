@@ -19,6 +19,6 @@ static CONST UINT		SYNC_INTERVAL{ FALSE };
 //シェーダーのCSOファイルが置かれているディレクトリーのパス
 static CONST CHAR*		CSO_FILE_DIRECTORY{"data\\shader\\"};
 //ImGuiを使用することをコンパイラーに伝達
-#define USE_IMGUI		TRUE
+#define USE_IMGUI		FALSE
 //ImGuiのフォントサイズ
 #define IMGUI_FONT_SIZE	14

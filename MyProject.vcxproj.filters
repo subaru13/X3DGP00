@@ -207,6 +207,12 @@
     <ClInclude Include="C8H10N4O2\function\OffScreen.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\MakeInterface.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\pSamplerState.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="C8H10N4O2\resource\3dgp.aps">

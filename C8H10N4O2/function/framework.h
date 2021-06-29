@@ -13,6 +13,7 @@
 #include "pBlendState.h"
 #include "pDepthStencilState.h"
 #include "pRasterizerState.h"
+#include "pSamplerState.h"
 #include "ConstantBuffer.h"
 #include "Arithmetic.h"
 #include "../FrameworkConfig.h"
@@ -29,8 +30,6 @@ extern ImWchar glyphRangesJapanese[];
 
 using namespace Microsoft::WRL;
 
-enum SAMPLER_STATE { SS_POINT, SS_LINEAR, SS_ANISOTROPIC };
-
 class Framework final
 {
 
@@ -38,7 +37,7 @@ private:
 	static Framework*						instance;
 
 	HWND hwnd;
-	
+
 	ComPtr<ID3D11Device>				d3d11_device;
 	ComPtr<ID3D11DeviceContext>			d3d11_context;
 	ComPtr<ID3D11RenderTargetView>		d3d11_render_view;
@@ -46,8 +45,9 @@ private:
 	std::unique_ptr<BlendStates>		d3d11_blend_states;
 	std::unique_ptr<DepthStencilStates>	d3d11_depth_stencil_states;
 	std::unique_ptr<RasterizerStates>	d3d11_rasterizer_states;
-	ComPtr<ID3D11SamplerState>			d3d11_sampler_states[3];
+	std::unique_ptr<SamplerStates>		d3d11_sampler_states;
 	ComPtr<IDXGISwapChain>				idxgi_swapchain;
+	D3D11_VIEWPORT						d3d11_viewport;
 
 	Framework(const Framework&) = delete;
 	Framework& operator=(const Framework&) = delete;
@@ -131,7 +131,7 @@ public:
 	static void setSamplerState(SAMPLER_STATE type, UINT slot = 0)
 	{
 		assert(instance != nullptr && "No Instance.");
-		instance->d3d11_context->PSSetSamplers(slot, 1, instance->d3d11_sampler_states[type].GetAddressOf());
+		instance->d3d11_context->PSSetSamplers(slot, 1, instance->d3d11_sampler_states->at(type));
 	}
 
 	/// <summary>
@@ -143,6 +143,50 @@ public:
 	{
 		assert(instance != nullptr && "No Instance.");
 		instance->d3d11_context->RSSetState(instance->d3d11_rasterizer_states->at(type, clockwise));
+	}
+
+	/// <summary>
+	/// ビューポートを初期設定へ戻します。
+	/// </summary>
+	static void resetViewPort()
+	{
+		assert(instance != nullptr && "No Instance.");
+		instance->d3d11_context->RSSetViewports(1, &instance->d3d11_viewport);
+	}
+
+	/// <summary>
+	/// ビューポートを設定します。
+	/// </summary>
+	/// <param name="size">ビューポートのサイズ</param>
+	static void setViewPort(FLOAT2 size)
+	{
+		assert(instance != nullptr && "No Instance.");
+		D3D11_VIEWPORT viewport{};
+		viewport.TopLeftX = 0;
+		viewport.TopLeftY = 0;
+		viewport.Width = size.x;
+		viewport.Height = size.y;
+		viewport.MinDepth = 0.0f;
+		viewport.MaxDepth = 1.0f;
+		instance->d3d11_context->RSSetViewports(1, &viewport);
+	}
+
+	/// <summary>
+	/// ビューポートを設定します。
+	/// </summary>
+	/// <param name="size">ビューポートのサイズ</param>
+	/// <param name="pos">ビューポートの開始座標(スクリーンスペース)</param>
+	static void setViewPort(FLOAT2 size, FLOAT2 pos)
+	{
+		assert(instance != nullptr && "No Instance.");
+		D3D11_VIEWPORT viewport{};
+		viewport.TopLeftX = pos.x;
+		viewport.TopLeftY = pos.y;
+		viewport.Width = size.x;
+		viewport.Height = size.y;
+		viewport.MinDepth = 0.0f;
+		viewport.MaxDepth = 1.0f;
+		instance->d3d11_context->RSSetViewports(1, &viewport);
 	}
 
 	int run()
@@ -256,8 +300,8 @@ private:
 			float fps = static_cast<float>(frames);
 			std::wostringstream outs;
 			outs.precision(6);
-			outs << L"【"<<APPLICATION_NAME << L"】" 
-				<< L"	FPS : " << fps << L" / " 
+			outs << L"【"<<APPLICATION_NAME << L"】"
+				<< L"	FPS : " << fps << L" / "
 				<< L"Frame Time : " << 1000.0f / fps << L" (ms)";
 			SetWindowTextW(hwnd, outs.str().c_str());
 

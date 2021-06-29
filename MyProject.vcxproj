@@ -225,12 +225,14 @@
     <ClInclude Include="C8H10N4O2\function\framework.h" />
     <ClInclude Include="C8H10N4O2\function\geometry_primitive.h" />
     <ClInclude Include="C8H10N4O2\function\high_resolution_timer.h" />
+    <ClInclude Include="C8H10N4O2\function\MakeInterface.h" />
     <ClInclude Include="C8H10N4O2\function\misc.h" />
     <ClInclude Include="C8H10N4O2\function\MyHandy.h" />
     <ClInclude Include="C8H10N4O2\function\OffScreen.h" />
     <ClInclude Include="C8H10N4O2\function\pBlendState.h" />
     <ClInclude Include="C8H10N4O2\function\pDepthStencilState.h" />
     <ClInclude Include="C8H10N4O2\function\pRasterizerState.h" />
+    <ClInclude Include="C8H10N4O2\function\pSamplerState.h" />
     <ClInclude Include="C8H10N4O2\function\SceneConstantBuffer.h" />
     <ClInclude Include="C8H10N4O2\function\SceneManager.h" />
     <ClInclude Include="C8H10N4O2\function\SimpleSound.h" />

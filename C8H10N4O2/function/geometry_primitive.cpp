@@ -100,14 +100,14 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config):
 
 	switch (primitive_config.shape)
 	{
-	case GP_CUBE:
+	case GP_SHAPE::GP_CUBE:
 		create_cube(vertices, indices);
 		break;
-	case GP_SPHERE:
+	case GP_SHAPE::GP_SPHERE:
 		assert(primitive_config.division > 0 && "The number of divisions is too small");
 		create_sphere(primitive_config.division, vertices, indices);
 		break;
-	case GP_CYLINDER:
+	case GP_SHAPE::GP_CYLINDER:
 		assert(primitive_config.division > 0 && "The number of divisions is too small");
 		create_cylinder(primitive_config.division, vertices, indices);
 		break;
@@ -125,7 +125,7 @@ void GeometryPrimitive::render(ID3D11DeviceContext* immediate_context, ID3D11Pix
 	immediate_context->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	immediate_context->IASetInputLayout(input_layout.Get());
-	
+
 	immediate_context->VSSetShader(vertex_shader.Get(), nullptr, 0);
 	if (external_pixel_shader)
 	{
@@ -135,11 +135,11 @@ void GeometryPrimitive::render(ID3D11DeviceContext* immediate_context, ID3D11Pix
 	{
 		immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
 	}
-	
+
 	constants data{ world, material_color };
 	constant_buffer = data;
 	constant_buffer.send(immediate_context, 0, true, true);
-	
+
 	D3D11_BUFFER_DESC buffer_desc{};
 	index_buffer->GetDesc(&buffer_desc);
 	immediate_context->DrawIndexed(buffer_desc.ByteWidth / sizeof(uint32_t), 0, 0);
@@ -148,7 +148,7 @@ void GeometryPrimitive::render(ID3D11DeviceContext* immediate_context, ID3D11Pix
 void GeometryPrimitive::create_com_buffers(ID3D11Device* device, vertex* vertices, size_t vertex_count, uint32_t* indices, size_t index_count)
 {
 	HRESULT hr{ S_OK };
-	
+
 	D3D11_BUFFER_DESC buffer_desc{};
 	D3D11_SUBRESOURCE_DATA subresource_data{};
 	buffer_desc.ByteWidth = static_cast<UINT>(sizeof(vertex) * vertex_count);
@@ -162,7 +162,7 @@ void GeometryPrimitive::create_com_buffers(ID3D11Device* device, vertex* vertice
 	subresource_data.SysMemSlicePitch = 0;
 	hr = device->CreateBuffer(&buffer_desc, &subresource_data, vertex_buffer.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-	
+
 	buffer_desc.ByteWidth = static_cast<UINT>(sizeof(uint32_t) * index_count);
 	buffer_desc.Usage = D3D11_USAGE_DEFAULT;
 	buffer_desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -269,7 +269,7 @@ void GeometryPrimitive::create_cube(std::vector<vertex>& vertices, std::vector<u
 
 	// right-side
 	// 0---------1
-	// |         |      
+	// |         |
 	// |   -X    |
 	// |         |
 	// 2---------3
@@ -291,7 +291,7 @@ void GeometryPrimitive::create_cube(std::vector<vertex>& vertices, std::vector<u
 
 	// left-side
 	// 0---------1
-	// |         |      
+	// |         |
 	// |   -X    |
 	// |         |
 	// 2---------3

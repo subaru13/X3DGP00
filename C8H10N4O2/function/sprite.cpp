@@ -1,10 +1,9 @@
-#include <assert.h>
-#include <sstream>
-#include "misc.h"
 #include "sprite.h"
-#include "CreateComObjectHelpar.h"
-#include "MyHandy.h"
 #include "../FrameworkConfig.h"
+#include "CreateComObjectHelpar.h"
+#include "misc.h"
+#include "MyHandy.h"
+#include <assert.h>
 
 Sprite::Sprite(ID3D11Device* device, const wchar_t* file_name)
 	:vertex_buffer(nullptr), pixel_shader(nullptr),
@@ -65,7 +64,7 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* file_name)
 	}
 
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-	
+
 	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
 	{
 		{ "POSITION",	0,	 DXGI_FORMAT_R32G32B32_FLOAT,		0,	D3D11_APPEND_ALIGNED_ELEMENT,	D3D11_INPUT_PER_VERTEX_DATA,	0 },
@@ -253,12 +252,12 @@ bool Sprite::attach(ID3D11ShaderResourceView* new_shader_resource_view)
 	return false;
 }
 
-void Sprite::render(ID3D11DeviceContext* immediate_context, 
-	ID3D11PixelShader** external_pixel_shader, 
-	FLOAT2 pos, 
+void Sprite::render(ID3D11DeviceContext* immediate_context,
+	ID3D11PixelShader** external_pixel_shader,
+	FLOAT2 pos,
 	FLOAT2 size,
-	FLOAT2 texpos, 
-	FLOAT2 texsize, 
+	FLOAT2 texpos,
+	FLOAT2 texsize,
 	float angle,
 	FLOAT4 color)
 {

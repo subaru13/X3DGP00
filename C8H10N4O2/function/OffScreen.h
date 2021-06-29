@@ -16,6 +16,9 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>		original_depth_stencil_view;
 	std::shared_ptr<Sprite>								renderer;
 	const LINK_DESTINATION								link_destination;
+	D3D11_VIEWPORT										viewport;
+	D3D11_VIEWPORT										original_viewport[8];
+	UINT												num_views;
 	void _render_traget(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format);
 	void _depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format);
 
