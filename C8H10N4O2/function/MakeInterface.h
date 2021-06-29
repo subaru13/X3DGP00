@@ -7,7 +7,6 @@
 #include "geometry_primitive.h"
 #include <memory>
 
-
 /// <summary>
 ///	スプライトを作成します。
 /// </summary>
@@ -96,5 +95,5 @@ inline std::unique_ptr<OffScreen> MakeOffScreen(ID3D11Device* device,
 	DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM,
 	bool need_renderer = true)
 {
-	return std::make_unique<OffScreen>(device, link_destination,w,h,format, need_renderer);
+	return std::make_unique<OffScreen>(device, link_destination, w, h, format, need_renderer);
 }

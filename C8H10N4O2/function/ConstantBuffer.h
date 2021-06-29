@@ -7,7 +7,7 @@
 using namespace Microsoft::WRL;
 /*********************************************************************************
 	A class that manages constant buffers.
-	Define the type of the variable to be registered 
+	Define the type of the variable to be registered
 	in the constant buffer when declaring the entity.
 	However, the byte width must be a multiple of 16.
 *********************************************************************************/
@@ -26,12 +26,12 @@ public:
 	/**************************************************************
 		Create a constant buffer.
 		Please pass the pointer of ID3D11Device.
-		Also, if necessary, pass the argument of the constructor 
+		Also, if necessary, pass the argument of the constructor
 		of the variable to be registered in the constant buffer.
 	**************************************************************/
 	template<class... Args>
-	ConstantBuffer(ID3D11Device* device,Args... args) 
-		:buffer(nullptr),data(args...)
+	ConstantBuffer(ID3D11Device* device, Args... args)
+		:buffer(nullptr), data(args...)
 	{
 		assert(device && "The device is invalid.");
 		assert(sizeof(T) % 16 == 0 && "constant buffer's need to be 16 byte aligned");
@@ -46,7 +46,7 @@ public:
 
 	/**************************************************************
 		Transfers the shader's constant buffer.
-		The arguments set the destination slot number 
+		The arguments set the destination slot number
 		and type of shader to send.
 	**************************************************************/
 	void send(ID3D11DeviceContext* immediate_context, UINT slot, bool use_vs = true, bool use_ps = true)
@@ -71,7 +71,6 @@ public:
 		data = other;
 		return data;
 	}
-
 };
 
 #endif // !INCLUDE_CONSTANT_BUFFER

@@ -89,5 +89,4 @@ public:
 	/// テクスチャの大きさを取得します。
 	/// </summary>
 	const FLOAT2& getTextrueSize()const { return textrue_size; }
-
 };

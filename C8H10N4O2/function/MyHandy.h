@@ -72,7 +72,6 @@ inline std::string combinePathsA(const std::string& directory, const std::string
 	return result + name;
 }
 
-
 inline void rotate(float& x, float& y, float cx, float cy, float angle)
 {
 	x -= cx;

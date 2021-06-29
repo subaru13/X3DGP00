@@ -4,7 +4,7 @@
 #include "misc.h"
 #include "../FrameworkConfig.h"
 
-GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config):
+GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config) :
 	constant_buffer(device), vertex_buffer(nullptr), index_buffer(nullptr),
 	vertex_shader(nullptr), pixel_shader(nullptr), input_layout(nullptr), primitive_config(config)
 {
@@ -60,7 +60,6 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config):
 	}
 	else
 	{
-
 		std::string vs =
 			"struct VS_OUT\n"
 			"{\n"
@@ -89,7 +88,6 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config):
 			"	return vout;\n"
 			"}\n";
 
-
 		hr = create_vertex_shader(device, vs,
 			vertex_shader.ReleaseAndGetAddressOf(), input_layout.ReleaseAndGetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
 	}
@@ -113,7 +111,6 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config):
 		break;
 	}
 	create_com_buffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
-
 }
 
 void GeometryPrimitive::render(ID3D11DeviceContext* immediate_context, ID3D11PixelShader** external_pixel_shader, const FLOAT4X4& world, const FLOAT4& material_color)
@@ -173,7 +170,6 @@ void GeometryPrimitive::create_com_buffers(ID3D11Device* device, vertex* vertice
 
 void GeometryPrimitive::create_cube(std::vector<vertex>& vertices, std::vector<uint32_t>& indices)
 {
-
 	vertices.resize(24);
 	indices.resize(36);
 
@@ -310,12 +306,9 @@ void GeometryPrimitive::create_cube(std::vector<vertex>& vertices, std::vector<u
 	indices[face * 6 + 3] = face * 4 + 1;
 	indices[face * 6 + 4] = face * 4 + 2;
 	indices[face * 6 + 5] = face * 4 + 3;
-
-
-
 }
 
-void GeometryPrimitive::create_sphere(u_int division,std::vector<vertex>& vertices, std::vector<uint32_t>& indices)
+void GeometryPrimitive::create_sphere(u_int division, std::vector<vertex>& vertices, std::vector<uint32_t>& indices)
 {
 	float r = 0.5f;
 	vertex top_vertex;

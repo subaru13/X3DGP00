@@ -17,7 +17,7 @@ class SceneManager;
 	If you want to change the scene,
 	please use the function that changes from the manager's address.
 	Pass the pointer of ID3D11Device to the default constructor.
-	Therefore, the first argument of the inherited 
+	Therefore, the first argument of the inherited
 	constructor must be a pointer to ID3D11Device.
 *****************************************************************************************/
 class SceneBase
@@ -72,7 +72,6 @@ public:
 	virtual ~SceneBase() {}
 };
 
-
 /*****************************************************************************************
 	This class registers and manages scenes that inherit from SceneBase.
 	The first scene to be executed is the first registered scene.
@@ -80,7 +79,7 @@ public:
 class SceneManager final
 {
 private://Declaration
-	typedef	SceneBase*					Scene;
+	typedef	SceneBase* Scene;
 	typedef	std::map<SceneName, Scene>	SceneList;
 	friend bool SceneBase::ChangeScene(const SceneName& name);
 private://Variables
@@ -91,7 +90,7 @@ private://Useful
 	bool ChangeScene(const SceneName& name);
 	SceneManager() :SceneDatas(), NowScene("scene is empty"), NextScene() {}
 public:
-	
+
 	static SceneManager* getInstance()
 	{
 		static SceneManager instance;
@@ -108,7 +107,7 @@ public:
 		by entering 0 or more arguments.
 	*******************************************************/
 	template<class T>
-	bool AddScene(ID3D11Device* device,const SceneName& name)
+	bool AddScene(ID3D11Device* device, const SceneName& name)
 	{
 		static_assert(std::is_base_of<SceneBase, T>::value == true, "This type cannot be used.");
 		SceneList::iterator it = SceneDatas.find(name);
@@ -124,7 +123,7 @@ public:
 	}
 
 	/*******************************************************
-		It is a function that 
+		It is a function that
 		initializes + uninitializes + updates.
 		It also decides whether to initialize.
 		Pass the elapsed time from the previous
@@ -132,7 +131,7 @@ public:
 		If not passed, 1 / 60th of a second
 		will be used as the elapsed time.
 	*******************************************************/
-	void edit(ID3D11Device* device,float elapsed_time = static_cast<float>(1.0f / 60.0f));
+	void edit(ID3D11Device* device, float elapsed_time = static_cast<float>(1.0f / 60.0f));
 
 	/*******************************************************
 		Draw the scene data.
@@ -152,7 +151,6 @@ public:
 		The destructor releases the registered scene.
 	*******************************************************/
 	~SceneManager() { release(); }
-
 };
 
 /// <summary>
@@ -168,7 +166,4 @@ bool AddScene(ID3D11Device* device, const SceneName& name)
 	return SceneManager::getInstance()->AddScene<T>(device, name);
 }
 
-
 #endif
-
-

@@ -3,11 +3,10 @@
 #include <d3d11.h>
 #include "sprite.h"
 
-
 class OffScreen
 {
 public:
-	enum class LINK_DESTINATION { RENDER_TARGET, DEPTH_STENCIL};
+	enum class LINK_DESTINATION { RENDER_TARGET, DEPTH_STENCIL };
 protected:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	associated_shader_resource_view;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		render_traget_view;
@@ -23,14 +22,14 @@ protected:
 	void _depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format);
 
 public:
-	OffScreen(ID3D11Device* device, LINK_DESTINATION link_destination,UINT w, UINT h, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM, bool need_renderer = true);
+	OffScreen(ID3D11Device* device, LINK_DESTINATION link_destination, UINT w, UINT h, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM, bool need_renderer = true);
 
 	/// <summary>
 	/// レンダーターゲットビューとデプスステンシルビューをクリアします。
 	/// </summary>
 	/// <param name="immediate_context">有効なコンテキスト</param>
 	/// <param name="color">塗りつぶし色</param>
-	void clear(ID3D11DeviceContext* immediate_context,FLOAT4 color = { 0,0,0,0 });
+	void clear(ID3D11DeviceContext* immediate_context, FLOAT4 color = { 0,0,0,0 });
 
 	/// <summary>
 	/// レンダーターゲットビューとデプスステンシルビューを切り替えます。
@@ -88,5 +87,4 @@ public:
 	{
 		return link_destination;
 	}
-
 };

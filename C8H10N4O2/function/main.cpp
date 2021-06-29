@@ -12,7 +12,6 @@ LRESULT CALLBACK window_procedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpa
 	return p ? p->handle_message(hwnd, msg, wparam, lparam) : DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
-
 HWND WindowInitialize(HINSTANCE instance, int cmd_show)
 {
 	WNDCLASSEXW wcex{};
@@ -34,7 +33,7 @@ HWND WindowInitialize(HINSTANCE instance, int cmd_show)
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 	HWND hwnd = CreateWindowExW(0, APPLICATION_NAME, L"",
 		WS_OVERLAPPEDWINDOW ^ WS_MAXIMIZEBOX ^ WS_THICKFRAME | WS_VISIBLE,
-		CW_USEDEFAULT, CW_USEDEFAULT, 
+		CW_USEDEFAULT, CW_USEDEFAULT,
 		rc.right - rc.left, rc.bottom - rc.top,
 		NULL, NULL, instance, NULL);
 	ShowWindow(hwnd, cmd_show);

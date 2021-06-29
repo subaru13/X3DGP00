@@ -57,14 +57,9 @@ public:
 	/// <returns></returns>
 	const FLOAT4& setCameraPosition()const { return constant_buffer.data.camera_position; }
 
-
 	/// <summary>
 	/// シーンデータをシェーダーに送信します。
 	/// </summary>
 	/// <param name="immediate_context">有効なコンテキスト</param>
 	void send(ID3D11DeviceContext* immediate_context);
-
 };
-
-
-

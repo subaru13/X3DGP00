@@ -30,7 +30,7 @@ private:
 	SpriteBatch(SpriteBatch&) = delete;
 	SpriteBatch& operator =(SpriteBatch&) = delete;
 public:
-	SpriteBatch(ID3D11Device* device,size_t max_sprites, const wchar_t* file_name = nullptr);
+	SpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t* file_name = nullptr);
 	SpriteBatch(ID3D11Device* device, size_t max_sprites, ID3D11ShaderResourceView* new_shader_resource_view);
 
 	/// <summary>
@@ -66,7 +66,7 @@ public:
 	/// <param name="angle">回転角度(ラジアン)</param>
 	/// <param name="color">表示色</param>
 	void render(ID3D11DeviceContext* immediate_context,
-		FLOAT2 pos, 
+		FLOAT2 pos,
 		FLOAT2 size,
 		FLOAT2 texpos = {},
 		FLOAT2 texsize = {},

@@ -37,7 +37,6 @@ public:
 		sampler_desc.Filter = D3D11_FILTER_ANISOTROPIC;
 		hr = device->CreateSamplerState(&sampler_desc, states[static_cast<int>(SAMPLER_STATE::SS_ANISOTROPIC)].ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-
 	}
 
 	ID3D11SamplerState** at(SAMPLER_STATE type) { return states[static_cast<int>(type)].GetAddressOf(); }

@@ -290,7 +290,6 @@ void Sprite::render(ID3D11DeviceContext* immediate_context,
 	float x3{ pos.x + size.x };
 	float y3{ pos.y + size.y };
 
-
 	//回転の中心を矩形の中心点にした場合
 	float cx = pos.x + size.x * 0.5f;
 	float cy = pos.y + size.y * 0.5f;
@@ -328,7 +327,6 @@ void Sprite::render(ID3D11DeviceContext* immediate_context,
 		vertices[1].texcoord /= textrue_size;
 		vertices[2].texcoord /= textrue_size;
 		vertices[3].texcoord /= textrue_size;
-
 	}
 	immediate_context->Unmap(vertex_buffer.Get(), 0);
 	UINT stride{ sizeof(vertex) };

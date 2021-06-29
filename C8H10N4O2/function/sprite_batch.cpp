@@ -66,7 +66,6 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t
 	}
 	else
 	{
-
 		std::string vs =
 			"struct VS_OUT\n"
 			"{\n"
@@ -82,7 +81,6 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t
 			"	vout.texcoord = texcoord;\n"
 			"	return vout;\n"
 			"}\n";
-
 
 		hr = create_vertex_shader(device, vs,
 			vertex_shader.ReleaseAndGetAddressOf(), input_layout.ReleaseAndGetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
@@ -110,8 +108,6 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t
 		}
 	}
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-
-
 }
 
 SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, ID3D11ShaderResourceView* new_shader_resource_view)
@@ -176,7 +172,6 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, ID3D11ShaderR
 	}
 	else
 	{
-
 		std::string vs =
 			"struct VS_OUT\n"
 			"{\n"
@@ -192,7 +187,6 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, size_t max_sprites, ID3D11ShaderR
 			"	vout.texcoord = texcoord;\n"
 			"	return vout;\n"
 			"}\n";
-
 
 		hr = create_vertex_shader(device, vs,
 			vertex_shader.ReleaseAndGetAddressOf(), input_layout.ReleaseAndGetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
@@ -239,7 +233,7 @@ bool SpriteBatch::attach(ID3D11ShaderResourceView* new_shader_resource_view)
 	return false;
 }
 
-void SpriteBatch::begin(ID3D11DeviceContext* immediate_context,ID3D11PixelShader** external_pixel_shader)
+void SpriteBatch::begin(ID3D11DeviceContext* immediate_context, ID3D11PixelShader** external_pixel_shader)
 {
 	assert(immediate_context && "The context is invalid.");
 	vertices.clear();
@@ -349,5 +343,4 @@ void SpriteBatch::end(ID3D11DeviceContext* immediate_context)
 	immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	immediate_context->IASetInputLayout(input_layout.Get());
 	immediate_context->Draw(static_cast<UINT>(vertex_count), 0);
-
 }

@@ -50,4 +50,3 @@ public:
 	ID3D11RasterizerState* at(RASTERIZER_FILL type, BOOL clockwise) { return states[static_cast<int>(type)][clockwise].Get(); }
 	virtual ~RasterizerStates() {}
 };
-

@@ -28,7 +28,7 @@ public:
 	/// <param name="file_name">フォントテクスチャのファイルアドレス</param>
 	/// <param name="size_per_char">1文字当たりの切り取りサイズ</param>
 	/// <returns>登録したハンドル(登録に失敗した場合-1)</returns>
-	Handle add_font(ID3D11Device* device, const wchar_t* file_name, FLOAT2 size_per_char = {16.0f,16.0f});
+	Handle add_font(ID3D11Device* device, const wchar_t* file_name, FLOAT2 size_per_char = { 16.0f,16.0f });
 
 	/// <summary>
 	/// 文字列を描画します。
@@ -44,9 +44,8 @@ public:
 		Handle handle,
 		std::string str,
 		FLOAT2 pos,
-		FLOAT2 scale = {1.0f,1.0f},
+		FLOAT2 scale = { 1.0f,1.0f },
 		FLOAT4 color = { 1,1,1,1 });
-
 
 	//インスタンスを作成します
 	//【返り値】インスタンスの作成に成功した場合trueを返します。
@@ -63,6 +62,4 @@ public:
 	//【返り値】インスタンスの破棄に成功した場合trueを返します。
 	static bool DestroyInstance();
 	~ASCII();
-
 };
-

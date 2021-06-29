@@ -32,7 +32,7 @@ class GeometryPrimitive
 {
 public:
 
-	 struct vertex
+	struct vertex
 	{
 		FLOAT3 position;
 		FLOAT3 normal;
@@ -67,17 +67,17 @@ public:
 	virtual void render(ID3D11DeviceContext* immediate_context,
 		ID3D11PixelShader** external_pixel_shader,
 		const FLOAT4X4& world,
-		const FLOAT4& material_color = {1,1,1,1});
+		const FLOAT4& material_color = { 1,1,1,1 });
 
 	/// <summary>
 	/// ジオメトリの構成を取得します。
 	/// </summary>
 	const GP_CONFIG& getConfig()const { return primitive_config; }
 protected:
-	void create_com_buffers(ID3D11Device * device, vertex * vertices, size_t vertex_count,
-		uint32_t * indices, size_t index_count);
+	void create_com_buffers(ID3D11Device* device, vertex* vertices, size_t vertex_count,
+		uint32_t* indices, size_t index_count);
 
 	void create_cube(std::vector<vertex>& vertices, std::vector<uint32_t>& indices);
-	void create_sphere(u_int division,std::vector<vertex>& vertices, std::vector<uint32_t>& indices);
+	void create_sphere(u_int division, std::vector<vertex>& vertices, std::vector<uint32_t>& indices);
 	void create_cylinder(u_int division, std::vector<vertex>& vertices, std::vector<uint32_t>& indices);
 };

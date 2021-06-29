@@ -3,11 +3,10 @@
 
 Framework* Framework::instance = nullptr;
 
-
 void ClearComObjectCache();
 void Initialization_Process_Before_Loop(ID3D11Device*);
 void Update_Process(float);
-void Drawing_Process(ID3D11DeviceContext*,float);
+void Drawing_Process(ID3D11DeviceContext*, float);
 void End_Process_After_The_Loop_ends();
 
 #ifdef _DEBUG
@@ -18,8 +17,8 @@ void Debug_Mode_End_Process_After_The_Loop_ends();
 #endif
 
 Framework::Framework(HWND hwnd)
-	:hwnd(hwnd),d3d11_device(nullptr),d3d11_context(nullptr),
-	d3d11_render_view(nullptr),d3d11_depth_view(nullptr),
+	:hwnd(hwnd), d3d11_device(nullptr), d3d11_context(nullptr),
+	d3d11_render_view(nullptr), d3d11_depth_view(nullptr),
 	idxgi_swapchain(nullptr), d3d11_blend_states(nullptr)
 {
 	assert(instance == nullptr && "No more instances can be created.");
@@ -97,7 +96,6 @@ Framework::Framework(HWND hwnd)
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 	}
 
-
 	//Viewport settings
 	{
 		d3d11_viewport.TopLeftX = 0;
@@ -144,9 +142,7 @@ void Framework::update()
 
 void Framework::render()
 {
-
 	HRESULT hr{ S_OK };
-
 
 	d3d11_context->ClearRenderTargetView(d3d11_render_view.Get(), FILL_COLOR);
 	d3d11_context->ClearDepthStencilView(d3d11_depth_view.Get(),
@@ -157,12 +153,11 @@ void Framework::render()
 
 	d3d11_context->PSSetShaderResources(0, 128, null_srv);
 
-
 	float elapsed_time = tictoc.time_interval();
 	SceneManager::getInstance()->render(d3d11_context.Get(), elapsed_time);
-	Drawing_Process(d3d11_context.Get(),elapsed_time);
+	Drawing_Process(d3d11_context.Get(), elapsed_time);
 #ifdef _DEBUG
-	Debug_Mode_Drawing_Process(d3d11_context.Get(),elapsed_time);
+	Debug_Mode_Drawing_Process(d3d11_context.Get(), elapsed_time);
 #endif
 
 #if USE_IMGUI

@@ -91,7 +91,6 @@ void OffScreen::_depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 		rtvd.Texture2D.MipSlice = 0;
 		hr = device->CreateRenderTargetView(render_traget_buffer.Get(), &rtvd, render_traget_view.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-
 	}
 	{
 		ComPtr<ID3D11Texture2D> depth_stencil_buffer{};
@@ -136,8 +135,8 @@ void OffScreen::_depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 
 OffScreen::OffScreen(ID3D11Device* device, LINK_DESTINATION _link_destination, UINT w, UINT h, DXGI_FORMAT format, bool need_renderer)
 	:link_destination(_link_destination), associated_shader_resource_view(nullptr), render_traget_view(nullptr), depth_stencil_view(nullptr),
-	original_render_traget_view(nullptr), original_depth_stencil_view(nullptr),renderer(nullptr),
-	viewport(),original_viewport(),num_views(ARRAYSIZE(original_viewport))
+	original_render_traget_view(nullptr), original_depth_stencil_view(nullptr), renderer(nullptr),
+	viewport(), original_viewport(), num_views(ARRAYSIZE(original_viewport))
 {
 	assert(device && "The device is invalid.");
 
@@ -197,4 +196,3 @@ void OffScreen::quad(ID3D11DeviceContext* immediate_context, ID3D11PixelShader**
 	assert(immediate_context && "The context is invalid.");
 	if (renderer)renderer->quad(immediate_context, external_pixel_shader);
 }
-

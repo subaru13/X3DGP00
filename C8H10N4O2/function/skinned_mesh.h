@@ -101,7 +101,6 @@ struct Animation
 	}
 };
 
-
 class SkinnedMesh
 {
 public:
@@ -342,7 +341,7 @@ private:
 	bool						loop_flg;
 	bool						end_flg;
 
-	bool _canChange(std::shared_ptr<SkinnedMesh> _owner,int _clip)const;
+	bool _canChange(std::shared_ptr<SkinnedMesh> _owner, int _clip)const;
 public:
 	Keyframe(std::shared_ptr<SkinnedMesh> owner = nullptr);
 	/// <summary>
@@ -375,7 +374,7 @@ public:
 	/// 0に近いほど1つ目のキーフレームが使用されます。
 	/// </param>
 	/// <returns>ブレンドに成功したらtrue</returns>
-	bool blend(int clip, int frame,float factor);
+	bool blend(int clip, int frame, float factor);
 
 	/// <summary>
 	/// ブレンドする2つのアニメーション番号とフレーム数を指定してブレンドします。

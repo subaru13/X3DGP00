@@ -27,14 +27,12 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 extern ImWchar glyphRangesJapanese[];
 #endif
 
-
 using namespace Microsoft::WRL;
 
 class Framework final
 {
-
 private:
-	static Framework*						instance;
+	static Framework* instance;
 
 	HWND hwnd;
 
@@ -232,14 +230,12 @@ public:
 		ImGui::DestroyContext();
 #endif
 
-
 		BOOL fullscreen = 0;
 		idxgi_swapchain->GetFullscreenState(&fullscreen, 0);
 		if (fullscreen)
 		{
 			idxgi_swapchain->SetFullscreenState(FALSE, 0);
 		}
-
 
 		return uninitialize() ? static_cast<int>(msg.wParam) : 0;
 	}
@@ -300,7 +296,7 @@ private:
 			float fps = static_cast<float>(frames);
 			std::wostringstream outs;
 			outs.precision(6);
-			outs << L"y"<<APPLICATION_NAME << L"z"
+			outs << L"y" << APPLICATION_NAME << L"z"
 				<< L"	FPS : " << fps << L" / "
 				<< L"Frame Time : " << 1000.0f / fps << L" (ms)";
 			SetWindowTextW(hwnd, outs.str().c_str());

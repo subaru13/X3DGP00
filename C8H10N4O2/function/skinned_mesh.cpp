@@ -79,7 +79,6 @@ void fetch_bone_influences(const FbxMesh* fbx_mesh, std::vector<bone_influences_
 	}
 }
 
-
 SkinnedMesh::SkinnedMesh(ID3D11Device* device,
 	const char* fbx_filename,
 	bool triangulate,
@@ -213,7 +212,6 @@ void SkinnedMesh::render(ID3D11DeviceContext* immediate_context,
 
 			immediate_context->DrawIndexed(subset.index_count, subset.start_index_location, 0);
 		}
-
 	}
 }
 
@@ -268,7 +266,6 @@ void SkinnedMesh::blend_animations(const Animation::keyframe* keyframes[2], floa
 	}
 	update_keyframe(keyframe);
 }
-
 
 void SkinnedMesh::fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 {
@@ -334,7 +331,6 @@ void SkinnedMesh::fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 
 			for (int position_in_polygon = 0; position_in_polygon < 3; ++position_in_polygon)
 			{
-
 				const int vertex_index{ polygon_index * 3 + position_in_polygon };
 
 				vertex vertex;
@@ -384,7 +380,6 @@ void SkinnedMesh::fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 				mesh.indices.at(static_cast<size_t>(offset) + position_in_polygon) = vertex_index;
 				subset.index_count++;
 			}
-
 		}
 	}
 }
@@ -736,11 +731,9 @@ bool Keyframe::_canChange(std::shared_ptr<SkinnedMesh> _owner, int _clip)const
 	return _clip < animations.size();
 }
 
-
-
 Keyframe::Keyframe(std::shared_ptr<SkinnedMesh> owner)
 	:owner(owner), keyframe(), clip_index(-1),
-	animation_tick(0.0f),loop_flg(false),end_flg(true)
+	animation_tick(0.0f), loop_flg(false), end_flg(true)
 {
 	//assert(this->owner.expired() == false && "Owner is absent.");
 }
@@ -784,7 +777,6 @@ void Keyframe::resetAnimationTick()
 {
 	animation_tick = 0.0f;
 }
-
 
 bool Keyframe::blend(int clip, int frame, float factor)
 {

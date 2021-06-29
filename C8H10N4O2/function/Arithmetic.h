@@ -111,7 +111,7 @@ typedef struct VECTOR2 :public DirectX::XMFLOAT2
 	VECTOR2	operator/=	(float s) { return *this = (*this / s); }
 	_NODISCARD bool	operator==	(VECTOR2 v)const { return x == v.x && y == v.y; }
 	_NODISCARD bool	operator!=	(VECTOR2 v)const { return x != v.x || y != v.y; }
-}FLOAT2,float2;
+}FLOAT2, float2;
 
 /****************************************************************
 	Operator with a scalar whose vector is on the left.
@@ -294,8 +294,7 @@ _NODISCARD inline bool Vec3IsSharp(const VECTOR3& v1, const VECTOR3& v2)
 	return (Vec3Dot(v1, v2) >= 0.0f);
 }
 
-
-typedef DirectX::XMFLOAT4 VECTOR4, FLOAT4,float4;
+typedef DirectX::XMFLOAT4 VECTOR4, FLOAT4, float4;
 
 /****************************************************************
 	Convert from color code to RGBA.
@@ -306,14 +305,13 @@ _NODISCARD inline FLOAT4 ColorCodeToRGBA(unsigned long color_code)
 
 	rgba.x = ((color_code >> 24) & 0x000000FF) / 255.0f;
 	rgba.y = ((color_code >> 16) & 0x000000FF) / 255.0f;
-	rgba.z = ((color_code >>  8) & 0x000000FF) / 255.0f;
-	rgba.w = ((color_code >>  0) & 0x000000FF) / 255.0f;
-	
+	rgba.z = ((color_code >> 8) & 0x000000FF) / 255.0f;
+	rgba.w = ((color_code >> 0) & 0x000000FF) / 255.0f;
+
 	return rgba;
 }
 
 typedef DirectX::XMFLOAT4X4	FLOAT4X4, float4x4;
-
 
 const FLOAT4X4 __CST[]
 {
@@ -328,14 +326,11 @@ const FLOAT4X4 __CST[]
 #define CST_RHS_Z	XMLoadFloat4x4(&__CST[2])
 #define CST_LHS_Z	XMLoadFloat4x4(&__CST[3])
 
-
 typedef DirectX::XMMATRIX MATRIX;
 
 #define RotationMatrix(angles)	XMMatrixRotationRollPitchYaw(angles.x,angles.y,angles.z)
 #define TransformMatrix(pos)	XMMatrixTranslation(pos.x, pos.y, pos.z)
 #define ScalingMatrix(scales)	XMMatrixScaling(scales.x, scales.y, scales.z)
-
-
 
 using namespace DirectX;
 

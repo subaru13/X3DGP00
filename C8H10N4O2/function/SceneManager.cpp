@@ -1,12 +1,11 @@
 #include "SceneManager.h"
 
-bool SceneBase::ChangeScene(const SceneName & name)
+bool SceneBase::ChangeScene(const SceneName& name)
 {
 	return s_manager ? s_manager->ChangeScene(name) : false;
 }
 
-
-bool SceneManager::ChangeScene(const SceneName & name)
+bool SceneManager::ChangeScene(const SceneName& name)
 {
 	if (!SceneDatas.empty() && name != NowScene)
 	{
@@ -41,7 +40,7 @@ void SceneManager::render(ID3D11DeviceContext* immediate_context, float elapsed_
 	if (!SceneDatas.empty())
 	{
 		SceneList::iterator it = SceneDatas.find(NowScene);
-		if (it != SceneDatas.end() && it->second)it->second->render(immediate_context,elapsed_time);
+		if (it != SceneDatas.end() && it->second)it->second->render(immediate_context, elapsed_time);
 	}
 }
 void SceneManager::release()
@@ -60,4 +59,3 @@ void SceneManager::release()
 		SceneDatas.clear();
 	}
 }
-

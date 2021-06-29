@@ -6,8 +6,8 @@
 
 enum class BLEND_STATE
 {
-	BS_NONE, BS_ALPHA, BS_ADD,BS_SUBTRACT,BS_REPLACE,
-	BS_MULTIPLY, BS_LIGHTEN, BS_DARKEN,BS_SCREEN
+	BS_NONE, BS_ALPHA, BS_ADD, BS_SUBTRACT, BS_REPLACE,
+	BS_MULTIPLY, BS_LIGHTEN, BS_DARKEN, BS_SCREEN
 };
 
 class BlendStates final
@@ -141,5 +141,5 @@ public:
 
 	ID3D11BlendState* at(BLEND_STATE type) { return states[static_cast<int>(type)].Get(); }
 
-	 ~BlendStates() {}
+	~BlendStates() {}
 };

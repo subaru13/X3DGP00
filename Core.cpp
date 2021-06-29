@@ -34,14 +34,12 @@
 
 *********************************************************************/
 
-
 /*********************************************************************
 			＠ゲームループ前に行う初期化処理
 			シーンの追加などを記入してください。
 *********************************************************************/
 void Initialization_Process_Before_Loop(ID3D11Device* device)
 {
-
 }
 
 /*********************************************************************
@@ -51,7 +49,6 @@ void Initialization_Process_Before_Loop(ID3D11Device* device)
 *********************************************************************/
 void Update_Process(float elapsed_time)
 {
-
 }
 
 /*********************************************************************
@@ -61,7 +58,6 @@ void Update_Process(float elapsed_time)
 *********************************************************************/
 void Drawing_Process(ID3D11DeviceContext* immediate_context, float elapsed_time)
 {
-
 }
 
 /*********************************************************************
@@ -70,7 +66,6 @@ void Drawing_Process(ID3D11DeviceContext* immediate_context, float elapsed_time)
 *********************************************************************/
 void End_Process_After_The_Loop_ends()
 {
-
 }
 
 #ifdef _DEBUG
@@ -78,14 +73,12 @@ void End_Process_After_The_Loop_ends()
 						デバック用
 *********************************************************************/
 
-
 /*********************************************************************
 			＠ゲームループ前に行うデバック用の初期化処理
 			シーンの追加などを記入してください。
 *********************************************************************/
 void Debug_Mode_Initialization_Process_Before_Loop(ID3D11Device* device)
 {
-
 }
 
 /*********************************************************************
@@ -95,7 +88,6 @@ void Debug_Mode_Initialization_Process_Before_Loop(ID3D11Device* device)
 *********************************************************************/
 void Debug_Mode_Update_Process(float elapsed_time)
 {
-
 }
 
 /*********************************************************************
@@ -105,7 +97,6 @@ void Debug_Mode_Update_Process(float elapsed_time)
 *********************************************************************/
 void Debug_Mode_Drawing_Process(ID3D11DeviceContext* immediate_context, float elapsed_time)
 {
-
 }
 
 /*********************************************************************
@@ -114,6 +105,5 @@ void Debug_Mode_Drawing_Process(ID3D11DeviceContext* immediate_context, float el
 *********************************************************************/
 void Debug_Mode_End_Process_After_The_Loop_ends()
 {
-
 }
 #endif // _DEBUG
