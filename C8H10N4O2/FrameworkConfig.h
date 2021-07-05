@@ -17,8 +17,8 @@ static CONST LPWSTR		APPLICATION_NAME{ L"DirectX11" };
 //スワップチェインのバックバッファーへ切り替えるタイミング
 static CONST UINT		SYNC_INTERVAL{ FALSE };
 //シェーダーのCSOファイルが置かれているディレクトリーのパス
-static CONST CHAR* CSO_FILE_DIRECTORY{ "data\\shader\\" };
+static CONST CHAR*		CSO_FILE_DIRECTORY{ "data\\shader\\" };
 //ImGuiを使用することをコンパイラーに伝達
-#define USE_IMGUI		FALSE
+#define USE_IMGUI		TRUE
 //ImGuiのフォントサイズ
 #define IMGUI_FONT_SIZE	14

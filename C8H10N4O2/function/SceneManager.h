@@ -87,9 +87,15 @@ private://Variables
 	SceneName								NowScene;
 	SceneName								NextScene;
 private://Useful
-	bool ChangeScene(const SceneName& name);
 	SceneManager() :SceneDatas(), NowScene("scene is empty"), NextScene() {}
 public:
+
+	/*******************************************************
+		Change the scene.
+		Please enter the registered name of
+		the scene you want to change.
+	*******************************************************/
+	bool ChangeScene(const SceneName& name);
 
 	static SceneManager* getInstance()
 	{
@@ -161,9 +167,19 @@ public:
 /// <param name="name">登録するシーンの名前</param>
 /// <returns>登録できた場合true</returns>
 template<class T>
-bool AddScene(ID3D11Device* device, const SceneName& name)
+inline bool AddScene(ID3D11Device* device, const SceneName& name)
 {
 	return SceneManager::getInstance()->AddScene<T>(device, name);
+}
+
+/// <summary>
+/// シーンを変更します
+/// </summary>
+/// <param name="name">変更先のシーンの名前</param>
+/// <returns>変更できた場合true</returns>
+inline bool ChangeScene(const SceneName& name)
+{
+	return SceneManager::getInstance()->ChangeScene(name);
 }
 
 #endif

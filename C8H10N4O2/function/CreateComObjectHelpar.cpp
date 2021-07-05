@@ -266,14 +266,6 @@ HRESULT load_texture_from_file(ID3D11Device* device, const wchar_t* file_name,
 	return hr;
 }
 
-ID3D11ShaderResourceView* query_texture(ID3D11Device* device, const wchar_t* filename)
-{
-	D3D11_TEXTURE2D_DESC texture2d_desc{};
-	ID3D11ShaderResourceView* shader_resource_view = nullptr;
-	HRESULT hr = load_texture_from_file(device, filename, &shader_resource_view, &texture2d_desc);
-	return shader_resource_view;
-}
-
 void ClearComObjectCache()
 {
 	ps_cache.clear();

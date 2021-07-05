@@ -10,5 +10,3 @@ HRESULT create_vertex_shader(ID3D11Device*, const std::string&, ID3D11VertexShad
 	ID3D11InputLayout**, const D3D11_INPUT_ELEMENT_DESC*, UINT);
 HRESULT make_dummy_texture(ID3D11Device*, ID3D11ShaderResourceView**);
 HRESULT load_texture_from_file(ID3D11Device*, const wchar_t*, ID3D11ShaderResourceView**, D3D11_TEXTURE2D_DESC*);
-
-ID3D11ShaderResourceView* query_texture(ID3D11Device* device, const wchar_t* filename);

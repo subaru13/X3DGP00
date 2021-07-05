@@ -5,6 +5,7 @@
 #include "skinned_mesh.h"
 #include "SceneConstantBuffer.h"
 #include "geometry_primitive.h"
+#include "CreateComObjectHelpar.h"
 #include <memory>
 
 /// <summary>
@@ -59,6 +60,15 @@ inline std::unique_ptr<SpriteBatch> MakeSpriteBatch(ID3D11Device* device, size_t
 inline std::unique_ptr<SkinnedMesh> MakeSkinnedMesh(ID3D11Device* device, const char* filename, bool triangulate = false, float sampling_rate = 0.0f)
 {
 	return std::make_unique<SkinnedMesh>(device, filename, triangulate, sampling_rate);
+}
+
+/// <summary>
+/// キーフレーム管理クラスを作成します。
+/// </summary>
+/// <param name="mesh">スキンドメッシュのシェアードポインタ</param>
+inline std::unique_ptr<Keyframe> MakeKeyframe(std::shared_ptr<SkinnedMesh> mesh)
+{
+	return std::make_unique<Keyframe>(mesh);
 }
 
 /// <summary>
