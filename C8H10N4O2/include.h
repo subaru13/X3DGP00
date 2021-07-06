@@ -20,3 +20,4 @@
 #include "function/SceneConstantBuffer.h"
 #include "function/SceneManager.h"
 #include "function/CreateComObjectHelpar.h"
+#include "function/key_input.h"

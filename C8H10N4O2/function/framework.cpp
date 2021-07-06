@@ -1,6 +1,6 @@
 #include "framework.h"
 #include "SceneManager.h"
-
+#include "key_input.h"
 Framework* Framework::instance = nullptr;
 
 void ClearComObjectCache();
@@ -132,6 +132,7 @@ void Framework::update()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 #endif
+	KeyManager::instance()->Update();
 	float elapsed_time = tictoc.time_interval();
 	SceneManager::getInstance()->edit(d3d11_device.Get(), elapsed_time);
 	Update_Process(elapsed_time);

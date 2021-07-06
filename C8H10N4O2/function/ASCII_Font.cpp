@@ -2,7 +2,7 @@
 
 std::unique_ptr<ASCII> ASCII::instance;
 
-ASCII::Handle ASCII::add_font(ID3D11Device* device, const wchar_t* file_name, FLOAT2 size_per_char)
+ASCII::Handle ASCII::addFont(ID3D11Device* device, const wchar_t* file_name, FLOAT2 size_per_char)
 {
 	assert(device && "The device is invalid.");
 	for (const auto& d : datas)

@@ -41,7 +41,6 @@
 *********************************************************************/
 void Initialization_Process_Before_Loop(ID3D11Device* device)
 {
-
 }
 
 /*********************************************************************
@@ -51,7 +50,6 @@ void Initialization_Process_Before_Loop(ID3D11Device* device)
 *********************************************************************/
 void Update_Process(float elapsed_time)
 {
-
 }
 
 /*********************************************************************
@@ -82,6 +80,7 @@ void End_Process_After_The_Loop_ends()
 *********************************************************************/
 void Debug_Mode_Initialization_Process_Before_Loop(ID3D11Device* device)
 {
+
 }
 
 /*********************************************************************
@@ -91,6 +90,7 @@ void Debug_Mode_Initialization_Process_Before_Loop(ID3D11Device* device)
 *********************************************************************/
 void Debug_Mode_Update_Process(float elapsed_time)
 {
+
 }
 
 /*********************************************************************
