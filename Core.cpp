@@ -51,16 +51,7 @@ void Initialization_Process_Before_Loop(ID3D11Device* device)
 *********************************************************************/
 void Update_Process(float elapsed_time)
 {
-	ImGui::Begin("SceneChange");
-	if (ImGui::Button("PTest"))
-	{
-		ChangeScene("PTest");
-	}
-	if (ImGui::Button("ShaderTest"))
-	{
-		ChangeScene("ShaderTest");
-	}
-	ImGui::End();
+
 }
 
 /*********************************************************************
