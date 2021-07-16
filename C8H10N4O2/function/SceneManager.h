@@ -34,7 +34,7 @@ public:
 		Please enter the registered name of
 		the scene you want to change.
 	*******************************************************/
-	virtual bool ChangeScene(const SceneName&) final;
+	virtual bool changeScene(const SceneName&) final;
 
 	/*******************************************************
 		It is the initialization process of the scene.
@@ -81,7 +81,7 @@ class SceneManager final
 private://Declaration
 	typedef	SceneBase* Scene;
 	typedef	std::map<SceneName, Scene>	SceneList;
-	friend bool SceneBase::ChangeScene(const SceneName& name);
+	friend bool SceneBase::changeScene(const SceneName& name);
 private://Variables
 	SceneList								SceneDatas;
 	SceneName								NowScene;
@@ -95,7 +95,7 @@ public:
 		Please enter the registered name of
 		the scene you want to change.
 	*******************************************************/
-	bool ChangeScene(const SceneName& name);
+	bool changeScene(const SceneName& name);
 
 	static SceneManager* getInstance()
 	{
@@ -179,7 +179,7 @@ inline bool AddScene(ID3D11Device* device, const SceneName& name)
 /// <returns>ïœçXÇ≈Ç´ÇΩèÍçátrue</returns>
 inline bool ChangeScene(const SceneName& name)
 {
-	return SceneManager::getInstance()->ChangeScene(name);
+	return SceneManager::getInstance()->changeScene(name);
 }
 
 #endif

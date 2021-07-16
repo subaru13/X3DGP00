@@ -1,1007 +1,1011 @@
-MTL material format (Lightwave, OBJ)
+MTLマテリアルフォーマット（Lightwave、OBJ）
 
-Excerpt from FILE FORMATS, Version 4.2
-October 1995
-Documentation created by: Diane Ramey, Linda Rose, and Lisa Tyerman
-Copyright 1995 Alias|Wavefront, Inc.
-All rights reserved
+ファイル形式、バージョン4.2からの抜粋
+1995年10月
+作成者：Diane Ramey、Linda Rose、およびLisa Tyerman
+Copyright 1995 Alias | Wavefront、Inc。
+全著作権所有
  
-5.  Material Library File (.mtl)
+5.マテリアルライブラリファイル（.mtl）
  
- Material library files contain one or more material definitions, each 
-of which includes the color, texture, and reflection map of individual 
-materials.  These are applied to the surfaces and vertices of objects.  
-Material files are stored in ASCII format and have the .mtl extension.
+ マテリアルライブラリファイルには、それぞれ1つ以上のマテリアル定義が含まれています
+個人の色、テクスチャ、反射マップが含まれています
+材料。これらは、オブジェクトのサーフェスと頂点に適用されます。
+マテリアルファイルはASCII形式で保存され、拡張子は.mtlです。
  
- An .mtl file differs from other Alias|Wavefront property files, such as 
-light and atmosphere files, in that it can contain more than one 
-material definition (other files contain the definition of only one 
-item).
+ .mtlファイルは、他のAlias | Wavefrontプロパティファイルとは異なります。
+光と大気のファイル。複数のファイルを含めることができます。
+材料定義（他のファイルには1つの定義のみが含まれています
+項目）。
  
- An .mtl file is typically organized as shown below.
- 
- 
- 	newmtl my_red
- 		Material color
- 		& illumination
- 		statements
- 
- 		texture map
- 		statements
- 
- 		reflection map
- 		statement
- 
- 	newmtl my_blue
- 		Material color
- 		& illumination
- 		statements
- 
- 		texture map
- 		statements
- 
- 		reflection map
- 		statement
- 
- 	newmtl my_green
- 		Material color
- 		& illumination
- 		statements
- 
- 		texture map
- 		statements
- 
- 		reflection map
- 		statement
- 
- 	Figure 5-1.  Typical organization of .mtl file
+ .mtlファイルは通常、以下に示すように編成されます。
  
  
- Each material description in an .mtl file consists of the newmtl 
-statement, which assigns a name to the material and designates the start 
-of a material description.  This statement is followed by the material 
-color, texture map, and reflection map statements that describe the 
-material.  An .mtl file map contain many different material 
-descriptions.
+ newmtl my_red
+ 素材の色
+ ＆ イルミネーション
+ ステートメント
  
- After you specify a new material with the "newmtl" statement, you can 
-enter the statements that describe the materials in any order.  However, 
-when the Property Editor writes an .mtl file, it puts the statements in 
-a system-assigned order.  In this chapter, the statements are described 
-in the system-assigned order.
+ テクスチャマップ
+ ステートメント
  
+ 反射マップ
+ ステートメント
  
- Format
+ newmtl my_blue
+ 素材の色
+ ＆ イルミネーション
+ ステートメント
  
- The following is a sample format for a material definition in an .mtl 
-file:
+ テクスチャマップ
+ ステートメント
  
- Material
- name
- statement:
- 		newmtl my_mtl
+ 反射マップ
+ ステートメント
  
- Material
- color and
- illumination
- statements:
- 		Ka 0.0435 0.0435 0.0435
- 		Kd 0.1086 0.1086 0.1086
- 		Ks 0.0000 0.0000 0.0000
- 		Tf 0.9885 0.9885 0.9885
- 		illum 6
- 		d -halo 0.6600
- 		Ns 10.0000
- 		sharpness 60
- 		Ni 1.19713
+ newmtl my_green
+ 素材の色
+ ＆ イルミネーション
+ ステートメント
  
- Texture
- map
- statements:
- 		map_Ka -s 1 1 1 -o 0 0 0 -mm 0 1 chrome.mpc
- 		map_Kd -s 1 1 1 -o 0 0 0 -mm 0 1 chrome.mpc
- 		map_Ks -s 1 1 1 -o 0 0 0 -mm 0 1 chrome.mpc
- 		map_Ns -s 1 1 1 -o 0 0 0 -mm 0 1 wisp.mps
- 		map_d -s 1 1 1 -o 0 0 0 -mm 0 1 wisp.mps
- 		disp -s 1 1 .5 wisp.mps
- 		decal -s 1 1 1 -o 0 0 0 -mm 0 1 sand.mps
- 		bump -s 1 1 1 -o 0 0 0 -bm 1 sand.mpb
+ テクスチャマップ
+ ステートメント
  
- Reflection
- map
- statement:
- 		refl -type sphere -mm 0 1 clouds.mpc
+ 反射マップ
+ ステートメント
+ 
+ 図5-1。 .mtlファイルの典型的な構成
  
  
- Material Name
+ .mtlファイルの各材料記述は、newmtlで構成されます
+材料に名前を割り当て、開始を指定するステートメント
+材料の説明の。このステートメントの後に資料が続きます
+を説明する色、テクスチャマップ、および反射マップステートメント
+材料。 .mtlファイルマップには多くの異なる資料が含まれています
+説明。
  
- The material name statement assigns a name to the material description.
- 
- Syntax
- The folowing syntax describes the material name statement.
- 
- 	newmtl name
- 
- Specifies the start of a material description and assigns a name to the 
-material.  An .mtl file must have one newmtl statement at the start of 
-each material description.
- 
- 	"name" is the name of the material.  Names may be any length but 
-cannot include blanks.  Underscores may be used in material names.
+ 「newmtl」ステートメントで新しいマテリアルを指定すると、次のことができます。
+資料を説明するステートメントを任意の順序で入力します。しかしながら、
+プロパティエディタが.mtlファイルを書き込むと、ステートメントが次のように配置されます。
+システムによって割り当てられた注文。この章では、ステートメントについて説明します
+システムによって割り当てられた順序で。
  
  
- Material color and illumination
+ フォーマット
  
- The statements in this section specify color, transparency, and 
-reflectivity values.
+ 以下は、.mtlの材料定義のサンプル形式です。
+ファイル：
  
- Syntax
- The following syntax describes the material color and illumination 
-statements that apply to all .mtl files.
+ 材料
+ 名前
+ ステートメント：
+ newmtl my_mtl
+ 
+ 材料
+ 色と
+ イルミネーション
+ ステートメント：
+ Ka 0.0435 0.0435 0.0435
+ Kd 0.1086 0.1086 0.1086
+ Ks 0.0000 0.0000 0.0000
+ Tf 0.9885 0.9885 0.9885
+ illum 6
+ d-ハロ0.6600
+ Ns 10.0000
+ シャープネス60
+ Ni 1.19713
+ 
+ テクスチャ
+ 地図
+ ステートメント：
+ map_Ka -s 1 1 1 -o 0 0 0 -mm 0 1 chrome.mpc
+ map_Kd -s 1 1 1 -o 0 0 0 -mm 0 1 chrome.mpc
+ map_Ks -s 1 1 1 -o 0 0 0 -mm 0 1 chrome.mpc
+ map_Ns -s 1 1 1 -o 0 0 0 -mm 0 1 wisp.mps
+ map_d -s 1 1 1 -o 0 0 0 -mm 0 1 wisp.mps
+ disp -s 1 1 .5 wisp.mps
+ デカール-s1 1 1 -o 0 0 0 -mm 0 1 sand.mps
+ バンプ-s1 1 1 -o 0 0 0 -bm 1 sand.mpb
+ 
+ 反射
+ 地図
+ ステートメント：
+ refl-type sphere -mm 0 1 clouds.mpc
  
  
- 	Ka r g b
- 	Ka spectral file.rfl factor
- 	Ka xyz x y z
+ 材料名
  
- To specify the ambient reflectivity of the current material, you can 
-use the "Ka" statement, the "Ka spectral" statement, or the "Ka xyz" 
-statement.
+ 材料名ステートメントは、材料の説明に名前を割り当てます。
  
- Tip	These statements are mutually exclusive.  They cannot be used 
-concurrently in the same material.
+ 構文
+ 次の構文は、材料名ステートメントを説明しています。
  
- Ka r g b
+ newmtl名
  
- The Ka statement specifies the ambient reflectivity using RGB values.
+ 材料記述の開始を指定し、に名前を割り当てます
+材料。 .mtlファイルには、先頭に1つのnewmtlステートメントが必要です。
+各材料の説明。
  
- "r g b" are the values for the red, green, and blue components of the 
-color.  The g and b arguments are optional.  If only r is specified, 
-then g, and b are assumed to be equal to r.  The r g b values are 
-normally in the range of 0.0 to 1.0.  Values outside this range increase 
-or decrease the relectivity accordingly.
+ 「名前」は素材の名前です。名前は任意の長さにすることができますが
+空白を含めることはできません。材料名にはアンダースコアを使用できます。
  
- Ka spectral file.rfl factor
  
- The "Ka spectral" statement specifies the ambient reflectivity using a 
-spectral curve.
+ 素材の色と照明
  
- "file.rfl" is the name of the .rfl file.
- "factor" is an optional argument.
- "factor" is a multiplier for the values in the .rfl file and defaults 
-to 1.0, if not specified.
+ このセクションのステートメントは、色、透明度、および
+反射率の値。
+ 
+ 構文
+ 次の構文は、マテリアルの色と照明を説明しています
+すべての.mtlファイルに適用されるステートメント。
+ 
+ 
+ Kar g b
+ Kaスペクトルファイル.rfl係数
+ Ka xyz x y z
+ 
+ 現在の材料の周囲反射率を指定するには、次のことができます。
+「Ka」ステートメント、「Kaスペクトル」ステートメント、または「Kaxyz」を使用します
+ステートメント。
+ 
+ ヒントこれらのステートメントは相互に排他的です。使用できません
+同じ素材で同時に。
+ 
+ Kar g b
+ 
+ Kaステートメントは、RGB値を使用して周囲反射率を指定します。
+ 
+ 「rgb」は、の赤、緑、青のコンポーネントの値です。
+色。 g引数とb引数はオプションです。 rのみを指定した場合、
+その場合、gとbはrに等しいと見なされます。 r gbの値は
+通常は0.0から1.0の範囲です。この範囲外の値は増加します
+またはそれに応じて反射率を下げます。
+ 
+ Kaスペクトルファイル.rfl係数
+ 
+ 「Kaspectrum」ステートメントは、を使用して周囲の反射率を指定します
+スペクトル曲線。
+ 
+ 「file.rfl」は.rflファイルの名前です。
+ 「factor」はオプションの引数です。
+ 「factor」は、.rflファイルの値の乗数であり、デフォルトです。
+指定されていない場合は1.0に。
  
  Ka xyz x y z
  
- The "Ka xyz" statement specifies the ambient reflectivity using CIEXYZ 
-values.
+ 「Kaxyz」ステートメントは、CIEXYZを使用して周囲反射率を指定します
+値。
  
- "x y z" are the values of the CIEXYZ color space.  The y and z 
-arguments are optional.  If only x is specified, then y and z are 
-assumed to be equal to x.  The x y z values are normally in the range of 
-0 to 1.  Values outside this range increase or decrease the reflectivity 
-accordingly.
+ 「xyz」はCIEXYZ色空間の値です。 yとz
+引数はオプションです。 xのみが指定されている場合、yとzは
+xに等しいと見なされます。 x y z値は通常、次の範囲にあります。
+0から1。この範囲外の値は、反射率を増減します。
+それに応じて。
  
  
- 	Kd r g b
- 	Kd spectral file.rfl factor
- 	Kd xyz x y z
+ Kd r g b
+ Kdスペクトルファイル.rfl係数
+ Kd xyz x y z
  
- To specify the diffuse reflectivity of the current material, you can 
-use the "Kd" statement, the "Kd spectral" statement, or the "Kd xyz" 
-statement.
+ 指定するには
+現在の材料の拡散反射率、あなたはすることができます
+「Kd」ステートメント、「Kdスペクトル」ステートメント、または「Kdxyz」を使用します
+ステートメント。
  
- Tip	These statements are mutually exclusive.  They cannot be used 
-concurrently in the same material.
+ ヒントこれらのステートメントは相互に排他的です。使用できません
+同じ素材で同時に。
  
  Kd r g b
  
- The Kd statement specifies the diffuse reflectivity using RGB values.
+ Kdステートメントは、RGB値を使用して拡散反射率を指定します。
  
- "r g b" are the values for the red, green, and blue components of the 
-atmosphere.  The g and b arguments are optional.  If only r is 
-specified, then g, and b are assumed to be equal to r.  The r g b values 
-are normally in the range of 0.0 to 1.0.  Values outside this range 
-increase or decrease the relectivity accordingly.
+ 「rgb」は、の赤、緑、青のコンポーネントの値です。
+雰囲気。 g引数とb引数はオプションです。 rだけが
+指定すると、gとbはrに等しいと見なされます。 r gb値
+通常は0.0から1.0の範囲です。この範囲外の値
+それに応じて反射率を増減します。
  
- Kd spectral file.rfl factor
+ Kdスペクトルファイル.rfl係数
  
- The "Kd spectral" statement specifies the diffuse reflectivity using a 
-spectral curve.
+ 「Kdspectrum」ステートメントは、を使用して拡散反射率を指定します
+スペクトル曲線。
  
- "file.rfl" is the name of the .rfl file.
- "factor" is an optional argument.
- "factor" is a multiplier for the values in the .rfl file and defaults 
-to 1.0, if not specified.
+ 「file.rfl」は.rflファイルの名前です。
+ 「factor」はオプションの引数です。
+ 「factor」は、.rflファイルの値の乗数であり、デフォルトです。
+指定されていない場合は1.0に。
  
  Kd xyz x y z
  
- The "Kd xyz" statement specifies the diffuse reflectivity using CIEXYZ 
-values.
+ 「Kdxyz」ステートメントは、CIEXYZを使用して拡散反射率を指定します
+値。
  
- "x y z" are the values of the CIEXYZ color space.  The y and z 
-arguments are optional.  If only x is specified, then y and z are 
-assumed to be equal to x.  The x y z values are normally in the range of 
-0 to 1.  Values outside this range increase or decrease the reflectivity 
-accordingly.
+ 「xyz」はCIEXYZ色空間の値です。 yとz
+引数はオプションです。 xのみが指定されている場合、yとzは
+xに等しいと見なされます。 x y z値は通常、次の範囲にあります。
+0から1。この範囲外の値は、反射率を増減します。
+それに応じて。
  
  
- 	Ks r g b
- 	Ks spectral file.rfl factor
- 	Ks xyz x y z
+ Ks r g b
+ Ksスペクトルファイル.rfl係数
+ Ks xyz x y z
  
- To specify the specular reflectivity of the current material, you can 
-use the "Ks" statement, the "Ks spectral" statement, or the "Ks xyz" 
-statement.
+ 現在のマテリアルの鏡面反射率を指定するには、次のことができます。
+「Ks」ステートメント、「Ksスペクトル」ステートメント、または「Ksxyz」を使用します
+ステートメント。
  
- Tip	These statements are mutually exclusive.  They cannot be used 
-concurrently in the same material.
+ ヒントこれらのステートメントは相互に排他的です。使用できません
+同じ素材で同時に。
  
  Ks r g b
  
- The Ks statement specifies the specular reflectivity using RGB values.
+ Ksステートメントは、RGB値を使用して鏡面反射率を指定します。
  
- "r g b" are the values for the red, green, and blue components of the 
-atmosphere.  The g and b arguments are optional.  If only r is 
-specified, then g, and b are assumed to be equal to r.  The r g b values 
-are normally in the range of 0.0 to 1.0.  Values outside this range 
-increase or decrease the relectivity accordingly.
+ 「rgb」は、の赤、緑、青のコンポーネントの値です。
+雰囲気。 g引数とb引数はオプションです。 rだけが
+指定すると、gとbはrに等しいと見なされます。 r gb値
+通常は0.0から1.0の範囲です。この範囲外の値
+それに応じて反射率を増減します。
  
- Ks spectral file.rfl factor
+ Ksスペクトルファイル.rfl係数
  
- The "Ks spectral" statement specifies the specular reflectivity using a 
-spectral curve.
+ 「Ksspectrum」ステートメントは、を使用して鏡面反射率を指定します
+スペクトル曲線。
  
- "file.rfl" is the name of the .rfl file.
- "factor" is an optional argument.
- "factor" is a multiplier for the values in the .rfl file and defaults 
-to 1.0, if not specified.
+ 「file.rfl」は.rflファイルの名前です。
+ 「factor」はオプションの引数です。
+ 「factor」は、.rflファイルの値の乗数であり、デフォルトです。
+指定されていない場合は1.0に。
  
  Ks xyz x y z
  
- The "Ks xyz" statement specifies the specular reflectivity using CIEXYZ 
-values.
+ 「Ksxyz」ステートメントは、CIEXYZを使用して鏡面反射率を指定します
+値。
  
- "x y z" are the values of the CIEXYZ color space.  The y and z 
-arguments are optional.  If only x is specified, then y and z are 
-assumed to be equal to x.  The x y z values are normally in the range of 
-0 to 1.  Values outside this range increase or decrease the reflectivity 
-accordingly.
+ 「xyz」はCIEXYZ色空間の値です。 yとz
+引数はオプションです。 xのみが指定されている場合、yとzは
+xに等しいと見なされます。 x y z値は通常、次の範囲にあります。
+0から1。この範囲外の値は、反射率を増減します。
+それに応じて。
  
  
- 	Tf r g b
- 	Tf spectral file.rfl factor
- 	Tf xyz x y z
+ Tf r g b
+ Tfスペクトルファイル.rfl係数
+ Tf xyz x y z
  
- To specify the transmission filter of the current material, you can use 
-the "Tf" statement, the "Tf spectral" statement, or the "Tf xyz" 
-statement.
+ 現在の材料の透過フィルターを指定するには、次を使用できます。
+「Tf」ステートメント、「Tfスペクトル」ステートメント、または「Tfxyz」
+ステートメント。
  
- Any light passing through the object is filtered by the transmission 
-filter, which only allows the specifiec colors to pass through.  For 
-example, Tf 0 1 0 allows all the green to pass through and filters out 
-all the red and blue.
+ オブジェクトを通過するすべての光は、透過によってフィルタリングされます
+特定の色のみを通過させるフィルター。にとって
+たとえば、Tf 0 1 0は、すべてのグリーンを通過させ、フィルターで除去します。
+すべての赤と青。
  
- Tip	These statements are mutually exclusive.  They cannot be used 
-concurrently in the same material.
+ ヒントこれらのステートメントは相互に排他的です。使用できません
+同じ素材で同時に。
  
  Tf r g b
  
- The Tf statement specifies the transmission filter using RGB values.
+ Tfステートメントは、RGB値を使用して透過フィルターを指定します。
  
- "r g b" are the values for the red, green, and blue components of the 
-atmosphere.  The g and b arguments are optional.  If only r is 
-specified, then g, and b are assumed to be equal to r.  The r g b values 
-are normally in the range of 0.0 to 1.0.  Values outside this range 
-increase or decrease the relectivity accordingly.
+ 「rgb」は、の赤、緑、青のコンポーネントの値です。
+雰囲気。 g引数とb引数はオプションです。 rだけが
+指定すると、gとbはrに等しいと見なされます。 r gb値
+通常は0.0から1.0の範囲です。この範囲外の値
+それに応じて反射率を増減します。
  
- Tf spectral file.rfl factor
+ Tfスペクトルファイル.rfl係数
  
- The "Tf spectral" statement specifies the transmission filterusing a 
-spectral curve.
+ 「Tfspectrum」ステートメントは、を使用して透過フィルターを指定します。
+スペクトル曲線。
  
- "file.rfl" is the name of the .rfl file.
- "factor" is an optional argument.
- "factor" is a multiplier for the values in the .rfl file and defaults 
-to 1.0, if not specified.
+ 「file.rfl」は.rflファイルの名前です。
+ 「factor」はオプションの引数です。
+ 「factor」は、.rflファイルの値の乗数であり、デフォルトです。
+指定されていない場合は1.0に。
  
  Tf xyz x y z
  
- The "Ks xyz" statement specifies the specular reflectivity using CIEXYZ 
-values.
+ 「Ksxyz」ステートメントは、CIEXYZを使用して鏡面反射率を指定します
+値。
  
- "x y z" are the values of the CIEXYZ color space.  The y and z 
-arguments are optional.  If only x is specified, then y and z are 
-assumed to be equal to x.  The x y z values are normally in the range of 
-0 to 1.  Values outside this range will increase or decrease the 
-intensity of the light transmission accordingly.
+ 「xyz」はCIEXYZ色空間の値です。 yとz
+引数はオプションです。 xのみが指定されている場合、yとzは
+xに等しいと見なされます。 x y z値は通常、次の範囲にあります。
+0から1。この範囲外の値は、
+それに応じて光透過率の強度。
  
  
- illum illum_#
+ illum illum_＃
  
- The "illum" statement specifies the illumination model to use in the 
-material.  Illumination models are mathematical equations that represent 
-various material lighting and shading effects.
+ 「illum」ステートメントは、で使用する照明モデルを指定します。
+材料。照明モデルは、次の式を表す数式です。
+さまざまなマテリアルの照明およびシェーディング効果。
  
- "illum_#"can be a number from 0 to 10.  The illumination models are 
-summarized below; for complete descriptions see "Illumination models" on 
-page 5-30.
+ 「illum_＃」は0から10までの数字にすることができます。照明モデルは次のとおりです。
+以下に要約します。完全な説明については、の「照明モデル」を参照してください。
+5-30ページ。
  
- Illumination    Properties that are turned on in the 
- model           Property Editor
+ でオンになっている照明プロパティ
+ モデルプロパティエディタ
  
- 0		Color on and Ambient off
- 1		Color on and Ambient on
- 2		Highlight on
- 3		Reflection on and Ray trace on
- 4		Transparency: Glass on
- 		Reflection: Ray trace on
- 5		Reflection: Fresnel on and Ray trace on
- 6		Transparency: Refraction on
- 		Reflection: Fresnel off and Ray trace on
- 7		Transparency: Refraction on
- 		Reflection: Fresnel on and Ray trace on
- 8		Reflection on and Ray trace off
- 9		Transparency: Glass on
- 		Reflection: Ray trace off
- 10		Casts shadows onto invisible surfaces
+ 0カラーオンとアンビエントオフ
+ 1色オンとアンビエントオン
+ 2高点灯
+ 3リフレクションオンとレイトレースオン
+ 4透明度：ガラスオン
+ 反射：レイトレーシング
+ 5リフレクション：フレネルオンとレイトレースオン
+ 6透明度：屈折
+ 反射：フレネルオフとレイトレースオン
+ 7透明度：屈折
+ 反射：フレネルオンとレイトレースオン
+ 8リフレクションオンとレイトレースオフ
+ 9透明度：ガラスオン
+ 反射：レイトレースオフ
+ 10見えない表面に影を落とす
  
  
- d factor
+ dファクター
  
- Specifies the dissolve for the current material.
+ 現在のマテリアルのディゾルブを指定します。
  
- "factor" is the amount this material dissolves into the background.  A 
-factor of 1.0 is fully opaque.  This is the default when a new material 
-is created.  A factor of 0.0 is fully dissolved (completely 
-transparent).
+ 「係数」は、このマテリアルがバックグラウンドに溶解する量です。 A
+1.0の因数は完全に不透明です。これは、新しいマテリアルの場合のデフォルトです
+創造された。 0.0の因数は完全に溶解します（完全に溶解します）
+トランスペアレント）。
  
- Unlike a real transparent material, the dissolve does not depend upon 
-material thickness nor does it have any spectral character.  Dissolve 
-works on all illumination models.
+ 実際の透明な素材とは異なり、ディゾルブは依存しません
+材料の厚さもスペクトル特性もありません。溶解する
+すべての照明モデルで動作します。
  
- d -halo factor
+ d-ハロファクター
  
- Specifies that a dissolve is dependent on the surface orientation 
-relative to the viewer.  For example, a sphere with the following 
-dissolve, d -halo 0.0, will be fully dissolved at its center and will 
-appear gradually more opaque toward its edge.
+ ディゾルブがサーフェスの方向に依存することを指定します
+視聴者に対して。たとえば、次のような球
+溶解、d -halo 0.0は、その中心で完全に溶解し、
+エッジに向かって徐々に不透明になります。
  
- "factor" is the minimum amount of dissolve applied to the material.  
-The amount of dissolve will vary between 1.0 (fully opaque) and the 
-specified "factor".  The formula is:
+ 「係数」は、材料に適用されるディゾルブの最小量です。
+ディゾルブの量は、1.0（完全に不透明）と
+指定された「係数」。式は次のとおりです。
  
- dissolve = 1.0 - (N*v)(1.0-factor)
+ ディゾルブ= 1.0-（N * v）（1.0-factor）
  
- For a definition of terms, see "Illumination models" on page 5-30.
+ 用語の定義については、5-30ページの「照明モデル」を参照してください。
  
  
- Ns exponent
+ Ns指数
  
- Specifies the specular exponent for the current material.  This defines 
-the focus of the specular highlight.
+ 現在のマテリアルのスペキュラー指数を指定します。これは定義します
+鏡面ハイライトの焦点。
  
- "exponent" is the value for the specular exponent.  A high exponent 
-results in a tight, concentrated highlight.  Ns values normally range 
-from 0 to 1000.
+ 「指数」は、スペキュラー指数の値です。高い指数
+タイトで集中したハイライトになります。 Ns値は通常範囲
+0〜1000。
  
  
- sharpness value
+ シャープネス値
  
- Specifies the sharpness of the reflections from the local reflection 
-map.  If a material does not have a local reflection map defined in its 
-material definition, sharpness will apply to the global reflection map 
-defined in PreView.
+ ローカル反射からの反射のシャープネスを指定します
+地図。マテリアルにローカル反射マップが定義されていない場合
+マテリアルの定義、シャープネスはグローバル反射マップに適用されます
+PreViewで定義されています。
  
- "value" can be a number from 0 to 1000.  The default is 60.  A high 
-value results in a clear reflection of objects in the reflection map.
+ 「値」は0〜1000の数値にすることができます。デフォルトは60です。高
+値を指定すると、反射マップ内のオブジェクトが明確に反射されます。
  
- Tip	Sharpness values greater than 100 map introduce aliasing effects 
-in flat surfaces that are viewed at a sharp angle
+ ヒント100マップを超えるシャープネス値はエイリアシング効果を導入します
+鋭角で見た平らな面で
  
  
- Ni optical_density
+ Ni Optical_density
  
- Specifies the optical density for the surface.  This is also known as 
-index of refraction.
+ 表面の光学密度を指定します。これは、
+屈折率。
  
- "optical_density" is the value for the optical density.  The values can 
-range from 0.001 to 10.  A value of 1.0 means that light does not bend 
-as it passes through an object.  Increasing the optical_density 
-increases the amount of bending.  Glass has an index of refraction of 
-about 1.5.  Values of less than 1.0 produce bizarre results and are not 
-recommended.
+ 「optic_density」は、光学濃度の値です。値はできます
+範囲は0.001〜10です。値1.0は、光が曲がらないことを意味します。
+オブジェクトを通過するとき。光学濃度の増加
+曲げの量を増やします。ガラスの屈折率は
+約1.5。 1.0未満の値は奇妙な結果を生成し、そうではありません
+推奨。
  
  
- Material texture map
+ マテリアルテクスチャマップ
  
- Texture map statements modify the material parameters of a surface by 
-associating an image or texture file with material parameters that can 
-be mapped.  By modifying existing parameters instead of replacing them, 
-texture maps provide great flexibility in changing the appearance of an 
-object's surface.
+ テクスチャマップステートメントは、サーフェスのマテリアルパラメータを次のように変更します。
+画像またはテクスチャファイルを、次のことができるマテリアルパラメータに関連付ける
+マップされます。既存のパラメータを置き換えるのではなく変更することにより、
+テクスチャマップは、外観を変更する際に大きな柔軟性を提供します
+オブジェクトの表面。
  
- Image files and texture files can be used interchangeably.  If you use 
-an image file, that file is converted to a texture in memory and is 
-discarded after rendering.
+ 画像ファイルとテクスチャファイルは同じ意味で使用できます。使用する場合
+画像ファイル、そのファイルはメモリ内のテクスチャに変換され、
+レンダリング後に破棄されます。
  
- Tip Using images instead of textures saves disk space and setup time, 
-however, it introduces a small computational cost at the beginning of a 
-render.
+ ヒントテクスチャの代わりに画像を使用すると、ディスク容量とセットアップ時間が節約されます。
+ただし、最初に小さな計算コストが発生します
+レンダリングします。
  
- The material parameters that can be modified by a texture map are:
+ テクスチャマップで変更できるマテリアルパラメータは次のとおりです。
  
- - Ka (color)
- - Kd (color)
- - Ks (color)
- - Ns (scalar)
- - d (scalar)
+ -か（色）
+ -Kd（色）
+ -Ks（カラー）
+ -Ns（スカラー）
+ --d（スカラー）
  
- In addition to the material parameters, the surface normal can be 
-modified.
+ 材料パラメータに加えて、表面法線は次のようになります。
+変更されました。
  
  
- Image file types
+ 画像ファイルの種類
  
- You can link any image file type that is currently supported.  
-Supported image file types are listed in the chapter "About Image" in 
-the "Advanced Visualizer User's Guide".  You can also use the "im_info -
-a" command to list Image file types, among other things.
+ 現在サポートされている任意の画像ファイルタイプをリンクできます。
+サポートされている画像ファイルの種類は、の「画像について」の章に記載されています。
+「AdvancedVisualizerユーザーズガイド」。 「im_info-」を使用することもできます
+とりわけ、画像ファイルタイプを一覧表示する「」コマンド。
  
  
- Texture file types
+ テクスチャファイルタイプ
  
- The texture file types you can use are:
+ 使用できるテクスチャファイルの種類は次のとおりです。
  
- - mip-mapped texture files (.mpc, .mps, .mpb)
- - compiled procedural texture files (.cxc, .cxs, .cxb)
+ -mipマップされたテクスチャファイル（.mpc、.mps、.mpb）
+ -コンパイルされたプロシージャルテクスチャファイル（.cxc、.cxs、.cxb）
  
  
- Mip-mapped texture files
+ ミップマップされたテクスチャファイル
  
- Mip-mapped texture files are created from images using the Create 
-Textures panel in the Director or the "texture2D" program.  There are 
-three types of texture files:
+ ミップマップされたテクスチャファイルは、Createを使用して画像から作成されます
+Directorまたは「texture2D」プログラムのテクスチャパネル。がある
+3種類のテクスチャファイル：
  
- - color texture files (.mpc)
- - scalar texture files (.mps)
- - bump texture files (.mpb)
+ -カラーテクスチャファイル（.mpc）
+ -スカラーテクスチャファイル（.mps）
+ -バンプテクスチャファイル（.mpb）
  
- Color textures.  Color texture files are designated by an extension of 
-".mpc" in the filename, such as "chrome.mpc".  Color textures modify the 
-material color as follows:
+ カラーテクスチャ。カラーテクスチャファイルは、次の拡張子で指定されます。
+ファイル名の「.mpc」（「chrome.mpc」など）。カラーテクスチャは、
+次のように材料の色：
  
- - Ka - material ambient is multiplied by the texture value
- - Kd - material diffuse is multiplied by the texture value
- - Ks - material specular is multiplied by the texture value
+ -Ka-マテリアルアンビエントにテクスチャ値を掛けます
+ -Kd-マテリアルディフューズにテクスチャ値を掛けます
+ -Ks-マテリアルスペキュラーにテクスチャ値を掛けます
  
- Scalar textures.  Scalar texture files are designated by an extension 
-of ".mps" in the filename, such as "wisp.mps".  Scalar textures modify 
-the material scalar values as follows:
+ スカラーテクスチャ。スカラーテクスチャファイルは拡張子で指定されます
+ファイル名の「.mps」（「wisp.mps」など）。スカラーテクスチャが変更されます
+マテリアルのスカラー値は次のとおりです。
  
- - Ns - material specular exponent is multiplied by the texture value
- - d - material dissolve is multiplied by the texture value
- - decal - uses a scalar value to deform the surface of an object to 
-create surface roughness
+ -Ns-材料のスペキュラー指数に、
+テクスチャ値
+ --d-マテリアルディゾルブにテクスチャ値を掛けます
+ -デカール-スカラー値を使用してオブジェクトの表面を次のように変形します
+表面粗さを作成します
  
- Bump textures.  Bump texture files are designated by an extension of 
-".mpb" in the filename, such as "sand.mpb".  Bump textures modify 
-surface normals.  The image used for a bump texture represents the 
-topology or height of the surface relative to the average surface.  Dark 
-areas are depressions and light areas are high points.  The effect is 
-like embossing the surface with the texture.
+ バンプテクスチャ。バンプテクスチャファイルは、次の拡張子で指定されます。
+ファイル名の「.mpb」（「sand.mpb」など）。バンプテクスチャが変更されます
+表面法線。バンプテクスチャに使用される画像は、
+平均的な表面に対する表面のトポロジーまたは高さ。闇
+エリアはくぼみであり、明るいエリアはハイポイントです。効果は
+テクスチャで表面をエンボス加工するようなものです。
  
  
- Procedural texture files
+ 手続き型テクスチャファイル
  
- Procedural texture files use mathematical formulas to calculate sample 
-values of the texture.  The procedural texture file is compiled, stored, 
-and accessed by the Image program when rendering.  for more information 
-see chapter 9, "Procedural Texture Files (.cxc, .cxb. and .cxs)".
+ 手続き型テクスチャファイルは、数式を使用してサンプルを計算します
+テクスチャの値。手続き型テクスチャファイルはコンパイル、保存され、
+レンダリング時にImageプログラムによってアクセスされます。詳細については
+第9章「プロシージャルテクスチャファイル（.cxc、.cxb。、および.cxs）」を参照してください。
  
- Syntax
+ 構文
  
- The following syntax describes the texture map statements that apply to 
-.mtl files.  These statements can be used alone or with any combination 
-of options.  The options and their arguments are inserted between the 
-keyword and the "filename".
+ 次の構文は、に適用されるテクスチャマップステートメントを説明しています。
+.mtlファイル。これらのステートメントは、単独で使用することも、任意の組み合わせで使用することもできます。
+オプションの。オプションとその引数は、
+キーワードと「ファイル名」。
  
- map_Ka -options args filename
+ map_Ka -optionsargsファイル名
  
- Specifies that a color texture file or a color procedural texture file 
-is applied to the ambient reflectivity of the material.  During 
-rendering, the "map_Ka" value is multiplied by the "Ka" value.
+ カラーテクスチャファイルまたはカラープロシージャルテクスチャファイルを指定します
+材料の周囲反射率に適用されます。中
+レンダリングでは、「map_Ka」値に「Ka」値が乗算されます。
  
- "filename" is the name of a color texture file (.mpc), a color 
-procedural texture file (.cxc), or an image file.
+ 「ファイル名」は、カラーテクスチャファイル（.mpc）の名前です。
+手続き型テクスチャファイル（.cxc）、または画像ファイル。
  
- Tip	To make sure that the texture retains its original look, use the 
-.rfl file "ident" as the underlying material.  This applies to the 
-"map_Ka", "map_Kd", and "map_Ks" statements.  For more information on 
-.rfl files, see chapter 8, "Spectral Curve File (.rfl)".
+ ヒントテクスチャが元の外観を維持していることを確認するには、
+基礎となるマテリアルとしての.rflファイル「ident」。これはに適用されます
+「map_Ka」、「map_Kd」、および「map_Ks」ステートメント。詳細については
+.rflファイル。第8章「スペクトル曲線ファイル（.rfl）」を参照してください。
  
- The options for the "map_Ka" statement are listed below.  These options 
-are described in detail in "Options for texture map statements" on page 
-5-18.
+ 「map_Ka」ステートメントのオプションを以下に示します。これらのオプション
+詳細については、ページの「テクスチャマップステートメントのオプション」を参照してください。
+5-18。
  
- 	-blendu on | off
- 	-blendv on | off
- 	-cc on | off
- 	-clamp on | off
- 	-mm base gain
- 	-o u v w
- 	-s u v w
- 	-t u v w
- 	-texres value
+ -blendu on |オフ
+ -blendv on |オフ
+ -ccオン|オフ
+ -クランプオン|オフ
+ -mmベースゲイン
+ -o u v w
+ -s u v w
+ -t u v w
+ -texres値
  
  
- map_Kd -options args filename
+ map_Kd -optionsargsファイル名
  
- Specifies that a color texture file or color procedural texture file is 
-linked to the diffuse reflectivity of the material.  During rendering, 
-the map_Kd value is multiplied by the Kd value.
+ カラーテクスチャファイルまたはカラープロシージャルテクスチャファイルが
+材料の拡散反射率にリンクされています。レンダリング中、
+map_Kd値にKd値を掛けます。
  
- "filename" is the name of a color texture file (.mpc), a color 
-procedural texture file (.cxc), or an image file.
+ 「ファイル名」は、カラーテクスチャファイル（.mpc）の名前です。
+手続き型テクスチャファイル（.cxc）、または画像ファイル。
  
- The options for the map_Kd statement are listed below.  These options 
-are described in detail in "Options for texture map statements" on page 
-5-18.
+ map_Kdステートメントのオプションを以下に示します。これらのオプション
+詳細については、ページの「テクスチャマップステートメントのオプション」を参照してください。
+5-18。
  
- 	-blendu on | off
- 	-blendv on | off
- 	-cc on | off
- 	-clamp on | off
- 	-mm base gain
- 	-o u v w
- 	-s u v w
- 	-t u v w
- 	-texres value
+ -blendu on |オフ
+ -blendv on |オフ
+ -ccオン|オフ
+ -クランプオン|オフ
+ -mmベースゲイン
+ -o u v w
+ -s u v w
+ -t u v w
+ -texres値
  
  
- map_Ks -options args filename
+ map_Ks -optionsargsファイル名
  
- Specifies that a color texture file or color procedural texture file is 
-linked to the specular reflectivity of the material.  During rendering, 
-the map_Ks value is multiplied by the Ks value.
+ カラーテクスチャファイルまたはカラープロシージャルテクスチャファイルが
+マテリアルの鏡面反射率にリンクされています。レンダリング中、
+map_Ks値にKs値を掛けます。
  
- "filename" is the name of a color texture file (.mpc), a color 
-procedural texture file (.cxc), or an image file.
+ 「ファイル名」は、カラーテクスチャファイル（.mpc）の名前です。
+手続き型テクスチャファイル（.cxc）、または画像ファイル。
  
- The options for the map_Ks statement are listed below.  These options 
-are described in detail in "Options for texture map statements" on page 
-5-18.
+ map_Ksステートメントのオプションを以下に示します。これらのオプション
+詳細については、ページの「テクスチャマップステートメントのオプション」を参照してください。
+5-18。
  
- 	-blendu on | off
- 	-blendv on | off
- 	-cc on | off
- 	-clamp on | off
- 	-mm base gain
- 	-o u v w
- 	-s u v w
- 	-t u v w
- 	-texres value
+ -blendu on |オフ
+ -blendv on |オフ
+ -ccオン|オフ
+ -クランプオン|オフ
+ -mmベースゲイン
+ -o u v w
+ -s u v w
+ -t u v w
+ -texres値
  
  
- map_Ns -options args filename
+ map_Ns -optionsargsファイル名
  
- Specifies that a scalar texture file or scalar procedural texture file 
-is linked to the specular exponent of the material.  During rendering, 
-the map_Ns value is multiplied by the Ns value.
+ スカラーテクスチャファイルまたはスカラープロシージャルテクスチャファイルを指定します
+マテリアルのスペキュラー指数にリンクされています。レンダリング中、
+map_Ns値にNs値を掛けます。
  
- "filename" is the name of a scalar texture file (.mps), a scalar 
-procedural texture file (.cxs), or an image file.
+ 「ファイル名」は、スカラーテクスチャファイル（.mps）の名前です。
+手続き型テクスチャファイル（.cxs）、または画像ファイル。
  
- The options for the map_Ns statement are listed below.  These options 
-are described in detail in "Options for texture map statements" on page 
-5-18.
+ map_Nsステートメントのオプションを以下に示します。これらのオプション
+詳細については、ページの「テクスチャマップステートメントのオプション」を参照してください。
+5-18。
  
- 	-blendu on | off
- 	-blendv on | off
- 	-clamp on | off
- 	-imfchan r | g | b | m | l | z
- 	-mm base gain
- 	-o u v w
- 	-s u v w
- 	-t u v w
- 	-texres value
+ -blendu on |オフ
+ -blendv on |オフ
+ -クランプオン|オフ
+ -imfchan r | g | b | m | l | z
+ -mmベースゲイン
+ -o u v w
+ -s u v w
+ -t u v w
+ -texres値
  
  
- map_d -options args filename
+ map_d -optionsargsファイル名
  
- Specifies that a scalar texture file or scalar procedural texture file 
-is linked to the dissolve of the material.  During rendering, the map_d 
-value is multiplied by the d value.
+ スカラーテクスチャファイルまたはスカラープロシージャルテクスチャファイルを指定します
+材料の溶解にリンクされています。レンダリング中、map_d
+値にd値を掛けます。
  
- "filename" is the name of a scalar texture file (.mps), a scalar 
-procedural texture file (.cxs), or an image file.
+ 「ファイル名」は、スカラーテクスチャファイル（.mps）の名前です。
+手続き型テクスチャファイル（.cxs）、または画像ファイル。
  
- The options for the map_d statement are listed below.  These options 
-are described in detail in "Options for texture map statements" on page 
-5-18.
+ map_dステートメントのオプションを以下に示します。これらのオプション
+詳細については、ページの「テクスチャマップステートメントのオプション」を参照してください。
+5-18。
  
- 	-blendu on | off
- 	-blendv on | off
- 	-clamp on | off
- 	-imfchan r | g | b | m | l | z
- 	-mm base gain
- 	-o u v w
- 	-s u v w
- 	-t u v w
- 	-texres value
+ -blendu on |オフ
+ -blendv on |オフ
+ -クランプオン|オフ
+ -imfchan r | g | b | m | l | z
+ -mmベースゲイン
+ -o u v w
+ -s u v w
+ -t u v w
+ -texres値
  
  
  map_aat on
  
- Turns on anti-aliasing of textures in this material without anti-
-aliasing all textures in the scene.
+ このマテリアルのテクスチャのアンチエイリアシングをアンチエイリアシングなしでオンにします。
+シーン内のすべてのテクスチャのエイリアス。
  
- If you wish to selectively anti-alias textures, first insert this 
-statement in the material file.  Then, when rendering with the Image 
-panel, choose the anti-alias settings:  "shadows", "reflections 
-polygons", or "polygons only".  If using Image from the command line, 
-use the -aa or -os options.  Do not use the -aat option.
+ アンチエイリアステクスチャを選択的に使用する場合は、最初にこれを挿入します
+材料ファイルのステートメント。次に、画像を使用してレンダリングする場合
+パネルで、アンチエイリアス設定を選択します：「シャドウ」、「反射」
+ポリゴン」または「ポリゴンのみ」。
+コマンドラインからの画像を使用して、
+-aaまたは-osオプションを使用します。 -aatオプションは使用しないでください。
  
- Image will anti-alias all textures in materials with the map_aat on 
-statement, using the oversampling level you choose when you run Image.  
-Textures in other materials will not be oversampled.
+ 画像は、map_aatがオンになっているマテリアルのすべてのテクスチャをアンチエイリアスします
+Imageの実行時に選択したオーバーサンプリングレベルを使用したステートメント。
+他のマテリアルのテクスチャはオーバーサンプリングされません。
  
- You cannot set a different oversampling level individually for each 
-material, nor can you anti-alias some textures in a material and not 
-others.  To anti-alias all textures in all materials, use the -aat 
-option from the Image command line.  If a material with "map_aat on" 
-includes a reflection map, all textures in that reflection map will be 
-anti-aliased as well.
+ それぞれに異なるオーバーサンプリングレベルを個別に設定することはできません
+マテリアル、またはマテリアルの一部のテクスチャをアンチエイリアスすることはできません。
+その他。すべてのマテリアルのすべてのテクスチャをアンチエイリアスするには、-aatを使用します
+Imageコマンドラインからのオプション。 「map_aaton」のあるマテリアルの場合
+反射マップが含まれ、その反射マップ内のすべてのテクスチャは次のようになります。
+アンチエイリアスも同様です。
  
- You will not see the effects of map_aat in the Property Editor.
+ プロパティエディタにmap_aatの効果は表示されません。
  
- Tip	Some .mpc textures map exhibit undesirable effects around the 
-edges of smoothed objects.  The "map_aat" statement will correct this.
- 
- 
- decal -options args filename
- 
- Specifies that a scalar texture file or a scalar procedural texture 
-file is used to selectively replace the material color with the texture 
-color.
- 
- "filename" is the name of a scalar texture file (.mps), a scalar 
-procedural texture file (.cxs), or an image file.
- 
- During rendering, the Ka, Kd, and Ks values and the map_Ka, map_Kd, and 
-map_Ks values are blended according to the following formula:
- 
- result_color=tex_color(tv)*decal(tv)+mtl_color*(1.0-decal(tv))
- 
- where tv is the texture vertex.
- 
- "result_color" is the blended Ka, Kd, and Ks values.
- 
- The options for the decal statement are listed below.  These options 
-are described in detail in "Options for texture map statements" on page 
-5-18.
- 
- 	-blendu on | off
- 	-blendv on | off
- 	-clamp on | off
- 	-imfchan r | g | b | m | l | z
- 	-mm base gain
- 	-o u v w
- 	-s u v w
- 	-t u v w
- 	-texres value
+ ヒント一部の.mpcテクスチャマップは、周囲に望ましくない影響を示します。
+スムージングされたオブジェクトのエッジ。 「map_aat」ステートメントはこれを修正します。
  
  
- disp -options args filename
+ デカール-optionsargsファイル名
  
- Specifies that a scalar texture is used to deform the surface of an 
-object, creating surface roughness.
+ スカラーテクスチャファイルまたはスカラープロシージャルテクスチャを指定します
+ファイルは、マテリアルの色をテクスチャに選択的に置き換えるために使用されます
+色。
  
- "filename" is the name of a scalar texture file (.mps), a bump 
-procedural texture file (.cxb), or an image file.
+ 「ファイル名」は、スカラーテクスチャファイル（.mps）の名前です。
+手続き型テクスチャファイル（.cxs）、または画像ファイル。
  
- The options for the disp statement are listed below.  These options are 
-described in detail in "Options for texture map statements" on page 5-
-18.
+ レンダリング中、Ka、Kd、およびKsの値と、map_Ka、map_Kd、および
+map_Ks値は、次の式に従ってブレンドされます。
  
- 	-blendu on | off
- 	-blendv on | off
- 	-clamp on | off
- 	-imfchan r | g | b | m | l | z
- 	-mm base gain
- 	-o u v w
- 	-s u v w
- 	-t u v w
- 	-texres value
+ result_color = tex_color（tv）* decal（tv）+ mtl_color *（1.0-decal（tv））
  
+ ここで、tvはテクスチャの頂点です。
  
- bump -options args filename
+ 「result_color」は、Ka、Kd、およびKsの値をブレンドしたものです。
  
- Specifies that a bump texture file or a bump procedural texture file is 
-linked to the material.
+ デカールステートメントのオプションを以下に示します。これらのオプション
+詳細については、ページの「テクスチャマップステートメントのオプション」を参照してください。
+5-18。
  
- "filename" is the name of a bump texture file (.mpb), a bump procedural 
-texture file (.cxb), or an image file.
- 
- The options for the bump statement are listed below.  These options are 
-described in detail in "Options for texture map statements" on page 5-
-18.
- 
- 	-bm mult
- 	-clamp on | off
- 	-blendu on | off
- 	-blendv on | off
- 	-imfchan r | g | b | m | l | z
- 	-mm base gain
- 	-o u v w
- 	-s u v w
- 	-t u v w
- 	-texres value
+ -blendu on |オフ
+ -blendv on |オフ
+ -クランプオン|オフ
+ -imfchan r | g | b | m | l | z
+ -mmベースゲイン
+ -o u v w
+ -s u v w
+ -t u v w
+ -texres値
  
  
- Options for texture map statements
+ disp -optionsargsファイル名
  
- The following options and arguments can be used to modify the texture 
-map statements.
+ スカラーテクスチャを使用して表面を変形することを指定します
+オブジェクト、表面粗さを作成します。
  
- -blenu on | off
+ 「ファイル名」は、バンプであるスカラーテクスチャファイル（.mps）の名前です。
+手続き型テクスチャファイル（.cxb）、または画像ファイル。
  
- The -blendu option turns texture blending in the horizontal direction 
-(u direction) on or off.  The default is on.
+ dispステートメントのオプションを以下に示します。これらのオプションは
+詳細については、5ページの「テクスチャマップステートメントのオプション」を参照してください。
+18.18。
  
- -blenv on | off
+ -blendu on |オフ
+ -blendv on |オフ
+ -クランプオン|オフ
+ -imfchan r | g | b | m | l | z
+ -mmベースゲイン
+ -o u v w
+ -s u v w
+ -t u v w
+ -texres値
  
- The -blendv option turns texture blending in the vertical direction (v 
-direction) on or off.  The default is on.
+ 
+ バンプオプション引数ファイル名
+ 
+ バンプテクスチャファイルまたはバンププロシージャルテクスチャファイルが
+資料にリンクされています。
+ 
+ 「ファイル名」は、バンププロシージャルであるバンプテクスチャファイル（.mpb）の名前です。
+テクスチャファイル（.cxb）、または画像ファイル。
+ 
+ バンプステートメントのオプションを以下に示します。これらのオプションは
+詳細については、5ページの「テクスチャマップステートメントのオプション」を参照してください。
+18.18。
+ 
+ -bm mult
+ -クランプオン|オフ
+ -blendu on |オフ
+ -blendv on |オフ
+ -imfchan r | g | b | m | l | z
+ -mmベースゲイン
+ -o u v w
+ -s u v w
+ -t u v w
+ -texres値
+ 
+ 
+ テクスチャマップステートメントのオプション
+ 
+ 次のオプションと引数を使用して、テクスチャを変更できます
+マップステートメント。
+ 
+ -blenu on |オフ
+ 
+ -blenduオプションは、テクスチャブレンディングを水平方向に回転させます
+（u方向）オンまたはオフ。デフォルトはオンです。
+ 
+ -blenv on |オフ
+ 
+ -blendvオプションは、テクスチャブレンディングを垂直方向（v
+方向）オンまたはオフ。デフォルトはオンです。
  
  -bm mult
  
- The -bm option specifies a bump multiplier.  You can use it only with 
-the "bump" statement.  Values stored with the texture or procedural 
-texture file are multiplied by this value before they are applied to the 
-surface.
+ -bmオプションは、バンプ乗数を指定します。でのみ使用できます
+「バンプ」ステートメント。テクスチャまたは手続き型で保存された値
+テクスチャファイルは、に適用される前にこの値で乗算されます
+表面。
  
- "mult" is the value for the bump multiplier.  It can be positive or 
-negative.  Extreme bump multipliers may cause odd visual results because 
-only the surface normal is perturbed and the surface position does not 
-change.  For best results, use values between 0 and 1.
+ 「mult」はバンプ乗数の値です。ポジティブまたは
+負。極端なバンプ乗数は、奇妙な視覚的結果を引き起こす可能性があります。
+表面法線のみが摂動され、表面位置は摂動されません
+変化する。最良の結果を得るには、0から1までの値を使用してください。
  
- -boost value
+ -ブースト値
  
- The -boost option increases the sharpness, or clarity, of mip-mapped 
-texture files -- that is, color (.mpc), scalar (.mps), and bump (.mpb) 
-files.  If you render animations with boost, you may experience some 
-texture crawling.  The effects of boost are seen when you render in 
-Image or test render in Model or PreView; they aren't as noticeable in 
-Property Editor.
+ -boostオプションは、mip-mappedのシャープネスまたは明瞭さを向上させます
+テクスチャファイル-つまり、カラー（.mpc）、スカラー（.mps）、およびバンプ（.mpb）
+ファイル。ブーストを使用してアニメーションをレンダリングすると、いくつかの経験があります
+テクスチャクロール。でレンダリングすると、ブーストの効果が見られます
+ModelまたはPreViewでの画像またはテストレンダリング。彼らはでそれほど目立たない
+プロパティエディタ。
  
- "value" is any non-negative floating point value representing the 
-degree of increased clarity; the greater the value, the greater the 
-clarity.  You should start with a boost value of no more than 1 or 2 and 
-increase the value as needed.  Note that larger values have more 
-potential to introduce texture crawling when animated.
+ 「値」は、
+透明度の向上;値が大きいほど、
+明快さ。 1または2以下のブースト値から開始する必要があります。
+必要に応じて値を増やします。値が大きいほど多くなることに注意してください
+アニメーション化されたときにテクスチャクロールを導入する可能性。
  
- -cc on | off
+ -ccオン|オフ
  
- The -cc option turns on color correction for the texture.  You can use 
-it only with the color map statements:  map_Ka, map_Kd, and map_Ks.
+ -ccオプションは、テクスチャの色補正をオンにします。あなたが使用することができます
+これは、カラーマップステートメント（map_Ka、map_Kd、およびmap_Ks）でのみ使用できます。
  
- -clamp on | off
+ -クランプオン|オフ
  
- The -clamp option turns clamping on or off.  When clamping is on, 
-textures are restricted to 0-1 in the uvw range.  The default is off.
+ -clampオプションは、クランプをオンまたはオフにします。クランプがオンの場合、
+テクスチャは、uvw範囲で0-1に制限されています。デフォルトはオフです。
  
- When clamping is turned on, one copy of the texture is mapped onto the 
-surface, rather than repeating copies of the original texture across the 
-surface of a polygon, which is the default.  Outside of the origin 
-texture, the underlying material is unchanged.
+ クランプをオンにすると、テクスチャの1つのコピーがにマッピングされます。
+元のteのコピーを繰り返すのではなく、表面全体のxture
+デフォルトであるポリゴンの表面。起源の外
+テクスチャ、下にある素材は変更されていません。
  
- A postage stamp on an envelope or a label on a can of soup is an 
-example of a texture with clamping turned on.  A tile floor or a 
-sidewalk is an example of a texture with clamping turned off.
+ 封筒の切手やスープ缶のラベルは
+クランプがオンになっているテクスチャの例。タイル張りの床または
+歩道は、クランプがオフになっているテクスチャの例です。
  
- Two-dimensional textures are clamped in the u and v dimensions; 3D 
-procedural textures are clamped in the u, v, and w dimensions.
+ 2次元テクスチャはu次元とv次元でクランプされます。 3D
+手続き型テクスチャは、u、v、およびw次元でクランプされます。
  
  -imfchan r | g | b | m | l | z
  
- The -imfchan option specifies the channel used to create a scalar or 
-bump texture.  Scalar textures are applied to:
+ -imfchanオプションは、スカラーまたは
+バンプテクスチャ。スカラーテクスチャは以下に適用されます：
  
- transparency
- specular exponent
- decal
- displacement
+ 透明性
+ スペキュラー指数
+ デカール
+ 変位
  
- The channel choices are:
+ チャネルの選択肢は次のとおりです。
  
- r specifies the red channel.
- g specifies the green channel.
- b specifies the blue channel.
- m specifies the matte channel.
- l specifies the luminance channel.
- z specifies the z-depth channel.
+ rは赤チャネルを指定します。
+ gは緑のチャネルを指定します。
+ bは青チャンネルを指定します。
+ mはマットチャネルを指定します。
+ lは輝度チャンネルを指定します。
+ zはz深度チャネルを指定します。
   
- The default for bump and scalar textures is "l" (luminance), unless you 
-are building a decal.  In that case, the default is "m" (matte).
+ バンプテクスチャとスカラーテクスチャのデフォルトは「l」（輝度）です。
+デカールを作成しています。その場合、デフォルトは「m」（マット）です。
  
- -mm base gain
+ -mmベースゲイン
  
- The -mm option modifies the range over which scalar or color texture 
-values may vary.  This has an effect only during rendering and does not 
-change the file.
+ -mmオプションは、スカラーまたはカラーテクスチャの範囲を変更します
+値は異なる場合があります。これはレンダリング中にのみ効果があり、効果はありません
+ファイルを変更します。
  
- "base" adds a base value to the texture values.  A positive value makes 
-everything brighter; a negative value makes everything dimmer.  The 
-default is 0; the range is unlimited.
+ 「base」は、テクスチャ値に基本値を追加します。正の値は
+すべてが明るくなります。負の値はすべてを暗くします。ザ・
+デフォルトは0です。範囲は無制限です。
  
- "gain" expands the range of the texture values.  Increasing the number 
-increases the contrast.  The default is 1; the range is unlimited.
+ 「ゲイン」は、テクスチャ値の範囲を拡大します。数を増やす
+コントラストを上げます。デフォルトは1です。範囲は無制限です。
  
  -o u v w
  
- The -o option offsets the position of the texture map on the surface by 
-shifting the position of the map origin.  The default is 0, 0, 0.
+ -oオプションは、サーフェス上のテクスチャマップの位置を次のようにオフセットします。
+マップの原点の位置をシフトします。デフォルトは0、0、0です。
  
- "u" is the value for the horizontal direction of the texture
+ 「u」はテクスチャの水平方向の値です
  
- "v" is an optional argument.
- "v" is the value for the vertical direction of the texture.
+ 「v」はオプションの引数です。
+ 「v」は、テクスチャの垂直方向の値です。
  
- "w" is an optional argument.
- "w" is the value used for the depth of a 3D texture.
+ 「w」はオプションの引数です。
+ 「w」は、3Dテクスチャの深さに使用される値です。
  
  -s u v w
  
- The -s option scales the size of the texture pattern on the textured 
-surface by expanding or shrinking the pattern.  The default is 1, 1, 1.
+ -sオプションは、テクスチャのテクスチャパターンのサイズをスケーリングします
+パターンを拡大または縮小することによって表面。デフォルトは1、1、1です。
  
- "u" is the value for the horizontal direction of the texture
+ 「u」はテクスチャの水平方向の値です
  
- "v" is an optional argument.
- "v" is the value for the vertical direction of the texture.
+ 「v」はオプションの引数です。
+ 「v」は、テクスチャの垂直方向の値です。
  
- "w" is an optional argument.
- "w" is a value used for the depth of a 3D texture.
- "w" is a value used for the amount of tessellation of the displacement 
-map.
+ 「w」はオプションの引数です。
+ 「w」は、3Dテクスチャの深さに使用される値です。
+ 「w」は、変位のテッセレーション量に使用される値です。
+地図。
  
  -t u v w
  
- The -t option turns on turbulence for textures.  Adding turbulence to a 
-texture along a specified direction adds variance to the original image 
-and allows a simple image to be repeated over a larger area without 
-noticeable tiling effects.
+ -tオプションは、テクスチャの乱流をオンにします。に乱流を追加する
+指定された方向に沿ったテクスチャは、元の画像に変化を追加します
+シンプルな画像をより広い領域で繰り返すことができます。
+顕著なタイリング効果。
  
- turbulence also lets you use a 2D image as if it were a solid texture, 
-similar to 3D procedural textures like marble and granite.
+ 乱気流を使用すると、2D画像をソリッドテクスチャであるかのように使用することもできます。
+大理石や花崗岩のような3D手続き型テクスチャに似ています。
  
- "u" is the value for the horizontal direction of the texture 
-turbulence.
+ 「u」はテクスチャの水平方向の値です
+乱気流。
  
- "v" is an optional argument.
- "v" is the value for the vertical direction of the texture turbulence.
+ 「v」はオプションの引数です。
+ 「v」は、テクスチャの乱れの垂直方向の値です。
  
- "w" is an optional argument.
- "w" is a value used for the depth of the texture turbulence.
+ 「w」はオプションの引数です。
+ 「w」は、テクスチャの乱れの深さに使用される値です。
  
- By default, the turbulence for every texture map used in a material is 
-uvw = (0,0,0).  This means that no turbulence will be applied and the 2D 
-texture will behave normally.
+ デフォルトでは、マテリアルで使用されるすべてのテクスチャマップの乱流は
+uvw =（0,0,0）。これは、乱気流が適用されず、2Dが適用されないことを意味します。
+テクスチャは正常に動作します。
  
- Only when you raise the turbulence values above zero will you see the 
-effects of turbulence.
+ 乱気流の値をゼロより上に上げた場合にのみ、
+乱流の影響。
  
- -texres resolution
+ -texres解像度
  
- The -texres option specifies the resolution of texture created when an 
-image is used.  The default texture size is the largest power of two 
-that does not exceed the original image size.
+ -texresオプションは、次の場合に作成されるテクスチャの解像度を指定します。
+画像を使用しています。デフォルトのテクスチャサイズは2の最大乗です
+元の画像サイズを超えないこと。
  
- If the source image is an exact power of 2, the texture cannot be built 
-any larger.  If the source image size is not an exact power of 2, you 
-can specify that the texture be built at the next power of 2 greater 
-than the source image size.
+ ソース画像が正確に2の累乗である場合、テクスチャを構築できません
+それより大きい。ソース画像のサイズが正確に2の累乗でない場合は、
+テクスチャが2の次の累乗で構築されるように指定できます
+ソース画像のサイズよりも。
  
- The original image should be square, otherwise, it will be scaled to 
-fit the closest square size that is not larger than the original.  
-Scaling reduces sharpness.
+ 元の画像は正方形である必要があります。そうでない場合は、次のように拡大縮小されます。
+元のサイズより大きくない最も近い正方形のサイズに合わせます。
+スケーリングはシャープネスを低下させます。
  
  
- Material reflection map
+ マテリアル反射マップ
  
- A reflection map is an environment that simulates reflections in 
-specified objects.  The environment is represented by a color texture 
-file or procedural texture file that is mapped on the inside of an 
-infinitely large, space.  Reflection maps can be spherical or cubic.  A 
-spherical reflection map requires only one texture or image file, while 
-a cubic reflection map requires six.
+ 反射マップは、反射をシミュレートする環境です。
+指定されたオブジェクト。環境はカラーテクスチャで表されます
+の内部にマッピングされているファイルまたは手続き型テクスチャファイル
+無限に大きいスペース。反射マップは球形または立方体にすることができます。 A
+球面反射マップに必要なテクスチャまたは画像ファイルは1つだけですが、
+立方反射マップには6つ必要です。
  
- Each material description can contain one reflection map statement that 
-specifies a color texture file or a color procedural texture file to 
-represent the environment.  The material itself must be assigned an 
-illumination model of 3 or greater.
+ 各マテリアルの説明には、次のような1つの反射マップステートメントを含めることができます。
+カラーテクスチャファイルまたはカラープロシージャルテクスチャファイルを次のように指定します。
+環境を表します。材料自体に割り当てる必要があります
+3以上の照明モデル。
  
- The reflection map statement in the .mtl file defines a local 
-reflection map.  That is, each material assigned to an object in a scene 
-can have an individual reflection map.  In PreView, you can assign a 
-global reflection map to an object and specify the orientation of the 
-reflection map.  Rotating the reflection map creates the effect of 
-animating reflections independently of object motion.  When you replace 
-a global reflection map with a local reflection map, the local 
-reflection map inherits the transformation of the global reflection map.
+ .mtlファイルのリフレクションマップステートメントは、ローカルを定義します
+反射マップ。つまり、シーン内のオブジェクトに割り当てられた各マテリアル
+個別の内省マップを持つことができます。 PreViewでは、
+グローバルリフレクションをオブジェクトにマップし、方向を指定します
+反射マップ。反射マップを回転させると効果が生まれます
+のct
+オブジェクトの動きとは無関係に反射をアニメートします。交換するとき
+ローカル反射マップを使用したグローバル反射マップ、ローカル
+反射マップは、グローバル反射マップの変換を継承します。
  
- Syntax
+ 構文
  
- The following syntax statements describe the reflection map statement 
-for .mtl files.
+ 次の構文ステートメントは、リフレクションマップステートメントについて説明しています。
+.mtlファイルの場合。
  
- refl -type sphere -options -args filename
+ refl -type sphere -options -argsfilename
  
- Specifies an infinitely large sphere that casts reflections onto the 
-material.  You specify one texture file.
+ に反射をキャストする無限に大きな球を指定します
+材料。 1つのテクスチャファイルを指定します。
  
- "filename" is the color texture file, color procedural texture file, or 
-image file that will be mapped onto the inside of the shape.
+ 「ファイル名」は、カラーテクスチャファイル、カラープロシージャルテクスチャファイル、または
+シェイプの内側にマッピングされる画像ファイル。
  
- refl -type cube_side -options -args filenames
+ refl -type cube_side -options -argsfilenames
  
- Specifies an infinitely large sphere that casts reflections onto the 
-material.  You can specify different texture files for the "top", 
-"bottom", "front", "back", "left", and "right" with the following 
-statements:
+ に反射をキャストする無限に大きな球を指定します
+材料。 「トップ」に異なるテクスチャファイルを指定できます。
+「下」、「前」、「後」、「左」、「右」の場合、次のようになります。
+ステートメント：
  
- refl -type cube_top
- refl -type cube_bottom
- refl -type cube_front
+ reflタイプcube_top
+ reflタイプcube_bottom
+ reflタイプcube_front
  refl -type cube_back
- refl -type cube_left
- refl -type cube_right
+ refl-typecube_left
+ refl-typecube_right
  
- "filenames" are the color texture files, color procedural texture 
-files, or image files that will be mapped onto the inside of the shape.
+ 「ファイル名」は、カラーテクスチャファイル、カラープロシージャルテクスチャです。
+ファイル、またはシェイプの内側にマッピングされる画像ファイル。
  
- The "refl" statements for sphere and cube can be used alone or with 
- any combination of the following options.  The options and their 
-arguments are inserted between "refl" and "filename".
+ 球と立方体の「refl」ステートメントは、単独で使用することも、
+ 次のオプションの任意の組み合わせ。オプションとその
+引数は「refl」と「filename」の間に挿入されます。
  
- -blendu on | off
- -blendv on | off
- -cc on | off
- -clamp on | off
- -mm base gain
+ -blendu on |オフ
+ -blendv on |オフ
+ -ccオン|オフ
+ -クランプオン|オフ
+ -mmベースゲイン
  -o u v w
  -s u v w
  -t u v w
- -texres value
+ -texres値
  
- The options for the reflection map statement are described in detail in 
-"Options for texture map statements" on page 18.
+ リフレクションマップステートメントのオプションについては、
+18ページの「テクスチャマップステートメントのオプション」。
  
  
- Examples
+ 例
  
- 1  Neon green
+ 1ネオングリーン
  
- This is a bright green material.  When applied to an object, it will 
-remain bright green regardless of any lighting in the scene.
+ 鮮やかなグリーンの素材です。オブジェクトに適用すると、
+シーン内の照明に関係なく、明るい緑色のままです。
  
  newmtl neon_green
  Kd 0.0000 1.0000 0.0000
  illum 0
  
- 2  Flat green
+ 2フラットグリーン
  
- This is a flat green material.
+ これは平らな緑色の素材です。
  
  newmtl flat_green
  Ka 0.0000 1.0000 0.0000
  Kd 0.0000 1.0000 0.0000
  illum 1
  
- 3  Dissolved green
+ 3溶けた緑
  
- This is a flat green, partially dissolved material.
+ これは平らな緑色の部分的に溶解した材料です。
  
  newmtl diss_green
  Ka 0.0000 1.0000 0.0000
@@ -1009,10 +1013,10 @@ remain bright green regardless of any lighting in the scene.
  d 0.8000
  illum 1
  
- 4  Shiny green
+ 4シャイニーグリーン
  
- This is a shiny green material.  When applied to an object, it shows a 
-white specular highlight.
+ ピカピカのグリーン素材です。オブジェクトに適用すると、
+白い鏡面ハイライト。
  
  newmtl shiny_green
  Ka 0.0000 1.0000 0.0000
@@ -1021,10 +1025,10 @@ white specular highlight.
  Ns 200.0000
  illum 1
  
- 5  Green mirror
+ 5グリーンミラー
  
- This is a reflective green material.  When applied to an object, it 
-reflects other objects in the same scene.
+ これは反射性の緑色の素材です。オブジェクトに適用すると、
+同じシーン内の他のオブジェクトを反映します。
  
  newmtl green_mirror
  Ka 0.0000 1.0000 0.0000
@@ -1033,11 +1037,11 @@ reflects other objects in the same scene.
  Ns 200.0000
  illum 3
  
- 6  Fake windshield
+ 6偽のフロントガラス
  
- This material approximates a glass surface.  Is it almost completely 
-transparent, but it shows reflections of other objects in the scene.  It 
-will not distort the image of objects seen through the material.
+ この材料はガラス表面に近似しています。ほぼ完全ですか
+透明ですが、シーン内の他のオブジェクトの反射を示します。それ
+マテリアルを通して見たオブジェクトのイメージを歪めることはありません。
  
  newmtl fake_windsh
  Ka 0.0000 0.0000 0.0000
@@ -1047,28 +1051,28 @@ will not distort the image of objects seen through the material.
  Ns 200
  illum 4
  
- 7  Fresnel blue
+ 7フレネルブルー
  
- This material exhibits an effect known as Fresnel reflection.  When 
-applied to an object, white fringes may appear where the object's 
-surface is viewed at a glancing angle.
+ この材料は、フレネル反射として知られる効果を示します。いつ
+オブジェクトに適用すると、オブジェクトの場所に白いフリンジが表示される場合があります
+表面は視線角度で見られます。
  
- newmtl fresnel_blu
+ newmtlfresnel_blu
  Ka 0.0000 0.0000 0.0000
  Kd 0.0000 0.0000 0.0000
  Ks 0.6180 0.8760 0.1430
  Ns 200
  illum 5
  
- 8  Real windshield
+ 8本物のフロントガラス
  
- This material accurately represents a glass surface.  It filters of 
-colorizes objects that are seen through it.  Filtering is done according 
-to the transmission color of the material.  The material also distorts 
-the image of objects according to its optical density.  Note that the 
-material is not dissolved and that its ambient, diffuse, and specular 
-reflective colors have been set to black.  Only the transmission color 
-is non-black.
+ この素材はガラスの表面を正確に表現しています。それは
+それを通して見られるオブジェクトを色付けします。フィルタリングはそれに応じて行われます
+素材の透過色に。素材も歪む
+光学濃度に応じたオブジェクトの画像。注意してください
+材料は溶解せず、その周囲、拡散、鏡面反射
+反射色は黒に設定されています。透過色のみ
+黒以外です。
  
  newmtl real_windsh
  Ka 0.0000 0.0000 0.0000
@@ -1079,11 +1083,11 @@ is non-black.
  Ni 1.2000
  illum 6
  
- 9  Fresnel windshield
+ 9フレネルフロントガラス
  
- This material combines the effects in examples 7 and 8.
+ この資料は、例7と8の効果を組み合わせたものです。
  
- newmtl fresnel_win
+ newmtlfresnel_win
  Ka 0.0000 0.0000 1.0000
  Kd 0.0000 0.0000 1.0000
  Ks 0.6180 0.8760 0.1430
@@ -1092,74 +1096,75 @@ is non-black.
  Ni 1.2000
  illum 7
  
- 10  Tin
+ 10スズ
  
- This material is based on spectral reflectance samples taken from an 
-actual piece of tin.  These samples are stored in a separate .rfl file 
-that is referred to by name in the material.  Spectral sample files 
-(.rfl) can be used in any type of material as an alternative to RGB 
-values.
+ この材料は、
+実際のスズ片。これらのサンプルは、別の.rflファイルに保存されます
+それは資料の中で名前で呼ばれています。スペクトルサンプルファイル
+（.rfl）は、RGBの代わりにあらゆるタイプの素材で使用できます
+値。
  
- newmtl tin
- Ka spectral tin.rfl
- Kd spectral tin.rfl
- Ks spectral tin.rfl
+ newmtlスズ
+ Kaスペクトルtin.rfl
+ Kdスペクトルtin.rfl
+ Ksスペクトルtin.rfl
  Ns 200
  illum 3
  
- 11  Pine Wood
+ 11パインウッド
  
- This material includes a texture map of a pine pattern.  The material 
-color is set to "ident" to preserve the texture's true color.  When 
-applied to an object, this texture map will affect only the ambient and 
-diffuse regions of that object's surface.
+ このマテリアルには、松のパターンのテクスチャマップが含まれています。素材
+テクスチャの本来の色を維持するために、colorは「ident」に設定されます。いつ
+オブジェクトに適用されると、このテクスチャマップはアンビエントとアンビエントにのみ影響します。
+そのオブジェクトの表面の拡散領域。
  
- The color information for the texture is stored in a separate .mpc file 
-that is referred to in the material by its name, "pine.mpc".  If you use 
-different .mpc files for ambient and diffuse, you will get unrealistic 
-results.
+ テクスチャの色情報は、別の.mpcファイルに保存されます
+これは、資料では「pine.mpc」という名前で呼ばれています。使用する場合
+アンビエントとdiffuの異なる.mpcファイル
+それ自体、あなたは非現実的になります
+結果。
  
  newmtl pine_wood
- Ka spectral ident.rfl 1
- Kd spectral ident.rfl 1
+ Kaスペクトルident.rfl1
+ Kdスペクトルident.rfl1
  illum 1
  map_Ka pine.mpc
  map_Kd pine.mpc
  
- 12  Bumpy leather
+ 12バンピーレザー
  
- This material includes a texture map of a leather pattern.  The 
-material color is set to "ident" to preserve the texture's true color.  
-When applied to an object, it affects both the color of the object's 
-surface and its apparent bumpiness.
+ この素材には、革模様のテクスチャマップが含まれています。ザ・
+テクスチャの本来の色を維持するために、マテリアルの色は「同一」に設定されます。
+オブジェクトに適用すると、オブジェクトの色の両方に影響します
+表面とその見かけのでこぼこ。
  
- The color information for the texture is stored in a separate .mpc file 
-that is referred to in the material by its name, "brown.mpc".  The bump 
-information is stored in a separate .mpb file that is referred to in the 
-material by its name, "leath.mpb".  The -bm option is used to raise the 
-apparent height of the leather bumps.
+ テクスチャの色情報は、別の.mpcファイルに保存されます
+これは、資料では「brown.mpc」という名前で呼ばれています。バンプ
+情報は、で参照される別の.mpbファイルに保存されます。
+「leath.mpb」という名前の素材。 -bmオプションは、
+革の隆起の見かけの高さ。
  
- newmtl bumpy_leath
- Ka spectral ident.rfl 1
- Kd spectral ident.rfl 1
- Ks spectral ident.rfl 1
+ newmtlbumpy_leath
+ Kaスペクトルident.rfl1
+ Kdスペクトルident.rfl1
+ Ksスペクトルident.rfl1
  illum 2
  map_Ka brown.mpc
  map_Kd brown.mpc
  map_Ks brown.mpc
- bump -bm 2.000 leath.mpb
+ バンプ-bm2.000 leath.mpb
  
- 13  Frosted window
+ 13つや消し窓
  
- This material includes a texture map used to alter the opacity of an 
-object's surface.  The material color is set to "ident" to preserve the 
-texture's true color.  When applied to an object, the object becomes 
-transparent in certain areas and opaque in others.
+ このマテリアルには、不透明度を変更するために使用されるテクスチャマップが含まれています。
+オブジェクトの表面。素材の色は「同一」に設定され、
+テクスチャのトゥルーカラー。オブジェクトに適用すると、オブジェクトは次のようになります。
+特定の領域では透明で、他の領域では不透明です。
  
- The variation between opaque and transparent regions is controlled by 
-scalar information stored in a separate .mps file that is referred to in 
-the material by its name, "window.mps".  The "-mm" option is used to 
-shift and compress the range of opacity.
+ 不透明領域と透明領域の間の変化は、によって制御されます。
+で参照される別の.mpsファイルに格納されているスカラー情報
+「window.mps」という名前の素材。 「-mm」オプションは、
+不透明度の範囲をシフトおよび圧縮します。
  
  newmtl frost_wind
  Ka 0.2 0.2 0.2
@@ -1170,232 +1175,233 @@ shift and compress the range of opacity.
  illum 2
  map_d -mm 0.200 0.800 window.mps
  
- 14  Shifted logo
+ 14シフトされたロゴ
  
- This material includes a texture map which illustrates how a texture's 
-origin may be shifted left/right (the "u" direction) or up/down (the "v" 
-direction).  The material color is set to "ident" to preserve the 
-texture's true color.
+ このマテリアルには、テクスチャがどのようになっているのかを示すテクスチャマップが含まれています
+原点は左右（「u」方向）または上下（「v」）にシフトできます。
+方向）。素材の色は「同一」に設定され、
+テクスチャのトゥルーカラー。
  
- In this example, the original image of the logo is off-center to the 
-left.  To compensate, the texture's origin is shifted back to the right 
-(the positive "u" direction) using the "-o" option to modify the origin.
+ この例では、ロゴの元の画像は中心からずれています。
+左。これを補正するために、テクスチャの原点が右にシフトバックされます
+（正の「u」方向）「-o」オプションを使用して原点を変更します。
  
- Ka spectral ident.rfl 1
- Kd spectral ident.rfl 1
- Ks spectral ident.rfl 1
+ Kaスペクトルident.rfl1
+ Kdスペクトルident.rfl1
+ Ksスペクトルident.rfl1
  illum 2
  map_Ka -o 0.200 0.000 0.000 logo.mpc
- map_Kd -o 0.200 0.000 0.000 logo.mpc
- map_Ks -o 0.200 0.000 0.000 logo.mpc
+ map_Kd -o 0.200 0.000 0.000 Logo.mpc
+ map_Ks -o 0.200 0.000 0.000 Logo.mpc
  
- 15  Scaled logo
+ 15スケーリングされたロゴ
  
- This material includes a texture map showing how a texture may be 
-scaled left or right (in the "u" direction) or up and down (in the "v" 
-direction).  The material color is set to "ident" to preserve the 
-texture's true color.
+ このマテリアルには、テクスチャがどのようになっているのかを示すテクスチャマップが含まれています
+左または右（「u」方向）または上下（「v」方向）にスケーリング
+方向）。素材の色は「同一」に設定され、
+テクスチャのトゥルーカラー。
  
- In this example, the original image of the logo is too small.  To 
-compensate, the texture is scaled slightly to the right (in the positive 
-"u" direction) and up (in the positive "v" direction) using the "-s" 
-option to modify the scale.
+ この例では、ロゴの元の画像が小さすぎます。に
+補正すると、テクスチャはわずかに右にスケーリングされます（正の場合）
+「-s」を使用して「u」方向）および上（正の「v」方向）
+スケールを変更するオプション。
  
- Ka spectral ident.rfl 1
- Kd spectral ident.rfl 1
- Ks spectral ident.rfl 1
+ Kaスペクトルident.rfl1
+ Kdスペクトルident.rfl1
+ Ksスペクトルident.rfl1
  illum 2
- map_Ka -s 1.200 1.200 0.000 logo.mpc
- map_Kd -s 1.200 1.200 0.000 logo.mpc
- map_Ks -s 1.200 1.200 0.000 logo.mpc
+ map_Ka -s 1.200 1.200 0.000 Logo.mpc
+ map_Kd -s 1.200 1.200 0.000logo.mpc
+ map_Ks -s 1.200 1.200 0.000logo.mpc
  
- 16  Chrome with spherical reflection map
+ 球面反射マップを備えた16クローム
  
- This illustrates a common use for local reflection maps (defined in a 
-material).
+ これは、ローカル反射マップの一般的な使用法を示しています（
+材料）。
  
- this material is highly reflective with no diffuse or ambient 
-contribution.  Its reflection map is an image with silver streaks that 
-yields a chrome appearance when viewed as a reflection.
+ この素材は反射率が高く、拡散や周囲の音がありません
+貢献。その反射マップは、銀色の縞模様のある画像です。
+反射として見たときにクロムの外観を生成します。
  
  ka 0 0 0
  kd 0 0 0
  ks .7 .7 .7
  illum 1
- refl -type sphere chrome.rla
+ reflタイプの球体chrome.rla
  
  
- Illumination models
+ イルミネーションモデル
  
- The following list defines the terms and vectors that are used in the 
-illumination model equations:
+ 次のリストは、で使用される用語とベクトルを定義します。
+照明モデルの方程式：
  
- Term	Definition
+ 用語の定義
  
- Ft	Fresnel reflectance
- Ft	Fresnel transmittance
- Ia	ambient light
- I	light intensity
- Ir	intensity from reflected direction
- 	(reflection map and/or ray tracing)
- It	intensity from transmitted direction
- Ka	ambient reflectance
- Kd	diffuse reflectance
- Ks	specular reflectance
- Tf	transmission filter
+ フォートフレネル反射率
+ フォートフレネル透過率
+ Iaアンビエントライト
+ 私は強度を光します
+ 反射方向からのIr強度
+ （反射マップおよび/またはレイトレーシング）
+ 送信方向からの強度
+ Ka周囲反射率
+ Kd拡散反射
+ Ks鏡面反射
+ Tf透過フィルター
  
- Vector	Definition
+ ベクトル定義
  
- H	unit vector bisector between L and V
- L	unit light vector
- N	unit surface normal
- V	unit view vector
+ LとVの間のH単位ベクトル二等分線
+ L単位の光ベクトル
+ N単位表面法線
+ Vユニットビューベクトル
  
- The illumination models are:
+ 照明モデルは次のとおりです。
  
- 0  This is a constant color illumination model.  The color is the 
-specified Kd for the material.  The formula is:
+ 0これは一定色の照明モデルです。色は
+材料に指定されたKd。式は次のとおりです。
  
-   color = Kd
+   色= Kd
  
- 1  This is a diffuse illumination model using Lambertian shading. The 
-color includes an ambient constant term and a diffuse shading term for 
-each light source.  The formula is
+ 1これはランバートシェーディングを使用した拡散照明モデルです。ザ・
+色には、周囲定数項と拡散シェーディング項が含まれます。
+各光源。式は
  
-   color = KaIa + Kd { SUM j=1..ls, (N * Lj)Ij }
+   色= KaIa + Kd {SUM j = 1..ls、（N * Lj）Ij}
  
- 2  This is a diffuse and specular illumination model using Lambertian 
-shading and Blinn's interpretation of Phong's specular illumination 
-model (BLIN77).  The color includes an ambient constant term, and a 
-diffuse and specular shading term for each light source.  The formula 
-is:
+ 2これは、ランバートを使用した拡散反射および鏡面照明モデルです。
+シェーディングとブリンによるフォンの鏡面照明の解釈
+モデル（BLIN77）。色には周囲定数項が含まれ、
+各光源の拡散および鏡面シェーディング項。式
+は：
  
-   color = KaIa 
- 	+ Kd { SUM j=1..ls, (N*Lj)Ij }
- 	+ Ks { SUM j=1..ls, ((H*Hj)^Ns)Ij }
+   色= KaIa
+ + Kd {SUM j = 1..ls、（N * Lj）Ij}
+ + Ks {SUM j = 1..ls、（（H * Hj）^ Ns）Ij}
  
- 3  This is a diffuse and specular illumination model with reflection 
-using Lambertian shading, Blinn's interpretation of Phong's specular 
-illumination model (BLIN77), and a reflection term similar to that in 
-Whitted's illumination model (WHIT80).  The color includes an ambient 
-constant term and a diffuse and specular shading term for each light 
-source.  The formula is:
+ 3これは、反射を伴う拡散反射および鏡面照明モデルです。
+ランバートシェーディングを使用して、フォンの鏡面反射のブリンの解釈
+照明モデル（BLIN77）、およびそれに類似した反射項
+Whittedのイルミネーションモデル（WHIT80）。カラー株式会社
+アンビエントを誘う
+各ライトの定数項と拡散および鏡面シェーディング項
+ソース。式は次のとおりです。
  
-   color = KaIa
- 	+ Kd { SUM j=1..ls, (N*Lj)Ij }
- 	+ Ks ({ SUM j=1..ls, ((H*Hj)^Ns)Ij } + Ir)
+   色= KaIa
+ + Kd {SUM j = 1..ls、（N * Lj）Ij}
+ + Ks（{SUM j = 1..ls、（（H * Hj）^ Ns）Ij} + Ir）
  
-   Ir = (intensity of reflection map) + (ray trace)
+   Ir =（反射マップの強度）+（光線追跡）
  
- 4  The diffuse and specular illumination model used to simulate glass 
-is the same as illumination model 3.  When using a very low dissolve 
-(approximately 0.1), specular highlights from lights or reflections 
-become imperceptible.
+ 4ガラスのシミュレーションに使用される拡散および鏡面照明モデル
+イルミネーションモデル3と同じです。非常に低いディゾルブを使用する場合
+（約0.1）、光または反射からの鏡面ハイライト
+知覚できなくなります。
  
- Simulating glass requires an almost transparent object that still 
-reflects strong highlights.  The maximum of the average intensity of 
-highlights and reflected lights is used to adjust the dissolve factor.  
-The formula is:
+ ガラスをシミュレートするには、ほぼ透明なオブジェクトが必要です。
+強いハイライトを反映しています。の平均強度の最大値
+ハイライトと反射光は、ディゾルブファクターを調整するために使用されます。
+式は次のとおりです。
  
-   color = KaIa
- 	+ Kd { SUM j=1..ls, (N*Lj)Ij }
- 	+ Ks ({ SUM j=1..ls, ((H*Hj)^Ns)Ij } + Ir)
+   色= KaIa
+ + Kd {SUM j = 1..ls、（N * Lj）Ij}
+ + Ks（{SUM j = 1..ls、（（H * Hj）^ Ns）Ij} + Ir）
  
- 5  This is a diffuse and specular shading models similar to 
-illumination model 3, except that reflection due to Fresnel effects is 
-introduced into the equation.  Fresnel reflection results from light 
-striking a diffuse surface at a grazing or glancing angle.  When light 
-reflects at a grazing angle, the Ks value approaches 1.0 for all color 
-samples.  The formula is:
+ 5これは、次のような拡散反射および鏡面反射モデルです。
+フレネル効果による反射が
+方程式に導入されました。フレネル反射は光から生じます
+かすめ角または視射角で拡散面を打つ。軽いとき
+かすめ角で反射し、Ks値はすべての色で1.0に近づきます
+サンプル。式は次のとおりです。
  
-   color = KaIa
- 	+ Kd { SUM j=1..ls, (N*Lj)Ij }
- 	+ Ks ({ SUM j=1..ls, ((H*Hj)^Ns)Ij Fr(Lj*Hj,Ks,Ns)Ij} + 
-Fr(N*V,Ks,Ns)Ir})
- 
- 
- 6  This is a diffuse and specular illumination model similar to that 
-used by Whitted (WHIT80) that allows rays to refract through a surface.  
-The amount of refraction is based on optical density (Ni).  The 
-intensity of light that refracts is equal to 1.0 minus the value of Ks, 
-and the resulting light is filtered by Tf (transmission filter) as it 
-passes through the object.  The formula is:
- 
-   color = KaIa
- 	+ Kd { SUM j=1..ls, (N*Lj)Ij }
- 	+ Ks ({ SUM j=1..ls, ((H*Hj)^Ns)Ij } + Ir)
- 	+ (1.0 - Ks) TfIt
- 
- 7  This illumination model is similar to illumination model 6, except 
-that reflection and transmission due to Fresnel effects has been 
-introduced to the equation.  At grazing angles, more light is reflected 
-and less light is refracted through the object.  The formula is:
- 
-   color = KaIa
- 	+ Kd { SUM j=1..ls, (N*Lj)Ij }
- 	+ Ks ({ SUM j=1..ls, ((H*Hj)^Ns)Ij Fr(Lj*Hj,Ks,Ns)Ij} + 
-Fr(N*V,Ks,Ns)Ir})
- 
- 	+ (1.0 - Kx)Ft (N*V,(1.0-Ks),Ns)TfIt
- 
- 8  This illumination model is similar to illumination model 3 without 
-ray tracing.  The formula is:
- 
-   color = KaIa
- 	+ Kd { SUM j=1..ls, (N*Lj)Ij }
- 	+ Ks ({ SUM j=1..ls, ((H*Hj)^Ns)Ij } + Ir)
- 
-   Ir = (intensity of reflection map)
- 
- 9  This illumination model is similar to illumination model 4without 
-ray tracing.  The formula is:
+   色= KaIa
+ + Kd {SUM j = 1..ls、（N * Lj）Ij}
+ + Ks（{SUM j = 1..ls、（（H * Hj）^ Ns）Ij Fr（Lj * Hj、Ks、Ns）Ij} +
+Fr（N * V、Ks、Ns）Ir}）
  
  
-   color = KaIa
- 	+ Kd { SUM j=1..ls, (N*Lj)Ij }
- 	+ Ks ({ SUM j=1..ls, ((H*Hj)^Ns)Ij } + Ir)
+ 6これは、それに類似した拡散および鏡面照明モデルです。
+Whitted（WHIT80）によって使用され、光線が表面を介して屈折できるようにします。
+屈折量は、光学密度（Ni）に基づいています。ザ・
+屈折する光の強度は、1.0からKsの値を引いたものに等しくなります。
+結果として生じる光は、Tf（透過フィルター）によってフィルター処理されます。
+オブジェクトを通過します。式は次のとおりです。
  
-   Ir = (intensity of reflection map)
+   色= KaIa
+ + Kd {SUM j = 1..ls、（N * Lj）Ij}
+ + Ks（{SUM j = 1..ls、（（H * Hj）^ Ns）Ij} + Ir）
+ +（1.0-Ks）TfIt
  
- 10  This illumination model is used to cast shadows onto an invisible 
-surface.  This is most useful when compositing computer-generated 
-imagery onto live action, since it allows shadows from rendered objects 
-to be composited directly on top of video-grabbed images.  The equation 
-for computation of a shadowmatte is formulated as follows.
+ 7この照明モデルは、照明モデル6と似ていますが、
+フレネル効果による反射と透過は
+方程式に導入されました。かすめ角では、より多くの光が反射されます
+そして、より少ない光がオブジェクトを通して屈折します。式は次のとおりです。
  
- color = Pixel color.  The pixel color of a shadowmatte material is 
-always black.
+   色= KaIa
+ + Kd {SUM j = 1..ls、（N * Lj）Ij}
+ + Ks（{SUM j = 1..ls、（（H * Hj）^ Ns）Ij Fr（Lj * Hj、Ks、Ns）Ij} +
+Fr（N * V、Ks、Ns）Ir}）
  
- color = black
+ +（1.0-Kx）Ft（N * V、（1.0-Ks）、Ns）TfIt
  
- M = Matte channel value.  This is the image channel which typically 
-represents the opacity of the point on the surface.  To store the shadow 
-in the matte channel of the image, it is calculated as:
+ 8この照明モデルは、照明モデル3に似ています。
+レイトレーシング。式は次のとおりです。
  
- M = 1 - W / P
+   色= KaIa
+ + Kd {SUM j = 1..ls、（N * Lj）Ij}
+ + Ks（{SUM j = 1..ls、（（H * Hj）^ Ns）Ij} + Ir）
  
- where:
+   Ir =（反射マップの強度）
  
- P = Unweighted sum.  This is the sum of all S values for each light:
+ 9この照明モデルは、照明モデル4に似ています。
+レイトレーシング。式は次のとおりです。
  
- P = S1 + S2 + S3 + .....
  
- W = Weighted sum.  This is the sum of all S values, each weighted by 
-the visibility factor (Q) for the light:
+   色= KaIa
+ + Kd {SUM j = 1..ls、（N * Lj）Ij}
+ + Ks（{SUM j = 1..ls、（（H * Hj）^ Ns）Ij} + Ir）
  
- W = (S1 * Q1) + (S2 * Q2) + .....
+   Ir =（反射マップの強度）
  
- Q = Visibility factor.  This is the amount of light from a particular 
-light source that reaches the point to be shaded, after traveling 
-through all shadow objects between the light and the point on the 
-surface.  Q = 0 means no light reached the point to be shaded; it was 
-blocked by shadow objects, thus casting a shadow.  Q = 1 means that 
-nothing blocked the light, and no shadow was cast.  0 < Q < 1 means that 
-the light was partially blocked by objects that were partially 
-dissolved.
+ 10このイルミネーションモデルは、目に見えないものに影を落とすために使用されます
+表面。これは、コンピューターで生成された合成時に最も役立ちます
+レンダリングされたオブジェクトからの影を可能にするため、実写への画像
+ビデオで取得した画像の上に直接合成されます。方程式
+シャドウマットの計算は次のように定式化されます。
  
- S = Summed brightness.  This is the sum of the spectral sample 
-intensities for a particular light.  The samples are variable, but the 
-default is 3:
+ color =ピクセルカラー。シャドウマット素材のピクセルカラーは
+常に黒。
  
- S = samp1 + samp2 + samp3.  
+ 色=黒
+ 
+ M =マットチャネル値。これは通常、画像チャネルです
+サーフェス上のポイントの不透明度を表します。影を保存するには
+画像のマットチャンネルでは、次のように計算されます。
+ 
+ M = 1-W / P
+ 
+ どこ：
+ 
+ P =加重されていない合計。これは、各ライトのすべてのS値の合計です。
+ 
+ P = S1 + S2 + S3 +....。
+ 
+ W =加重和。これは、すべてのS値の合計であり、それぞれが
+ライトの可視性係数（Q）：
+ 
+ W =（S1 * Q1）+（S2 * Q2）+....。
+ 
+ Q =可視性係数。これは特定の光の量です
+旅行後、日陰になるポイントに到達する光源
+ライトと上のポイントの間のすべてのシャドウオブジェクトを介して
+表面。 Q = 0は、シェーディングするポイントに光が到達していないことを意味します。そうだった
+シャドウオブジェクトによってブロックされ、シャドウをキャストします。 Q = 1は、
+光を遮るものはなく、影もありませんでした。 0 <Q <1は、
+光は部分的にブロックされたオブジェクトによって部分的にブロックされました
+解散。
+ 
+ S =合計輝度。これはスペクトルサンプルの合計です
+特定の光の強度。サンプルは可変ですが、
+デフォルトは3です。
+ 
+ S = samp1 + samp2 + samp3。

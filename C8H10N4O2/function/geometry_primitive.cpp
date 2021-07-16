@@ -27,7 +27,7 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config) :
 			"cbuffer Constant : register(b0) \n"
 			"{\n"
 			"	row_major float4x4 world;\n"
-			"	float4 matrial_color;\n"
+			"	float4 material_color;\n"
 			"};\n"
 			"cbuffer Scene : register(b7) \n"
 			"{\n"
@@ -40,7 +40,7 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config) :
 			"	float3 L = normalize(-light_direction.xyz);\n"
 			"	float3 N = normalize(pin.normal.xyz);\n"
 			"	float D = dot(L,N);\n"
-			"	return float4(matrial_color.rgb * max(max(0,light_direction.w),D),matrial_color.a);\n"
+			"	return float4(material_color.rgb * max(max(0,light_direction.w),D),material_color.a);\n"
 			"}\n";
 		hr = create_pixel_shader(device, ps, pixel_shader.ReleaseAndGetAddressOf());
 	}
@@ -70,7 +70,7 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config) :
 			"cbuffer Constant : register(b0) \n"
 			"{\n"
 			"	row_major float4x4 world;\n"
-			"	float4 matrial_color;\n"
+			"	float4 material_color;\n"
 			"};\n"
 			"cbuffer Scene : register(b7) \n"
 			"{\n"

@@ -22,3 +22,5 @@ static CONST CHAR*		CSO_FILE_DIRECTORY{ "data\\shader\\" };
 #define USE_IMGUI		TRUE
 //ImGuiのフォントサイズ
 #define IMGUI_FONT_SIZE	14
+//スクリーンショットを有効にするか
+#define USE_SCREEN_SHOT TRUE

@@ -1,11 +1,11 @@
 #include "SceneManager.h"
 
-bool SceneBase::ChangeScene(const SceneName& name)
+bool SceneBase::changeScene(const SceneName& name)
 {
-	return s_manager ? s_manager->ChangeScene(name) : false;
+	return s_manager ? s_manager->changeScene(name) : false;
 }
 
-bool SceneManager::ChangeScene(const SceneName& name)
+bool SceneManager::changeScene(const SceneName& name)
 {
 	if (!SceneDatas.empty() && name != NowScene)
 	{

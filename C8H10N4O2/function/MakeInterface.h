@@ -6,6 +6,7 @@
 #include "SceneConstantBuffer.h"
 #include "geometry_primitive.h"
 #include "CreateComObjectHelpar.h"
+#include "ConstantBuffer.h"
 #include <memory>
 
 /// <summary>
@@ -69,6 +70,19 @@ inline std::unique_ptr<SkinnedMesh> MakeSkinnedMesh(ID3D11Device* device, const 
 inline std::unique_ptr<Keyframe> MakeKeyframe(std::shared_ptr<SkinnedMesh> mesh)
 {
 	return std::make_unique<Keyframe>(mesh);
+}
+
+/// <summary>
+/// コンスタントバッファを作成します。
+/// </summary>
+/// <typeparam name="T">コンスタントバッファに渡す型</typeparam>
+/// <typeparam name="...Args"></typeparam>
+/// <param name="device">有効なデバイス</param>
+/// <param name="...args">コンスタントバッファ内で管理するデータのコンストラクタに渡すデータ</param>
+template <class T,class... Args>
+inline std::unique_ptr<ConstantBuffer<T>> MakeConstantBuffer(ID3D11Device* device, Args... args)
+{
+	return std::make_unique<ConstantBuffer<T>>(device, args...);
 }
 
 /// <summary>

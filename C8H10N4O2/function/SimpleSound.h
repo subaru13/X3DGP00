@@ -34,8 +34,8 @@ private:
 	{
 		if (errCord != 0L)
 		{
-			Character buff[256u] = {};
-			mciGetErrorString(errCord, buff, 256u);
+			Character buff[BuffSize] = {};
+			mciGetErrorString(errCord, buff, BuffSize);
 			if (MessageBox(NULL, buff, TEXT("ERROR!!"), MB_ICONHAND) == IDOK)
 			{
 				exit(0);

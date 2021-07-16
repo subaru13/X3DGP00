@@ -86,7 +86,7 @@ HRESULT load_vertex_shader(ID3D11Device* device, const std::string& cso_name,
 	long cso_sz = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
 
-	std::unique_ptr<unsigned char[]> cso_data = std::make_unique<unsigned char[]>(cso_sz);
+	std::unique_ptr<char[]> cso_data = std::make_unique<char[]>(cso_sz);
 	fread(cso_data.get(), cso_sz, 1, fp);
 	fclose(fp);
 

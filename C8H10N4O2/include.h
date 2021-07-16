@@ -21,3 +21,4 @@
 #include "function/SceneManager.h"
 #include "function/CreateComObjectHelpar.h"
 #include "function/key_input.h"
+#include "function/camera_control.h"

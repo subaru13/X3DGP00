@@ -8,5 +8,5 @@ struct VS_OUT
 cbuffer object_constant : register(b0)
 {
 	row_major float4x4 world;
-	float4 matrial_color;
+	float4 material_color;
 };

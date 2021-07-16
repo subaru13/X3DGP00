@@ -332,6 +332,10 @@ typedef DirectX::XMMATRIX MATRIX;
 #define TransformMatrix(pos)	XMMatrixTranslation(pos.x, pos.y, pos.z)
 #define ScalingMatrix(scales)	XMMatrixScaling(scales.x, scales.y, scales.z)
 
+#define _SCALAR_TO_FLOAT2(scalar) (FLOAT2(scalar,scalar))
+#define _SCALAR_TO_FLOAT3(scalar) (FLOAT3(scalar,scalar,scalar))
+#define _SCALAR_TO_FLOAT4(scalar) (FLOAT4(scalar,scalar,scalar,scalar))
+
 using namespace DirectX;
 
 #endif

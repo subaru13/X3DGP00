@@ -281,14 +281,14 @@ public:
 	/// キーフレームの情報を更新します。
 	/// </summary>
 	/// <param name="keyframe">キーフレーム</param>
-	void update_keyframe(Animation::keyframe& keyframe)const;
+	void updateKeyframe(Animation::keyframe& keyframe)const;
 	/// <summary>
 	/// アニメションデータを追加します。
 	/// </summary>
 	/// <param name="animation_filename">アニメションデータのファイルパス</param>
 	/// <param name="sampling_rate">サンプリングレート</param>
 	/// <returns>成功したらtrue</returns>
-	bool append_animations(const char* animation_filename, float sampling_rate = 0.0f);
+	bool appendAnimations(const char* animation_filename, float sampling_rate = 0.0f);
 	/// <summary>
 	/// モーションブレンドを実行します。
 	/// </summary>
@@ -298,7 +298,7 @@ public:
 	/// 0に近いほど1つ目のキーフレームが使用されます。
 	/// </param>
 	/// <param name="keyframe">合成したキーフレーム</param>
-	void blend_animations(const Animation::keyframe* keyframes[2], float factor, Animation::keyframe& keyframe);
+	void blendAnimations(const Animation::keyframe* keyframes[2], float factor, Animation::keyframe& keyframe);
 	/// <summary>
 	/// シーンビューのデータを取得します。
 	/// </summary>
@@ -447,4 +447,5 @@ public:
 	void reset();
 
 	operator bool()const { return owner.expired(); }
+	const Animation::keyframe* operator&()const { return owner.expired() ? nullptr : &keyframe; }
 };

@@ -86,3 +86,5 @@ inline void rotate(float& x, float& y, float cx, float cy, float angle)
 	x += cx;
 	y += cy;
 };
+
+

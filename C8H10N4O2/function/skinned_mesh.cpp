@@ -1,8 +1,10 @@
 ﻿#pragma warning(disable : 4099)
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #include <sstream>
 #include <functional>
 #include <filesystem>
 #include <fstream>
+#include <codecvt>
 #include "skinned_mesh.h"
 #include "misc.h"
 #include "MyHandy.h"
@@ -10,6 +12,13 @@
 #include "../FrameworkConfig.h"
 using namespace DirectX;
 using namespace fbxsdk;
+
+
+std::u16string utf8_to_utf16(std::string const& src)
+{
+	std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
+	return converter.from_bytes(src);
+}
 
 inline XMFLOAT4X4 to_xmfloat4x4(const FbxAMatrix& fbxamatrix)
 {
@@ -88,7 +97,7 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device,
 	assert(device && "The device is invalid.");
 
 	std::filesystem::path cereal_filename(fbx_filename);
-	cereal_filename.replace_extension("json");
+	cereal_filename.replace_extension("skn");
 	if (std::filesystem::exists(cereal_filename))
 	{
 		std::ifstream ifs(cereal_filename.c_str(), std::ios::binary);
@@ -157,7 +166,9 @@ void SkinnedMesh::render(ID3D11DeviceContext* immediate_context,
 	{
 		uint32_t stride{ sizeof(vertex) };
 		uint32_t offset{ 0 };
+		if (mesh.vertex_buffer == nullptr)continue;
 		immediate_context->IASetVertexBuffers(0, 1, mesh.vertex_buffer.GetAddressOf(), &stride, &offset);
+		if (mesh.index_buffer == nullptr)continue;
 		immediate_context->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		immediate_context->IASetInputLayout(input_layout.Get());
@@ -215,7 +226,7 @@ void SkinnedMesh::render(ID3D11DeviceContext* immediate_context,
 	}
 }
 
-void SkinnedMesh::update_keyframe(Animation::keyframe& keyframe)const
+void SkinnedMesh::updateKeyframe(Animation::keyframe& keyframe)const
 {
 	size_t node_count{ keyframe.nodes.size() };
 	for (size_t node_index = 0; node_index < node_count; ++node_index)
@@ -233,7 +244,7 @@ void SkinnedMesh::update_keyframe(Animation::keyframe& keyframe)const
 	}
 }
 
-bool SkinnedMesh::append_animations(const char* animation_filename, float sampling_rate)
+bool SkinnedMesh::appendAnimations(const char* animation_filename, float sampling_rate)
 {
 	if (!isExistFileA(animation_filename))return false;
 	FbxManager* fbx_manager{ FbxManager::Create() };
@@ -249,7 +260,7 @@ bool SkinnedMesh::append_animations(const char* animation_filename, float sampli
 	return true;
 }
 
-void SkinnedMesh::blend_animations(const Animation::keyframe* keyframes[2], float factor, Animation::keyframe& keyframe)
+void SkinnedMesh::blendAnimations(const Animation::keyframe* keyframes[2], float factor, Animation::keyframe& keyframe)
 {
 	size_t node_count{ keyframes[0]->nodes.size() };
 	keyframe.nodes.resize(node_count);
@@ -264,7 +275,7 @@ void SkinnedMesh::blend_animations(const Animation::keyframe* keyframes[2], floa
 		XMVECTOR T[2]{ XMLoadFloat3(&keyframes[0]->nodes.at(node_index).translation),XMLoadFloat3(&keyframes[1]->nodes.at(node_index).translation) };
 		XMStoreFloat3(&keyframe.nodes.at(node_index).translation, XMVectorLerp(T[0], T[1], factor));
 	}
-	update_keyframe(keyframe);
+	updateKeyframe(keyframe);
 }
 
 void SkinnedMesh::fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
@@ -388,31 +399,39 @@ void SkinnedMesh::create_com_objects(ID3D11Device* device, const char* fbx_filen
 {
 	for (mesh& mesh : meshes)
 	{
+		if (mesh.vertices.empty())continue;
 		HRESULT hr{ S_OK };
 		D3D11_BUFFER_DESC buffer_desc{};
 		D3D11_SUBRESOURCE_DATA subresource_data{};
-		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(vertex) * mesh.vertices.size());
-		buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-		buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		buffer_desc.CPUAccessFlags = 0;
-		buffer_desc.MiscFlags = 0;
-		buffer_desc.StructureByteStride = 0;
-		subresource_data.pSysMem = mesh.vertices.data();
-		subresource_data.SysMemPitch = 0;
-		subresource_data.SysMemSlicePitch = 0;
-		hr = device->CreateBuffer(&buffer_desc, &subresource_data,
-			mesh.vertex_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-
-		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(uint32_t) * mesh.indices.size());
-		buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-		buffer_desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		subresource_data.pSysMem = mesh.indices.data();
-		hr = device->CreateBuffer(&buffer_desc, &subresource_data, mesh.index_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		if (size_t size = mesh.vertices.size(); size > 0)
+		{
+			buffer_desc.ByteWidth = static_cast<UINT>(sizeof(vertex) * size);
+			buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+			buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			buffer_desc.CPUAccessFlags = 0;
+			buffer_desc.MiscFlags = 0;
+			buffer_desc.StructureByteStride = 0;
+			subresource_data.pSysMem = mesh.vertices.data();
+			subresource_data.SysMemPitch = 0;
+			subresource_data.SysMemSlicePitch = 0;
+			hr = device->CreateBuffer(&buffer_desc, &subresource_data,
+				mesh.vertex_buffer.ReleaseAndGetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		}
+		if (size_t size = mesh.indices.size(); size > 0)
+		{
+			buffer_desc.ByteWidth = static_cast<UINT>(sizeof(uint32_t) * size);
+			buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+			buffer_desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+			subresource_data.pSysMem = mesh.indices.data();
+			hr = device->CreateBuffer(&buffer_desc, &subresource_data, mesh.index_buffer.ReleaseAndGetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		}
 #if 1
 		mesh.vertices.clear();
 		mesh.indices.clear();
+		mesh.vertices.shrink_to_fit();
+		mesh.indices.shrink_to_fit();
 #endif
 	}
 
@@ -560,7 +579,12 @@ void SkinnedMesh::create_com_objects(ID3D11Device* device, const char* fbx_filen
 		if (iterator->second.texture_filenames[0].size() > 0)
 		{
 			std::filesystem::path path(fbx_filename);
-			path.replace_filename(iterator->second.texture_filenames[0]);
+			std::filesystem::path texpass(utf8_to_utf16(iterator->second.texture_filenames[0]));
+			path.replace_filename(texpass.filename());
+			if (!std::filesystem::exists(path))
+			{
+				path.replace_filename(texpass);
+			}
 			D3D11_TEXTURE2D_DESC texture2d_desc;
 			load_texture_from_file(device, path.c_str(),
 				iterator->second.shader_resource_views[0].ReleaseAndGetAddressOf(), &texture2d_desc);
@@ -572,7 +596,12 @@ void SkinnedMesh::create_com_objects(ID3D11Device* device, const char* fbx_filen
 		if (iterator->second.texture_filenames[1].size() > 0)
 		{
 			std::filesystem::path path(fbx_filename);
-			path.replace_filename(iterator->second.texture_filenames[1]);
+			std::filesystem::path texpass(utf8_to_utf16(iterator->second.texture_filenames[1]));
+			path.replace_filename(texpass.filename());
+			if (!std::filesystem::exists(path))
+			{
+				path.replace_filename(texpass);
+			}
 			D3D11_TEXTURE2D_DESC texture2d_desc;
 			load_texture_from_file(device, path.c_str(),
 				iterator->second.shader_resource_views[1].ReleaseAndGetAddressOf(), &texture2d_desc);
@@ -611,13 +640,13 @@ void SkinnedMesh::fetch_materials(FbxScene* fbx_scene, std::unordered_map<uint64
 				material.Kd.w = 1.0f;
 
 				const FbxFileTexture* fbx_texture{ fbx_property.GetSrcObject<FbxFileTexture>() };
-				material.texture_filenames[0] = fbx_texture ? fbx_texture->GetRelativeFileName() : "";
+				material.texture_filenames[0] = fbx_texture ? fbx_texture->GetFileName() : "";
 			}
 			fbx_property = fbx_material->FindProperty(FbxSurfaceMaterial::sNormalMap);
 			if (fbx_property.IsValid())
 			{
 				const FbxFileTexture* file_texture{ fbx_property.GetSrcObject<FbxFileTexture>() };
-				material.texture_filenames[1] = file_texture ? file_texture->GetRelativeFileName() : "";
+				material.texture_filenames[1] = file_texture ? file_texture->GetFileName() : "";
 			}
 			materials.emplace(material.unique_id, std::move(material));
 		}
@@ -756,6 +785,7 @@ bool Keyframe::change(int clip, bool loop)
 	{
 		clip_index = -1;
 		keyframe.nodes.clear();
+		keyframe.nodes.shrink_to_fit();
 		loop_flg = false;
 		end_flg = true;
 		return true;
@@ -810,8 +840,8 @@ bool Keyframe::blend(int clip, int frame, float factor)
 			&animation[1]->sequence.at(frame % animation[1]->sequence.size())
 		};
 
-		ownerPtr->blend_animations(keyframes, factor, keyframe);
-		ownerPtr->update_keyframe(keyframe);
+		ownerPtr->blendAnimations(keyframes, factor, keyframe);
+		ownerPtr->updateKeyframe(keyframe);
 	}
 	return result;
 }
@@ -837,8 +867,8 @@ bool Keyframe::blend(int clip1, int frame1, int clip2, int frame2, float factor)
 			&animation_brend.sequence.at(frame2 % animation_brend.sequence.size())
 		};
 
-		ownerPtr->blend_animations(keyframes, factor, keyframe);
-		ownerPtr->update_keyframe(keyframe);
+		ownerPtr->blendAnimations(keyframes, factor, keyframe);
+		ownerPtr->updateKeyframe(keyframe);
 	}
 	return result;
 }
@@ -910,8 +940,8 @@ void Keyframe::updateAndBlend(float elapsed_time, int clip, int frame, float fac
 			&animation_brend.sequence.at(frame % animation_brend.sequence.size())
 		};
 
-		ownerPtr->blend_animations(keyframes, factor, keyframe);
-		ownerPtr->update_keyframe(keyframe);
+		ownerPtr->blendAnimations(keyframes, factor, keyframe);
+		ownerPtr->updateKeyframe(keyframe);
 	}
 }
 

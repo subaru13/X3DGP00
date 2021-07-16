@@ -1,6 +1,10 @@
 #include "framework.h"
 #include "SceneManager.h"
 #include "key_input.h"
+#include "DirectXTK/ScreenGrab.h"
+#include <wincodec.h>
+#include <direct.h>
+#include <filesystem>
 Framework* Framework::instance = nullptr;
 
 void ClearComObjectCache();
@@ -18,8 +22,8 @@ void Debug_Mode_End_Process_After_The_Loop_ends();
 
 Framework::Framework(HWND hwnd)
 	:hwnd(hwnd), d3d11_device(nullptr), d3d11_context(nullptr),
-	d3d11_render_view(nullptr), d3d11_depth_view(nullptr),
-	idxgi_swapchain(nullptr), d3d11_blend_states(nullptr)
+	d3d11_render_traget_view(nullptr), d3d11_depth_stencil_view(nullptr),
+	idxgi_swapchain(nullptr), d3d11_blend_states(nullptr), screenshot_key(nullptr)
 {
 	assert(instance == nullptr && "No more instances can be created.");
 	instance = this;
@@ -44,7 +48,7 @@ Framework::Framework(HWND hwnd)
 		swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		swap_chain_desc.BufferDesc.RefreshRate.Numerator = 60;
 		swap_chain_desc.BufferDesc.RefreshRate.Denominator = 1;
-		swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
 		swap_chain_desc.OutputWindow = hwnd;
 		swap_chain_desc.SampleDesc.Count = 1;
 		swap_chain_desc.SampleDesc.Quality = 0;
@@ -66,7 +70,7 @@ Framework::Framework(HWND hwnd)
 		ComPtr<ID3D11Texture2D> back_buffer{};
 		hr = idxgi_swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(back_buffer.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-		hr = d3d11_device->CreateRenderTargetView(back_buffer.Get(), NULL, d3d11_render_view.ReleaseAndGetAddressOf());
+		hr = d3d11_device->CreateRenderTargetView(back_buffer.Get(), NULL, d3d11_render_traget_view.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 	}
 
@@ -92,7 +96,7 @@ Framework::Framework(HWND hwnd)
 		depth_stencil_view_desc.Format = texture2d_desc.Format;
 		depth_stencil_view_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		depth_stencil_view_desc.Texture2D.MipSlice = 0;
-		hr = d3d11_device->CreateDepthStencilView(depth_stencil_buffer.Get(), &depth_stencil_view_desc, d3d11_depth_view.ReleaseAndGetAddressOf());
+		hr = d3d11_device->CreateDepthStencilView(depth_stencil_buffer.Get(), &depth_stencil_view_desc, d3d11_depth_stencil_view.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 	}
 
@@ -111,9 +115,13 @@ Framework::Framework(HWND hwnd)
 	d3d11_depth_stencil_states = std::make_unique<DepthStencilStates>(d3d11_device.Get());
 	d3d11_context->OMSetDepthStencilState(d3d11_depth_stencil_states->at(DEPTH_STENCIL_STATE::DS_FALSE), 1);
 	d3d11_rasterizer_states = std::make_unique<RasterizerStates>(d3d11_device.Get());
-	d3d11_context->RSSetState(d3d11_rasterizer_states->at(RASTERIZER_FILL::RS_SOLID, FALSE));
+	d3d11_context->RSSetState(d3d11_rasterizer_states->at(RASTERIZER_FILL::BACK_SOLID, FALSE));
 	d3d11_sampler_states = std::make_unique<SamplerStates>(d3d11_device.Get());
 	d3d11_context->PSSetSamplers(0, 1, instance->d3d11_sampler_states->at(SAMPLER_STATE::SS_POINT));
+#if  USE_SCREEN_SHOT
+	screenshot_key = std::make_unique<Key>(VK_SNAPSHOT);
+#endif //  USE_SCREEN_SHOT
+
 }
 
 bool Framework::initialize()
@@ -133,6 +141,26 @@ void Framework::update()
 	ImGui::NewFrame();
 #endif
 	KeyManager::instance()->Update();
+
+#if  USE_SCREEN_SHOT
+	if (screenshot_key->down())
+	{
+		Microsoft::WRL::ComPtr<ID3D11Resource> resource;
+		d3d11_render_traget_view->GetResource(resource.ReleaseAndGetAddressOf());
+		time_t t = time(NULL);
+		tm time_stamp{};
+		errno_t err = localtime_s(&time_stamp, &t);
+		int mkr = _mkdir("./ScreenShot//");
+		std::wstringstream name;
+		name << L"./ScreenShot//" << time_stamp.tm_year + 1900 << L"_" <<
+			time_stamp.tm_mon + 1 << L"_" << time_stamp.tm_mday
+			<< L"_" << time_stamp.tm_hour << L"_" <<
+			time_stamp.tm_min << L"_" << time_stamp.tm_sec << L".jpg";
+		HRESULT hr = SaveWICTextureToFile(d3d11_context.Get(), resource.Get(), GUID_ContainerFormatJpeg, name.str().c_str());
+		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	}
+#endif //  USE_SCREEN_SHOT
+
 	float elapsed_time = tictoc.time_interval();
 	SceneManager::getInstance()->edit(d3d11_device.Get(), elapsed_time);
 	Update_Process(elapsed_time);
@@ -145,14 +173,14 @@ void Framework::render()
 {
 	HRESULT hr{ S_OK };
 
-	d3d11_context->ClearRenderTargetView(d3d11_render_view.Get(), FILL_COLOR);
-	d3d11_context->ClearDepthStencilView(d3d11_depth_view.Get(),
+	d3d11_context->ClearRenderTargetView(d3d11_render_traget_view.Get(), FILL_COLOR);
+	d3d11_context->ClearDepthStencilView(d3d11_depth_stencil_view.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	d3d11_context->OMSetRenderTargets(1, d3d11_render_view.GetAddressOf(), d3d11_depth_view.Get());
+	d3d11_context->OMSetRenderTargets(1, d3d11_render_traget_view.GetAddressOf(), d3d11_depth_stencil_view.Get());
 
-	ID3D11ShaderResourceView* null_srv[128] = { nullptr };
+	ID3D11ShaderResourceView* null_srv[16] = { nullptr };
 
-	d3d11_context->PSSetShaderResources(0, 128, null_srv);
+	d3d11_context->PSSetShaderResources(0, 16, null_srv);
 
 	float elapsed_time = tictoc.time_interval();
 	SceneManager::getInstance()->render(d3d11_context.Get(), elapsed_time);
