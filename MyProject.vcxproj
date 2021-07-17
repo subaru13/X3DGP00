@@ -204,6 +204,7 @@
     <ClCompile Include="C8H10N4O2\function\skinned_mesh.cpp" />
     <ClCompile Include="C8H10N4O2\function\sprite.cpp" />
     <ClCompile Include="C8H10N4O2\function\sprite_batch.cpp" />
+    <ClCompile Include="C8H10N4O2\function\camera_control.cpp" />
     <ClCompile Include="Core.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +243,7 @@
     <ClInclude Include="C8H10N4O2\function\sprite_batch.h" />
     <ClInclude Include="C8H10N4O2\include.h" />
     <ClInclude Include="C8H10N4O2\resource\resource.h" />
+    <ClInclude Include="C8H10N4O2\function\camera_control.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="C8H10N4O2\resource\3dgp.aps" />
