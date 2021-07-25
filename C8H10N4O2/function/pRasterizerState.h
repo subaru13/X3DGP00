@@ -61,6 +61,6 @@ public:
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 	}
 
-	ID3D11RasterizerState* at(RASTERIZER_FILL type, BOOL clockwise) { return states[static_cast<int>(type)][clockwise].Get(); }
+	ID3D11RasterizerState* at(RASTERIZER_FILL type, BOOL clockwise) { return states[static_cast<int>(type)][clockwise==TRUE].Get(); }
 	virtual ~RasterizerStates() {}
 };

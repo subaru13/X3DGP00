@@ -49,7 +49,7 @@ public:
 
 	//インスタンスを作成します
 	//【返り値】インスタンスの作成に成功した場合trueを返します。
-	static bool CreateInstance();
+	static bool createInstance();
 
 	//インスタンスを取得します。
 	static ASCII* getInstance()
@@ -60,6 +60,6 @@ public:
 
 	//インスタンスを破棄します。
 	//【返り値】インスタンスの破棄に成功した場合trueを返します。
-	static bool DestroyInstance();
+	static bool destroyInstance();
 	~ASCII();
 };

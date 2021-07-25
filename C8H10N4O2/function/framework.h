@@ -190,6 +190,18 @@ public:
 		instance->d3d11_context->RSSetViewports(1, &viewport);
 	}
 
+	/// <summary>
+	/// ビューポートを取得します。
+	/// </summary>
+	static D3D11_VIEWPORT getViewPort()
+	{
+		assert(instance != nullptr && "No Instance.");
+		D3D11_VIEWPORT viewport{};
+		UINT num = 1;
+		instance->d3d11_context->RSGetViewports(&num, &viewport);
+		return viewport;
+	}
+
 	int run()
 	{
 		MSG msg{};
@@ -311,3 +323,15 @@ private:
 };
 
 #define QuitMainLoop		PostQuitMessage(0)
+
+#define CHANGE_SETTINGS_2D_RENDERING \
+Framework::setDepthStencilState(DEPTH_STENCIL_STATE::DS_FALSE);\
+Framework::setRasterizerState(RASTERIZER_FILL::BACK_SOLID, FALSE);
+
+#define CHANGE_SETTINGS_3D_RENDERING_LHS \
+Framework::setDepthStencilState(DEPTH_STENCIL_STATE::DS_TRHE);\
+Framework::setRasterizerState(RASTERIZER_FILL::BACK_SOLID, FALSE);
+
+#define CHANGE_SETTINGS_3D_RENDERING_RHS \
+Framework::setDepthStencilState(DEPTH_STENCIL_STATE::DS_TRHE);\
+Framework::setRasterizerState(RASTERIZER_FILL::BACK_SOLID, TRUE);

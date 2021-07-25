@@ -92,3 +92,30 @@ public:
 		_obj.reset();
 	}
 };
+
+class Mouse final
+{
+private:
+	POINT pos;
+	Key l_button;
+	Key r_button;
+	Key c_button;
+	Mouse() :l_button(MK_LBUTTON), r_button(MK_RBUTTON), c_button(VK_MBUTTON), pos() {}
+public:
+	void update(HWND hwnd)
+	{
+		GetCursorPos(&pos);
+		ScreenToClient(hwnd, &pos);
+	}
+
+	const POINT& getPos()const { return pos; }
+	const Key& getL()const { return l_button; }
+	const Key& getR()const { return r_button; }
+	const Key& getC()const { return c_button; }
+
+	static Mouse* instance()
+	{
+		static Mouse ins;
+		return &ins;
+	}
+};

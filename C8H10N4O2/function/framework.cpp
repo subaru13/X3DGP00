@@ -141,7 +141,7 @@ void Framework::update()
 	ImGui::NewFrame();
 #endif
 	KeyManager::instance()->Update();
-
+	Mouse::instance()->update(hwnd);
 #if  USE_SCREEN_SHOT
 	if (screenshot_key->down())
 	{

@@ -423,19 +423,19 @@ public:
 	/// <summary>
 	/// 再生中のアニメーション番号を取得します。
 	/// </summary>
-	const int& getClipIndex()const { return owner.expired() ? -1 : clip_index; }
+	int getClipIndex()const { return owner.expired() ? -1 : clip_index; }
 	/// <summary>
 	/// アニメーションティックを取得します。
 	/// </summary>
-	const float& getAnimationTick()const { return owner.expired() ? 0.0f : animation_tick; }
+	float getAnimationTick()const { return owner.expired() ? 0.0f : animation_tick; }
 	/// <summary>
 	/// アニメーションが終了しているかのフラグを取得します。
 	/// </summary>
-	const bool& getEndFlg()const { return owner.expired() ? true : end_flg; }
+	bool getEndFlg()const { return owner.expired() ? true : end_flg; }
 	/// <summary>
 	/// 現在のループ設定を取得します。
 	/// </summary>
-	const bool& getLoopFlg()const { return owner.expired() ? false : loop_flg; }
+	bool getLoopFlg()const { return owner.expired() ? false : loop_flg; }
 	/// <summary>
 	/// 現在のキーフレームを取得します。
 	/// </summary>

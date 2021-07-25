@@ -45,20 +45,35 @@ FLOAT2 ASCII::print(ID3D11DeviceContext* immediate_context, ASCII::Handle handle
 	FLOAT2 tex_size = choice.spr->getTextrueSize() / choice.size_per_char;
 	FLOAT2 size = choice.size_per_char * scale;
 
-	float carriage = 0;
+	FLOAT2 carriage = pos;
 	for (const char c : str)
 	{
-		choice.spr->render(immediate_context,
-			{ pos.x + carriage,pos.y },
-			size,
-			{ tex_size.x * (c & 0x0F), tex_size.y * (c >> 4) },
-			tex_size, 0, color);
-		carriage += size.x;
+		switch (c)
+		{
+		case '\n':
+			carriage.x = pos.x;
+			carriage.y += size.y;
+			break;
+		case ' ':
+			carriage.x += size.x;
+			break;
+		case '\t':
+			carriage.x += size.x * 4.0f;
+			break;
+		default:
+			choice.spr->render(immediate_context,
+				carriage,
+				size,
+				{ tex_size.x * (c & 0x0F), tex_size.y * (c >> 4) },
+				tex_size, 0, color);
+			carriage.x += size.x;
+			break;
+		}
 	}
 
 	choice.spr->end(immediate_context);
 
-	return FLOAT2(carriage + size.x, pos.y + size.y);
+	return carriage + size;
 }
 
 ASCII::~ASCII()
@@ -70,7 +85,7 @@ ASCII::~ASCII()
 	datas.clear();
 }
 
-bool ASCII::CreateInstance()
+bool ASCII::createInstance()
 {
 	if (instance == nullptr)
 	{
@@ -80,7 +95,7 @@ bool ASCII::CreateInstance()
 	return false;
 }
 
-bool ASCII::DestroyInstance()
+bool ASCII::destroyInstance()
 {
 	if (instance != nullptr)
 	{
