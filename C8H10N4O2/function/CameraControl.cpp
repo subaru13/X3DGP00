@@ -1,10 +1,10 @@
-#include "camera_control.h"
-#include "key_input.h"
+#include "CameraControl.h"
+#include "KeyInput.h"
 #include "..//FrameworkConfig.h"
 
 CameraControl::CameraControl()
 	:pos(0.0f, 0.0f, -10.0f), traget(0.0f, 0.0f, 0.0f), up_vector(0.0f, 1.0f, 0.0f),
-	fov(ToRadian(30.0f)), width(static_cast<float>(SCREEN_WIDTH)), height(static_cast<float>(SCREEN_HEIGHT)),
+	fov(toRadian(30.0f)), width(static_cast<float>(SCREEN_WIDTH)), height(static_cast<float>(SCREEN_HEIGHT)),
 	znear(0.1f), zfar(1000.0f), l_fulcrum(), r_fulcrum(), c_fulcrum(){}
 
 FLOAT4X4 CameraControl::getView() const
@@ -58,7 +58,7 @@ void CameraControl::update(float move_speed, float rotation_speed, float elapsed
 
 		if (fabsl(drg.x) > 64L)
 		{
-			if (Vec3Dot(VECTOR3(0, 1, 0), up_vector) < 0)drg.x *= -1;
+			if (vec3Dot(VECTOR3(0, 1, 0), up_vector) < 0)drg.x *= -1;
 			attitude.y += drg.x > 0 ? elapsed_time * 0.174533f * rotation_speed : -elapsed_time * 0.174533f * rotation_speed;
 		}
 
@@ -69,8 +69,8 @@ void CameraControl::update(float move_speed, float rotation_speed, float elapsed
 
 		FLOAT4X4 rotation4x4{};
 		XMStoreFloat4x4(&rotation4x4, RotationMatrix(attitude));
-		traget = pos + Vec3Normalization(VECTOR3(rotation4x4._31, rotation4x4._32, rotation4x4._33));
-		up_vector = Vec3Normalization(VECTOR3(rotation4x4._21, rotation4x4._22, rotation4x4._23));
+		traget = pos + vec3Normalize(VECTOR3(rotation4x4._31, rotation4x4._32, rotation4x4._33));
+		up_vector = vec3Normalize(VECTOR3(rotation4x4._21, rotation4x4._22, rotation4x4._23));
 	}
 
 	if (r_key.down())
@@ -83,8 +83,8 @@ void CameraControl::update(float move_speed, float rotation_speed, float elapsed
 		FLOAT4X4 rotation4x4{};
 		XMStoreFloat4x4(&rotation4x4, RotationMatrix(attitude));
 
-		VECTOR3 forward = Vec3Normalization(VECTOR3(rotation4x4._31, rotation4x4._32, rotation4x4._33));
-		VECTOR3 right = Vec3Normalization(VECTOR3(rotation4x4._11, rotation4x4._12, rotation4x4._13));
+		VECTOR3 forward = vec3Normalize(VECTOR3(rotation4x4._31, rotation4x4._32, rotation4x4._33));
+		VECTOR3 right = vec3Normalize(VECTOR3(rotation4x4._11, rotation4x4._12, rotation4x4._13));
 
 		if (fabsl(drg.x) > 64L)
 		{
@@ -110,8 +110,8 @@ void CameraControl::update(float move_speed, float rotation_speed, float elapsed
 		FLOAT4X4 rotation4x4{};
 		XMStoreFloat4x4(&rotation4x4, RotationMatrix(attitude));
 
-		VECTOR3 forward = Vec3Normalization(VECTOR3(rotation4x4._31, rotation4x4._32, rotation4x4._33));
-		VECTOR3 right = Vec3Normalization(VECTOR3(rotation4x4._11, rotation4x4._12, rotation4x4._13));
+		VECTOR3 forward = vec3Normalize(VECTOR3(rotation4x4._31, rotation4x4._32, rotation4x4._33));
+		VECTOR3 right = vec3Normalize(VECTOR3(rotation4x4._11, rotation4x4._12, rotation4x4._13));
 
 		if (fabsl(drg.x) > 64L)
 		{

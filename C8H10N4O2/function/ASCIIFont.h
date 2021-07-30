@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sprite_batch.h"
+#include "SpriteBatch.h"
 #include <vector>
 #include <string>
 
@@ -54,7 +54,7 @@ public:
 	//インスタンスを取得します。
 	static ASCII* getInstance()
 	{
-		assert(instance != nullptr && "No Instance.");
+		if(instance == nullptr)createInstance();
 		return instance.get();
 	}
 

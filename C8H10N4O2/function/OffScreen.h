@@ -1,7 +1,7 @@
 #pragma once
 #include <wrl.h>
 #include <d3d11.h>
-#include "sprite.h"
+#include "Sprite.h"
 
 class OffScreen
 {

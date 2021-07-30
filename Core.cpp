@@ -1,7 +1,7 @@
 ﻿/********************************************************************/
 /*							インクルード							*/
 /********************************************************************/
-#include "C8H10N4O2/include.h"
+#include "C8H10N4O2/Include.h"
 
 /********************************************************************/
 /*							プロトタイプ宣言						*/
@@ -10,39 +10,39 @@
 /*********************************************************************
 			＠実行順について
 
-	Initialization_Process_Before_Loop
+	initializationProcessBeforeLoop
 			↓
-	Debug_Mode_Initialization_Process_Before_Loop(デバック時のみ)
+	debugModeInitializationProcessBeforeLoop(デバック時のみ)
 			↓	(ループ開始)
 	SceneManager::edit
 			↓
-	Update_Process
+	updateProcess
 			↓
-	Debug_Mode_Update_Process(デバック時のみ)
+	debugModeUpdateProcess(デバック時のみ)
 			↓
 	SceneManager::render
 			↓
-	Drawing_Process
+	drawingProcess
 			↓
-	Debug_Mode_Drawing_Process(デバック時のみ)
+	debugModeDrawingProcess(デバック時のみ)
 			↓	(ループ終了)
 	SceneManager::release
 			↓
-	End_Process_After_The_Loop_ends
+	endProcessAfterTheLoopEnds
 			↓
-	Debug_Mode_End_Process_After_The_Loop_ends(デバック時のみ)
+	debugModeEndProcessAfterTheLoopEnds(デバック時のみ)
 
 *********************************************************************/
 
-
+#include "test.h"
 
 /*********************************************************************
 			＠ゲームループ前に行う初期化処理
 			シーンの追加などを記入してください。
 *********************************************************************/
-void Initialization_Process_Before_Loop(ID3D11Device* device)
+void initializationProcessBeforeLoop(ID3D11Device* device)
 {
-
+	addScene<BloomTest>(device, "test");
 }
 
 /*********************************************************************
@@ -50,7 +50,7 @@ void Initialization_Process_Before_Loop(ID3D11Device* device)
 			シーンマネージャーの更新処理とは別に実行されます。
 			常時更新したい処理はこちらに記入してください。
 *********************************************************************/
-void Update_Process(float elapsed_time)
+void updateProcess(float elapsed_time)
 {
 }
 
@@ -59,7 +59,7 @@ void Update_Process(float elapsed_time)
 			シーンマネージャーの描画処理とは別に実行されます。
 			常時描画したい処理はこちらに記入してください。
 *********************************************************************/
-void Drawing_Process(ID3D11DeviceContext* immediate_context, float elapsed_time)
+void drawingProcess(ID3D11DeviceContext* immediate_context, float elapsed_time)
 {
 }
 
@@ -67,7 +67,7 @@ void Drawing_Process(ID3D11DeviceContext* immediate_context, float elapsed_time)
 			＠ループ終了後の終了処理
 			解放処理などをこちらに記入してください。
 *********************************************************************/
-void End_Process_After_The_Loop_ends()
+void endProcessAfterTheLoopEnds()
 {
 }
 
@@ -80,7 +80,7 @@ void End_Process_After_The_Loop_ends()
 			＠ゲームループ前に行うデバック用の初期化処理
 			シーンの追加などを記入してください。
 *********************************************************************/
-void Debug_Mode_Initialization_Process_Before_Loop(ID3D11Device* device)
+void debugModeInitializationProcessBeforeLoop(ID3D11Device* device)
 {
 
 }
@@ -90,7 +90,7 @@ void Debug_Mode_Initialization_Process_Before_Loop(ID3D11Device* device)
 			シーンマネージャーの更新処理とは別に実行されます。
 			常時更新したい処理はこちらに記入してください。
 *********************************************************************/
-void Debug_Mode_Update_Process(float elapsed_time)
+void debugModeUpdateProcess(float elapsed_time)
 {
 
 }
@@ -100,7 +100,7 @@ void Debug_Mode_Update_Process(float elapsed_time)
 			シーンマネージャーの描画処理とは別に実行されます。
 			常時描画したい処理はこちらに記入してください。
 *********************************************************************/
-void Debug_Mode_Drawing_Process(ID3D11DeviceContext* immediate_context, float elapsed_time)
+void debugModeDrawingProcess(ID3D11DeviceContext* immediate_context, float elapsed_time)
 {
 }
 
@@ -108,7 +108,7 @@ void Debug_Mode_Drawing_Process(ID3D11DeviceContext* immediate_context, float el
 			＠ループ終了後のデバック用の終了処理
 			解放処理などをこちらに記入してください。
 *********************************************************************/
-void Debug_Mode_End_Process_After_The_Loop_ends()
+void debugModeEndProcessAfterTheLoopEnds()
 {
 }
 #endif // _DEBUG

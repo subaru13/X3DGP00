@@ -1,5 +1,5 @@
 #include "CreateComObjectHelpar.h"
-#include "misc.h"
+#include "Misc.h"
 #include <map>
 #include <wrl.h>
 #include <Shlwapi.h>
@@ -34,7 +34,7 @@ namespace
 	std::map<std::wstring, ComPtr<ID3D11ShaderResourceView>> srv_cache;
 }
 
-HRESULT load_pixel_shader(ID3D11Device* device, const std::string& cso_name, ID3D11PixelShader** pixel_shader)
+HRESULT loadPixelShader(ID3D11Device* device, const std::string& cso_name, ID3D11PixelShader** pixel_shader)
 {
 	auto it = ps_cache.find(cso_name);
 	if (it != ps_cache.end())
@@ -57,14 +57,14 @@ HRESULT load_pixel_shader(ID3D11Device* device, const std::string& cso_name, ID3
 	fclose(fp);
 
 	HRESULT hr = device->CreatePixelShader(cso_data.get(), cso_sz, nullptr, pixel_shader);
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	ps_cache.insert(std::make_pair(cso_name, *pixel_shader));
 
 	return hr;
 }
 
-HRESULT load_vertex_shader(ID3D11Device* device, const std::string& cso_name,
+HRESULT loadVertexShader(ID3D11Device* device, const std::string& cso_name,
 	ID3D11VertexShader** vertex_shader, ID3D11InputLayout** input_layout,
 	const D3D11_INPUT_ELEMENT_DESC* input_element_desc, UINT num_elements)
 {
@@ -91,17 +91,17 @@ HRESULT load_vertex_shader(ID3D11Device* device, const std::string& cso_name,
 	fclose(fp);
 
 	HRESULT hr = device->CreateVertexShader(cso_data.get(), cso_sz, nullptr, vertex_shader);
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	hr = device->CreateInputLayout(input_element_desc, num_elements, cso_data.get(), cso_sz, input_layout);
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	vs_cache.insert(std::make_pair(cso_name, VsCacheData(*vertex_shader, *input_layout)));
 
 	return hr;
 }
 
-HRESULT create_pixel_shader(ID3D11Device* device, const std::string& shader, ID3D11PixelShader** pixel_shader)
+HRESULT createPixelShader(ID3D11Device* device, const std::string& shader, ID3D11PixelShader** pixel_shader)
 {
 	assert(device && "The device is invalid.");
 	HRESULT hr = S_OK;
@@ -124,16 +124,16 @@ HRESULT create_pixel_shader(ID3D11Device* device, const std::string& shader, ID3
 		ComPtr<ID3DBlob> error_message_blob;
 		hr = D3DCompile(shader.c_str(), shader.length(), 0, 0, 0, "main", "ps_5_0",
 			flags, 0, &compiled_shader_blob, &error_message_blob);
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 		hr = device->CreatePixelShader(compiled_shader_blob->GetBufferPointer(), compiled_shader_blob->GetBufferSize(), 0, pixel_shader);
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 		ps_cache.insert(std::make_pair(shader, *pixel_shader));
 	}
 
 	return hr;
 }
 
-HRESULT create_vertex_shader(ID3D11Device* device, const std::string& shader,
+HRESULT createVertexShader(ID3D11Device* device, const std::string& shader,
 	ID3D11VertexShader** vertex_shader, ID3D11InputLayout** input_layout,
 	const D3D11_INPUT_ELEMENT_DESC* input_element_desc, UINT num_elements)
 {
@@ -160,10 +160,10 @@ HRESULT create_vertex_shader(ID3D11Device* device, const std::string& shader,
 		ComPtr<ID3DBlob> error_message_blob;
 		hr = D3DCompile(shader.c_str(), shader.length(), 0, 0, 0, "main", "vs_5_0",
 			flags, 0, &compiled_shader_blob, &error_message_blob);
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 		hr = device->CreateVertexShader(compiled_shader_blob->GetBufferPointer(),
 			compiled_shader_blob->GetBufferSize(), 0, vertex_shader);
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		hr = device->CreateInputLayout
 		(
@@ -171,14 +171,14 @@ HRESULT create_vertex_shader(ID3D11Device* device, const std::string& shader,
 			compiled_shader_blob->GetBufferPointer(),
 			compiled_shader_blob->GetBufferSize(),
 			input_layout);
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 		vs_cache.insert(std::make_pair(shader, VsCacheData(*vertex_shader, *input_layout)));
 	}
 
 	return hr;
 }
 
-HRESULT make_dummy_texture(ID3D11Device* device, ID3D11ShaderResourceView** shader_resource_view)
+HRESULT makeDummyTexture(ID3D11Device* device, ID3D11ShaderResourceView** shader_resource_view)
 {
 	assert(device && "The device is invalid.");
 	HRESULT hr = S_OK;
@@ -203,7 +203,7 @@ HRESULT make_dummy_texture(ID3D11Device* device, ID3D11ShaderResourceView** shad
 	subresource_data.SysMemSlicePitch = 4;
 	ComPtr<ID3D11Texture2D> texture2d;
 	hr = device->CreateTexture2D(&texture2d_desc, &subresource_data, &texture2d);
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC shader_resource_view_desc = {};
 	shader_resource_view_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -211,12 +211,12 @@ HRESULT make_dummy_texture(ID3D11Device* device, ID3D11ShaderResourceView** shad
 	shader_resource_view_desc.Texture2D.MipLevels = 1;
 
 	hr = device->CreateShaderResourceView(texture2d.Get(), &shader_resource_view_desc, shader_resource_view);
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	return hr;
 }
 
-HRESULT load_texture_from_file(ID3D11Device* device, const wchar_t* file_name,
+HRESULT loadTextureFromFile(ID3D11Device* device, const wchar_t* file_name,
 	ID3D11ShaderResourceView** shader_resource_view, D3D11_TEXTURE2D_DESC* texture2d_desc)
 {
 	assert(device && "The device is invalid.");
@@ -248,7 +248,7 @@ HRESULT load_texture_from_file(ID3D11Device* device, const wchar_t* file_name,
 		{
 			hr = DirectX::CreateWICTextureFromFile(device, file_pass.c_str(), &resource, shader_resource_view);
 		}
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		srv_cache.insert(std::make_pair(file_pass.c_str(), *shader_resource_view));
 	}
@@ -260,7 +260,7 @@ HRESULT load_texture_from_file(ID3D11Device* device, const wchar_t* file_name,
 
 	ComPtr<ID3D11Texture2D> texture2d;
 	hr = resource->QueryInterface<ID3D11Texture2D>(&texture2d);
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	texture2d->GetDesc(texture2d_desc);
 
 	return hr;

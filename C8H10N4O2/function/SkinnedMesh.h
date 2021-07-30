@@ -317,13 +317,13 @@ public:
 	const std::vector<Animation>& getAnimationClips()const { return animation_clips; }
 
 protected:
-	void fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes);
-	void fetch_materials(FbxScene* fbx_scene, std::unordered_map<uint64_t, material>& materials);
-	void fetch_skeleton(FbxMesh* fbx_mesh, skeleton& bind_pose);
-	void fetch_animations(FbxScene* fbx_scene,
+	void fetchMeshes(FbxScene* fbx_scene, std::vector<mesh>& meshes);
+	void fetchMaterials(FbxScene* fbx_scene, std::unordered_map<uint64_t, material>& materials);
+	void fetchSkeleton(FbxMesh* fbx_mesh, skeleton& bind_pose);
+	void fetchAnimations(FbxScene* fbx_scene,
 		std::vector<Animation>& animation_clips,
 		float sampling_rate /*If this value is 0, the animation data will be sampled at the default frame rate.*/);
-	void create_com_objects(ID3D11Device* device, const char* fbx_filename);
+	void createComObjects(ID3D11Device* device, const char* fbx_filename);
 protected:
 	scene scene_view;
 	std::unordered_map<uint64_t, material> materials;

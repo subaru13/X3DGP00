@@ -1,6 +1,6 @@
-#include "framework.h"
+#include "Framework.h"
 #include "SceneManager.h"
-#include "key_input.h"
+#include "KeyInput.h"
 #include "DirectXTK/ScreenGrab.h"
 #include <wincodec.h>
 #include <direct.h>
@@ -8,16 +8,16 @@
 Framework* Framework::instance = nullptr;
 
 void ClearComObjectCache();
-void Initialization_Process_Before_Loop(ID3D11Device*);
-void Update_Process(float);
-void Drawing_Process(ID3D11DeviceContext*, float);
-void End_Process_After_The_Loop_ends();
+void initializationProcessBeforeLoop(ID3D11Device*);
+void updateProcess(float);
+void drawingProcess(ID3D11DeviceContext*, float);
+void endProcessAfterTheLoopEnds();
 
 #ifdef _DEBUG
-void Debug_Mode_Initialization_Process_Before_Loop(ID3D11Device*);
-void Debug_Mode_Update_Process(float);
-void Debug_Mode_Drawing_Process(ID3D11DeviceContext*, float);
-void Debug_Mode_End_Process_After_The_Loop_ends();
+void debugModeInitializationProcessBeforeLoop(ID3D11Device*);
+void debugModeUpdateProcess(float);
+void debugModeDrawingProcess(ID3D11DeviceContext*, float);
+void debugModeEndProcessAfterTheLoopEnds();
 #endif
 
 Framework::Framework(HWND hwnd)
@@ -31,7 +31,7 @@ Framework::Framework(HWND hwnd)
 	HRESULT hr{ S_OK };
 
 	hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_MULTITHREADED);
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	//Creating a device and swap chain
 	{
@@ -62,16 +62,16 @@ Framework::Framework(HWND hwnd)
 			idxgi_swapchain.ReleaseAndGetAddressOf(),
 			d3d11_device.ReleaseAndGetAddressOf(),
 			NULL, d3d11_context.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 
 	//Creating a render target view
 	{
 		ComPtr<ID3D11Texture2D> back_buffer{};
 		hr = idxgi_swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(back_buffer.ReleaseAndGetAddressOf()));
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 		hr = d3d11_device->CreateRenderTargetView(back_buffer.Get(), NULL, d3d11_render_traget_view.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 
 	//Creating a depth stencil view
@@ -90,14 +90,14 @@ Framework::Framework(HWND hwnd)
 		texture2d_desc.CPUAccessFlags = 0;
 		texture2d_desc.MiscFlags = 0;
 		hr = d3d11_device->CreateTexture2D(&texture2d_desc, NULL, depth_stencil_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		D3D11_DEPTH_STENCIL_VIEW_DESC depth_stencil_view_desc{};
 		depth_stencil_view_desc.Format = texture2d_desc.Format;
 		depth_stencil_view_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		depth_stencil_view_desc.Texture2D.MipSlice = 0;
 		hr = d3d11_device->CreateDepthStencilView(depth_stencil_buffer.Get(), &depth_stencil_view_desc, d3d11_depth_stencil_view.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 
 	//Viewport settings
@@ -126,9 +126,9 @@ Framework::Framework(HWND hwnd)
 
 bool Framework::initialize()
 {
-	Initialization_Process_Before_Loop(d3d11_device.Get());
+	initializationProcessBeforeLoop(d3d11_device.Get());
 #ifdef _DEBUG
-	Debug_Mode_Initialization_Process_Before_Loop(d3d11_device.Get());
+	debugModeInitializationProcessBeforeLoop(d3d11_device.Get());
 #endif
 	return true;
 }
@@ -140,7 +140,7 @@ void Framework::update()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 #endif
-	KeyManager::instance()->Update();
+	KeyManager::instance()->update();
 	Mouse::instance()->update(hwnd);
 #if  USE_SCREEN_SHOT
 	if (screenshot_key->down())
@@ -157,15 +157,15 @@ void Framework::update()
 			<< L"_" << time_stamp.tm_hour << L"_" <<
 			time_stamp.tm_min << L"_" << time_stamp.tm_sec << L".jpg";
 		HRESULT hr = SaveWICTextureToFile(d3d11_context.Get(), resource.Get(), GUID_ContainerFormatJpeg, name.str().c_str());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 #endif //  USE_SCREEN_SHOT
 
-	float elapsed_time = tictoc.time_interval();
+	float elapsed_time = tictoc.timeInterval();
 	SceneManager::getInstance()->edit(d3d11_device.Get(), elapsed_time);
-	Update_Process(elapsed_time);
+	updateProcess(elapsed_time);
 #ifdef _DEBUG
-	Debug_Mode_Update_Process(elapsed_time);
+	debugModeUpdateProcess(elapsed_time);
 #endif
 }
 
@@ -182,11 +182,11 @@ void Framework::render()
 
 	d3d11_context->PSSetShaderResources(0, 16, null_srv);
 
-	float elapsed_time = tictoc.time_interval();
+	float elapsed_time = tictoc.timeInterval();
 	SceneManager::getInstance()->render(d3d11_context.Get(), elapsed_time);
-	Drawing_Process(d3d11_context.Get(), elapsed_time);
+	drawingProcess(d3d11_context.Get(), elapsed_time);
 #ifdef _DEBUG
-	Debug_Mode_Drawing_Process(d3d11_context.Get(), elapsed_time);
+	debugModeDrawingProcess(d3d11_context.Get(), elapsed_time);
 #endif
 
 #if USE_IMGUI
@@ -195,15 +195,15 @@ void Framework::render()
 #endif
 
 	hr = idxgi_swapchain->Present(SYNC_INTERVAL, 0);
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 }
 
 bool Framework::uninitialize()
 {
 	SceneManager::getInstance()->release();
-	End_Process_After_The_Loop_ends();
+	endProcessAfterTheLoopEnds();
 #ifdef _DEBUG
-	Debug_Mode_End_Process_After_The_Loop_ends();
+	debugModeEndProcessAfterTheLoopEnds();
 #endif
 	return true;
 }

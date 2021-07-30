@@ -4,7 +4,7 @@
 #include <tchar.h>
 #include <time.h>
 
-#include "framework.h"
+#include "Framework.h"
 
 LRESULT CALLBACK window_procedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {

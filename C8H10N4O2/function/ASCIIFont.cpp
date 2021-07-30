@@ -1,4 +1,4 @@
-#include "ASCII_Font.h"
+#include "ASCIIFont.h"
 
 std::unique_ptr<ASCII> ASCII::instance;
 
@@ -56,6 +56,9 @@ FLOAT2 ASCII::print(ID3D11DeviceContext* immediate_context, ASCII::Handle handle
 			break;
 		case ' ':
 			carriage.x += size.x;
+			break;
+		case '\r':
+			carriage.x = pos.x;
 			break;
 		case '\t':
 			carriage.x += size.x * 4.0f;

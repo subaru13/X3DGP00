@@ -1,5 +1,5 @@
 #include "OffScreen.h"
-#include "misc.h"
+#include "Misc.h"
 
 void OffScreen::_render_traget(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format)
 {
@@ -19,7 +19,7 @@ void OffScreen::_render_traget(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 		texture2d_desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
 		hr = device->CreateTexture2D(&texture2d_desc, NULL, render_traget_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		D3D11_RENDER_TARGET_VIEW_DESC rtvd;
 		ZeroMemory(&rtvd, sizeof(rtvd));
@@ -27,7 +27,7 @@ void OffScreen::_render_traget(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 		rtvd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		rtvd.Texture2D.MipSlice = 0;
 		hr = device->CreateRenderTargetView(render_traget_buffer.Get(), &rtvd, render_traget_view.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
 		ZeroMemory(&srvd, sizeof(srvd));
@@ -36,7 +36,7 @@ void OffScreen::_render_traget(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 		srvd.Texture2D.MostDetailedMip = 0;
 		srvd.Texture2D.MipLevels = 1;
 		hr = device->CreateShaderResourceView(render_traget_buffer.Get(), &srvd, associated_shader_resource_view.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 	{
 		ComPtr<ID3D11Texture2D> depth_stencil_buffer{};
@@ -53,14 +53,14 @@ void OffScreen::_render_traget(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 		texture2d_desc.CPUAccessFlags = 0;
 		texture2d_desc.MiscFlags = 0;
 		hr = device->CreateTexture2D(&texture2d_desc, NULL, depth_stencil_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		D3D11_DEPTH_STENCIL_VIEW_DESC depth_stencil_view_desc{};
 		depth_stencil_view_desc.Format = texture2d_desc.Format;
 		depth_stencil_view_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		depth_stencil_view_desc.Texture2D.MipSlice = 0;
 		hr = device->CreateDepthStencilView(depth_stencil_buffer.Get(), &depth_stencil_view_desc, depth_stencil_view.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 }
 
@@ -82,7 +82,7 @@ void OffScreen::_depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 		texture2d_desc.BindFlags = D3D11_BIND_RENDER_TARGET;
 
 		hr = device->CreateTexture2D(&texture2d_desc, NULL, render_traget_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		D3D11_RENDER_TARGET_VIEW_DESC rtvd;
 		ZeroMemory(&rtvd, sizeof(rtvd));
@@ -90,7 +90,7 @@ void OffScreen::_depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 		rtvd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		rtvd.Texture2D.MipSlice = 0;
 		hr = device->CreateRenderTargetView(render_traget_buffer.Get(), &rtvd, render_traget_view.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 	{
 		ComPtr<ID3D11Texture2D> depth_stencil_buffer{};
@@ -110,7 +110,7 @@ void OffScreen::_depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 		texture2d_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 
 		hr = device->CreateTexture2D(&texture2d_desc, NULL, depth_stencil_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		// 深度ステンシルビュー設定
 		D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
@@ -119,7 +119,7 @@ void OffScreen::_depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 		dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		dsvd.Texture2D.MipSlice = 0;
 		hr = device->CreateDepthStencilView(depth_stencil_buffer.Get(), &dsvd, depth_stencil_view.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		//	シェーダーリソースビュー作成
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
@@ -129,7 +129,7 @@ void OffScreen::_depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 		srvd.Texture2D.MostDetailedMip = 0;
 		srvd.Texture2D.MipLevels = 1;
 		hr = device->CreateShaderResourceView(depth_stencil_buffer.Get(), &srvd, associated_shader_resource_view.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 }
 

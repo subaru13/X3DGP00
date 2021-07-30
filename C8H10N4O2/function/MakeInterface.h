@@ -1,10 +1,10 @@
 #pragma once
-#include "sprite.h"
-#include "sprite_batch.h"
+#include "Sprite.h"
+#include "SpriteBatch.h"
 #include "OffScreen.h"
-#include "skinned_mesh.h"
+#include "SkinnedMesh.h"
 #include "SceneConstantBuffer.h"
-#include "geometry_primitive.h"
+#include "GeometryPrimitive.h"
 #include "CreateComObjectHelpar.h"
 #include "ConstantBuffer.h"
 #include <memory>
@@ -14,7 +14,7 @@
 /// </summary>
 /// <param name="device">有効なデバイス</param>
 /// <param name="file_name">テクスチャのアドレス</param>
-inline std::unique_ptr<Sprite> MakeSprite(ID3D11Device* device, const wchar_t* file_name = L"\0")
+inline std::unique_ptr<Sprite> makeSprite(ID3D11Device* device, const wchar_t* file_name = L"\0")
 {
 	return std::make_unique<Sprite>(device, file_name);
 }
@@ -24,7 +24,7 @@ inline std::unique_ptr<Sprite> MakeSprite(ID3D11Device* device, const wchar_t* f
 /// </summary>
 /// <param name="device">有効なデバイス</param>
 /// <param name="new_shader_resource_view">シェーダーリソースビュー</param>
-inline std::unique_ptr<Sprite> MakeSprite(ID3D11Device* device, ID3D11ShaderResourceView* new_shader_resource_view)
+inline std::unique_ptr<Sprite> makeSprite(ID3D11Device* device, ID3D11ShaderResourceView* new_shader_resource_view)
 {
 	return std::make_unique<Sprite>(device, new_shader_resource_view);
 }
@@ -35,7 +35,7 @@ inline std::unique_ptr<Sprite> MakeSprite(ID3D11Device* device, ID3D11ShaderReso
 /// <param name="device">有効なデバイス</param>
 /// <param name="max_sprites">表示最大枚数</param>
 /// <param name="file_name">テクスチャのアドレス</param>
-inline std::unique_ptr<SpriteBatch> MakeSpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t* file_name = L"\0")
+inline std::unique_ptr<SpriteBatch> makeSpriteBatch(ID3D11Device* device, size_t max_sprites, const wchar_t* file_name = L"\0")
 {
 	return std::make_unique<SpriteBatch>(device, max_sprites, file_name);
 }
@@ -46,7 +46,7 @@ inline std::unique_ptr<SpriteBatch> MakeSpriteBatch(ID3D11Device* device, size_t
 /// <param name="device">有効なデバイス</param>
 /// <param name="max_sprites">表示最大枚数</param>
 /// <param name="new_shader_resource_view">シェーダーリソースビュー</param>
-inline std::unique_ptr<SpriteBatch> MakeSpriteBatch(ID3D11Device* device, size_t max_sprites, ID3D11ShaderResourceView* new_shader_resource_view)
+inline std::unique_ptr<SpriteBatch> makeSpriteBatch(ID3D11Device* device, size_t max_sprites, ID3D11ShaderResourceView* new_shader_resource_view)
 {
 	return std::make_unique<SpriteBatch>(device, max_sprites, new_shader_resource_view);
 }
@@ -58,7 +58,7 @@ inline std::unique_ptr<SpriteBatch> MakeSpriteBatch(ID3D11Device* device, size_t
 /// <param name="fbx_filename">メッシュデータのアドレス(fbx,obj,json)</param>
 /// <param name="triangulate">三角化するか</param>
 /// <param name="sampling_rate">アニメションのサンプリングレート</param>
-inline std::unique_ptr<SkinnedMesh> MakeSkinnedMesh(ID3D11Device* device, const char* filename, bool triangulate = false, float sampling_rate = 0.0f)
+inline std::unique_ptr<SkinnedMesh> makeSkinnedMesh(ID3D11Device* device, const char* filename, bool triangulate = false, float sampling_rate = 0.0f)
 {
 	return std::make_unique<SkinnedMesh>(device, filename, triangulate, sampling_rate);
 }
@@ -67,7 +67,7 @@ inline std::unique_ptr<SkinnedMesh> MakeSkinnedMesh(ID3D11Device* device, const 
 /// キーフレーム管理クラスを作成します。
 /// </summary>
 /// <param name="mesh">スキンドメッシュのシェアードポインタ</param>
-inline std::unique_ptr<Keyframe> MakeKeyframe(std::shared_ptr<SkinnedMesh> mesh)
+inline std::unique_ptr<Keyframe> makeKeyframe(std::shared_ptr<SkinnedMesh> mesh)
 {
 	return std::make_unique<Keyframe>(mesh);
 }
@@ -80,7 +80,7 @@ inline std::unique_ptr<Keyframe> MakeKeyframe(std::shared_ptr<SkinnedMesh> mesh)
 /// <param name="device">有効なデバイス</param>
 /// <param name="...args">コンスタントバッファ内で管理するデータのコンストラクタに渡すデータ</param>
 template <class T,class... Args>
-inline std::unique_ptr<ConstantBuffer<T>> MakeConstantBuffer(ID3D11Device* device, Args... args)
+inline std::unique_ptr<ConstantBuffer<T>> makeConstantBuffer(ID3D11Device* device, Args... args)
 {
 	return std::make_unique<ConstantBuffer<T>>(device, args...);
 }
@@ -89,7 +89,7 @@ inline std::unique_ptr<ConstantBuffer<T>> MakeConstantBuffer(ID3D11Device* devic
 /// シーンコンスタントを作成します。
 /// </summary>
 /// <param name="device">有効なデバイス</param>
-inline std::unique_ptr<SceneConstant> MakeSceneConstant(ID3D11Device* device)
+inline std::unique_ptr<SceneConstant> makeSceneConstant(ID3D11Device* device)
 {
 	return std::make_unique<SceneConstant>(device);
 }
@@ -99,7 +99,7 @@ inline std::unique_ptr<SceneConstant> MakeSceneConstant(ID3D11Device* device)
 /// </summary>
 /// <param name="device">有効なデバイス</param>
 /// <param name="config">プリミティブの構成</param>
-inline std::unique_ptr<GeometryPrimitive> MakeGeometryPrimitive(ID3D11Device* device, GP_CONFIG config)
+inline std::unique_ptr<GeometryPrimitive> makeGeometryPrimitive(ID3D11Device* device, GP_CONFIG config)
 {
 	return std::make_unique<GeometryPrimitive>(device, config);
 }
@@ -113,7 +113,7 @@ inline std::unique_ptr<GeometryPrimitive> MakeGeometryPrimitive(ID3D11Device* de
 /// <param name="h">ビューの縦幅</param>
 /// <param name="format">シェーダーリソースビューのフォーマット</param>
 /// <param name="need_renderer">レンダラーが必要か。</param>
-inline std::unique_ptr<OffScreen> MakeOffScreen(ID3D11Device* device,
+inline std::unique_ptr<OffScreen> makeOffScreen(ID3D11Device* device,
 	OffScreen::LINK_DESTINATION link_destination,
 	UINT w, UINT h,
 	DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM,

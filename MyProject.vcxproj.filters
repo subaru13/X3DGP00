@@ -55,22 +55,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C8H10N4O2\function\main.cpp">
-      <Filter>C8H10N4O2\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="C8H10N4O2\function\sprite.cpp">
-      <Filter>C8H10N4O2\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="C8H10N4O2\function\sprite_batch.cpp">
-      <Filter>C8H10N4O2\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="C8H10N4O2\function\ASCII_Font.cpp">
-      <Filter>C8H10N4O2\Sources</Filter>
-    </ClCompile>
     <ClCompile Include="C8H10N4O2\function\CreateComObjectHelpar.cpp">
-      <Filter>C8H10N4O2\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="C8H10N4O2\function\framework.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
     </ClCompile>
     <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui.cpp">
@@ -91,13 +76,7 @@
     <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui_widgets.cpp">
       <Filter>C8H10N4O2\External\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="C8H10N4O2\function\geometry_primitive.cpp">
-      <Filter>C8H10N4O2\Sources</Filter>
-    </ClCompile>
     <ClCompile Include="C8H10N4O2\function\SceneConstantBuffer.cpp">
-      <Filter>C8H10N4O2\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="C8H10N4O2\function\skinned_mesh.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
     </ClCompile>
     <ClCompile Include="C8H10N4O2\function\SceneManager.cpp">
@@ -109,36 +88,36 @@
     <ClCompile Include="C8H10N4O2\function\OffScreen.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="C8H10N4O2\function\camera_control.cpp">
+    <ClCompile Include="C8H10N4O2\function\ASCIIFont.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\CameraControl.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\Framework.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\GeometryPrimitive.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\WinMain.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\SkinnedMesh.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\SpriteBatch.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\Sprite.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C8H10N4O2\function\framework.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\high_resolution_timer.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\misc.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\pBlendState.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="C8H10N4O2\function\SimpleSound.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\sprite.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\sprite_batch.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="C8H10N4O2\function\Arithmetic.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\ASCII_Font.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
     <ClInclude Include="C8H10N4O2\function\ConstantBuffer.h">
@@ -146,9 +125,6 @@
     </ClInclude>
     <ClInclude Include="C8H10N4O2\function\CreateComObjectHelpar.h">
       <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="C8H10N4O2\include.h">
-      <Filter>C8H10N4O2</Filter>
     </ClInclude>
     <ClInclude Include="C8H10N4O2\resource\resource.h">
       <Filter>C8H10N4O2\Resources</Filter>
@@ -186,22 +162,10 @@
     <ClInclude Include="C8H10N4O2\External\Include\DirectXTK\WICTextureLoader.h">
       <Filter>C8H10N4O2\External\DirectXTK</Filter>
     </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\geometry_primitive.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="C8H10N4O2\function\MyHandy.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
     <ClInclude Include="C8H10N4O2\function\SceneConstantBuffer.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\pRasterizerState.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\pDepthStencilState.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\skinned_mesh.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
     <ClInclude Include="C8H10N4O2\function\SceneManager.h">
@@ -213,14 +177,53 @@
     <ClInclude Include="C8H10N4O2\function\MakeInterface.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\pSamplerState.h">
+    <ClInclude Include="test.h">
+      <Filter>Development\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\ASCIIFont.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\key_input.h">
+    <ClInclude Include="C8H10N4O2\function\CameraControl.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="C8H10N4O2\function\camera_control.h">
+    <ClInclude Include="C8H10N4O2\function\Framework.h">
       <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\GeometryPrimitive.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\HighResolutionTimer.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\KeyInput.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\BlendState.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\DepthStencilState.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\RasterizerState.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\SamplerState.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\Misc.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\SkinnedMesh.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\SpriteBatch.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\Sprite.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\Include.h">
+      <Filter>C8H10N4O2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

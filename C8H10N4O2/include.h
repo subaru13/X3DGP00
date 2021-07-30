@@ -11,14 +11,14 @@
 #include <Windows.h>
 
 //DefaultFunctions
-#include "function/framework.h"
+#include "function/Framework.h"
 #include "function/MakeInterface.h"
-#include "function/geometry_primitive.h"
-#include "function/ASCII_Font.h"
+#include "function/GeometryPrimitive.h"
+#include "function/ASCIIFont.h"
 #include "function/Arithmetic.h"
 #include "function/SimpleSound.h"
 #include "function/SceneConstantBuffer.h"
 #include "function/SceneManager.h"
 #include "function/CreateComObjectHelpar.h"
-#include "function/key_input.h"
-#include "function/camera_control.h"
+#include "function/KeyInput.h"
+#include "function/CameraControl.h"

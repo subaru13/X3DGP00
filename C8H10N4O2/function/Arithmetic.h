@@ -28,7 +28,7 @@ using namespace Variables;
 /****************************************************************
 	Square.
 ****************************************************************/
-_NODISCARD inline float Pow2(const float& x)
+_NODISCARD inline float pow2(const float& x)
 {
 	return (x * x);
 }
@@ -36,7 +36,7 @@ _NODISCARD inline float Pow2(const float& x)
 /****************************************************************
 	Convert degrees to radians.
 ****************************************************************/
-_NODISCARD inline float ToRadian(const float& x)
+_NODISCARD inline float toRadian(const float& x)
 {
 	return (x * 0.0174533f);
 }
@@ -44,7 +44,7 @@ _NODISCARD inline float ToRadian(const float& x)
 /****************************************************************
 	Convert radians to degrees.
 ****************************************************************/
-_NODISCARD inline float ToAngle(const float& x)
+_NODISCARD inline float toAngle(const float& x)
 {
 	return (x * 57.29577951308f);
 }
@@ -52,7 +52,7 @@ _NODISCARD inline float ToAngle(const float& x)
 /****************************************************************
 	Normalize radians.
 ****************************************************************/
-inline float NormalizationRadian(float& radian)
+inline float normalizeRadian(float& radian)
 {
 	while (radian > Constants::Pi) { radian -= (Constants::Pi * 2.0f); }
 	while (radian < -Constants::Pi) { radian += (Constants::Pi * 2.0f); }
@@ -62,7 +62,7 @@ inline float NormalizationRadian(float& radian)
 /****************************************************************
 	Generates a specified range of random numbers.
 ****************************************************************/
-_NODISCARD inline float Random(float min, float max)
+_NODISCARD inline float random(float min, float max)
 {
 	if (max < min)
 	{
@@ -73,7 +73,7 @@ _NODISCARD inline float Random(float min, float max)
 	std::uniform_real_distribution<float> rand(min, max);
 	return rand(Variables::mt);
 }
-_NODISCARD inline int Random(int min, int max)
+_NODISCARD inline int random(int min, int max)
 {
 	if (max < min)
 	{
@@ -122,7 +122,7 @@ _NODISCARD inline VECTOR2 operator/(const float& s, const VECTOR2& v) { return {
 /****************************************************************
 	Normalize a 2D vector
 ****************************************************************/
-_NODISCARD inline VECTOR2 Vec2Normalization(const VECTOR2& v)
+_NODISCARD inline VECTOR2 vec2Normalize(const VECTOR2& v)
 {
 	float length = sqrtf((v.x * v.x) + (v.y * v.y));
 	return VECTOR2(v.x / length, v.y / length);
@@ -131,7 +131,7 @@ _NODISCARD inline VECTOR2 Vec2Normalization(const VECTOR2& v)
 /****************************************************************
 	Arithmetic of inner product of 2D vectors.
 ****************************************************************/
-_NODISCARD inline float Vec2Dot(const VECTOR2& v1, const VECTOR2& v2)
+_NODISCARD inline float vec2Dot(const VECTOR2& v1, const VECTOR2& v2)
 {
 	return ((v1.x * v2.x) + (v1.y * v2.y));
 }
@@ -139,7 +139,7 @@ _NODISCARD inline float Vec2Dot(const VECTOR2& v1, const VECTOR2& v2)
 /****************************************************************
 	Arithmetic the cross product of 2D vectors.
 ****************************************************************/
-_NODISCARD inline float Vec2Cross(const VECTOR2& v1, const VECTOR2& v2)
+_NODISCARD inline float vec2Cross(const VECTOR2& v1, const VECTOR2& v2)
 {
 	return v1.x * v2.y - v1.y * v2.x;
 }
@@ -147,7 +147,7 @@ _NODISCARD inline float Vec2Cross(const VECTOR2& v1, const VECTOR2& v2)
 /****************************************************************
 	Calculate the magnitude (length) of a 2D vector.
 ****************************************************************/
-_NODISCARD inline float Vec2Length(const VECTOR2& v)
+_NODISCARD inline float vec2Length(const VECTOR2& v)
 {
 	return sqrtf((v.x * v.x) + (v.y * v.y));
 }
@@ -156,7 +156,7 @@ _NODISCARD inline float Vec2Length(const VECTOR2& v)
 	Calculates the square of
 	the magnitude (length) of a 2D vector.
 ****************************************************************/
-_NODISCARD inline float Vec2LengthSq(const VECTOR2& v)
+_NODISCARD inline float vec2LengthSq(const VECTOR2& v)
 {
 	return ((v.x * v.x) + (v.y * v.y));
 }
@@ -164,18 +164,18 @@ _NODISCARD inline float Vec2LengthSq(const VECTOR2& v)
 /****************************************************************
 	Determine if the 2D vector is in a vertical relationship.
 ****************************************************************/
-_NODISCARD inline bool Vec2IsVertical(const VECTOR2& v1, const VECTOR2& v2)
+_NODISCARD inline bool vec2IsVertical(const VECTOR2& v1, const VECTOR2& v2)
 {
-	float d = Vec2Dot(v1, v2);
+	float d = vec2Dot(v1, v2);
 	return (-Constants::Epsilon < d&& d < Constants::Epsilon);
 }
 
 /****************************************************************
 	Determine if the 2D vectors are in parallel.
 ****************************************************************/
-_NODISCARD inline bool Vec2IsParallel(const VECTOR2& v1, const VECTOR2& v2)
+_NODISCARD inline bool vec2IsParallel(const VECTOR2& v1, const VECTOR2& v2)
 {
-	float d = Vec2Cross(v1, v2);
+	float d = vec2Cross(v1, v2);
 	d *= d;
 	return (-Constants::Epsilon < d&& d < Constants::Epsilon);
 }
@@ -183,9 +183,9 @@ _NODISCARD inline bool Vec2IsParallel(const VECTOR2& v1, const VECTOR2& v2)
 /****************************************************************
 	Determine if the 2D vector has a sharp relationship.
 ****************************************************************/
-_NODISCARD inline bool Vec2IsSharp(const VECTOR2& v1, const VECTOR2& v2)
+_NODISCARD inline bool vec2IsSharp(const VECTOR2& v1, const VECTOR2& v2)
 {
-	return (Vec2Dot(v1, v2) >= 0.0f);
+	return (vec2Dot(v1, v2) >= 0.0f);
 }
 
 /****************************************************************
@@ -226,7 +226,7 @@ _NODISCARD inline VECTOR3 operator/(const float& s, const VECTOR3& v) { return {
 /****************************************************************
 	Normalize a 3D vector
 ****************************************************************/
-_NODISCARD inline VECTOR3 Vec3Normalization(const VECTOR3& v)
+_NODISCARD inline VECTOR3 vec3Normalize(const VECTOR3& v)
 {
 	float length = sqrtf((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
 	return VECTOR3(v.x / length, v.y / length, v.z / length);
@@ -235,7 +235,7 @@ _NODISCARD inline VECTOR3 Vec3Normalization(const VECTOR3& v)
 /****************************************************************
 	Arithmetic of inner product of 3D vectors.
 ****************************************************************/
-_NODISCARD inline float Vec3Dot(const VECTOR3& v1, const VECTOR3& v2)
+_NODISCARD inline float vec3Dot(const VECTOR3& v1, const VECTOR3& v2)
 {
 	return ((v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z));
 }
@@ -243,7 +243,7 @@ _NODISCARD inline float Vec3Dot(const VECTOR3& v1, const VECTOR3& v2)
 /****************************************************************
 	Arithmetic the cross product of 3D vectors.
 ****************************************************************/
-_NODISCARD inline VECTOR3 Vec3Cross(const VECTOR3& v1, const VECTOR3& v2)
+_NODISCARD inline VECTOR3 vec3Cross(const VECTOR3& v1, const VECTOR3& v2)
 {
 	float x = (v1.y * v2.z) - (v1.z * v2.y);
 	float y = (v1.z * v2.x) - (v1.x * v2.z);
@@ -254,7 +254,7 @@ _NODISCARD inline VECTOR3 Vec3Cross(const VECTOR3& v1, const VECTOR3& v2)
 /****************************************************************
 	Calculate the magnitude (length) of a 3D vector.
 ****************************************************************/
-_NODISCARD inline float Vec3Length(const VECTOR3& v)
+_NODISCARD inline float vec3Length(const VECTOR3& v)
 {
 	return sqrtf((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
 }
@@ -263,7 +263,7 @@ _NODISCARD inline float Vec3Length(const VECTOR3& v)
 	Calculates the square of
 	the magnitude (length) of a 3D vector.
 ****************************************************************/
-_NODISCARD inline float Vec3LengthSq(const VECTOR3& v)
+_NODISCARD inline float vec3LengthSq(const VECTOR3& v)
 {
 	return ((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
 }
@@ -271,27 +271,27 @@ _NODISCARD inline float Vec3LengthSq(const VECTOR3& v)
 /****************************************************************
 	Determine if the 3D vector is in a vertical relationship.
 ****************************************************************/
-_NODISCARD inline bool Vec3IsVertical(const VECTOR3& v1, const VECTOR3& v2)
+_NODISCARD inline bool vec3IsVertical(const VECTOR3& v1, const VECTOR3& v2)
 {
-	float d = Vec3Dot(v1, v2);
+	float d = vec3Dot(v1, v2);
 	return (-Constants::Epsilon < d&& d < Constants::Epsilon);
 }
 
 /****************************************************************
 	Determine if the 3D vectors are in parallel.
 ****************************************************************/
-_NODISCARD inline bool Vec3IsParallel(const VECTOR3& v1, const VECTOR3& v2)
+_NODISCARD inline bool vec3IsParallel(const VECTOR3& v1, const VECTOR3& v2)
 {
-	float d = Vec3LengthSq(Vec3Cross(v1, v2));
+	float d = vec3LengthSq(vec3Cross(v1, v2));
 	return (-Constants::Epsilon < d&& d < Constants::Epsilon);
 }
 
 /****************************************************************
 	Determine if the 3D vector has a sharp relationship.
 ****************************************************************/
-_NODISCARD inline bool Vec3IsSharp(const VECTOR3& v1, const VECTOR3& v2)
+_NODISCARD inline bool vec3IsSharp(const VECTOR3& v1, const VECTOR3& v2)
 {
-	return (Vec3Dot(v1, v2) >= 0.0f);
+	return (vec3Dot(v1, v2) >= 0.0f);
 }
 
 typedef DirectX::XMFLOAT4 VECTOR4, FLOAT4, float4;
@@ -299,7 +299,7 @@ typedef DirectX::XMFLOAT4 VECTOR4, FLOAT4, float4;
 /****************************************************************
 	Convert from color code to RGBA.
 ****************************************************************/
-_NODISCARD inline FLOAT4 ColorCodeToRGBA(unsigned long color_code)
+_NODISCARD inline FLOAT4 colorCodeToRGBA(unsigned long color_code)
 {
 	FLOAT4 rgba{};
 

@@ -2,7 +2,7 @@
 #include <wrl.h>
 #include <d3d11.h>
 #include <assert.h>
-#include "misc.h"
+#include "Misc.h"
 
 enum class SAMPLER_STATE { SS_POINT, SS_LINEAR, SS_ANISOTROPIC };
 
@@ -28,15 +28,15 @@ public:
 		sampler_desc.MinLOD = 0;
 		sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
 		HRESULT hr = device->CreateSamplerState(&sampler_desc, states[static_cast<int>(SAMPLER_STATE::SS_POINT)].ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		hr = device->CreateSamplerState(&sampler_desc, states[static_cast<int>(SAMPLER_STATE::SS_LINEAR)].ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		sampler_desc.Filter = D3D11_FILTER_ANISOTROPIC;
 		hr = device->CreateSamplerState(&sampler_desc, states[static_cast<int>(SAMPLER_STATE::SS_ANISOTROPIC)].ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 
 	ID3D11SamplerState** at(SAMPLER_STATE type) { return states[static_cast<int>(type)].GetAddressOf(); }

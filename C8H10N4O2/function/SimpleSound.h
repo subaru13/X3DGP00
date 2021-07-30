@@ -21,7 +21,7 @@
 class SimpleSoundDevice
 {
 public:
-	static constexpr unsigned int BuffSize = 256U;
+	static constexpr unsigned int BUFFER_SIZE = 256U;
 private:
 #ifdef UNICODE
 	typedef std::wstring String;
@@ -30,40 +30,40 @@ private:
 	typedef std::string String;
 	typedef char Character;
 #endif // UNICODE
-	static void AssertMessage(MCIERROR errCord)
+	static void assertMessage(MCIERROR errCord)
 	{
 		if (errCord != 0L)
 		{
-			Character buff[BuffSize] = {};
-			mciGetErrorString(errCord, buff, BuffSize);
+			Character buff[BUFFER_SIZE] = {};
+			mciGetErrorString(errCord, buff, BUFFER_SIZE);
 			if (MessageBox(NULL, buff, TEXT("ERROR!!"), MB_ICONHAND) == IDOK)
 			{
 				exit(0);
 			}
 		}
 	}
-	const String Pass;
-	bool isStop;
-	bool EffectivenessThread;
-	HWND hWnd;
-	Character buff[BuffSize];
-	static void LoopThread(SimpleSoundDevice* sound)
+	const String pass;
+	bool is_stop;
+	bool effectiveness_thread;
+	HWND hwnd;
+	Character buff[BUFFER_SIZE];
+	static void loopThread(SimpleSoundDevice* sound)
 	{
 #ifdef _DEBUG
 		OutputDebugString(TEXT("The thread has started.\n"));
 #endif // DEBUG
-		sound->EffectivenessThread = true;
-		Character buff[BuffSize] = {};
+		sound->effectiveness_thread = true;
+		Character buff[BUFFER_SIZE] = {};
 		while (true)
 		{
-			if (!sound->isStop)
+			if (!sound->is_stop)
 			{
-				AssertMessage(sound->GetMode(buff));
-				if (buff == String(TEXT("stopped")))sound->Play(false);
+				assertMessage(sound->getMode(buff));
+				if (buff == String(TEXT("stopped")))sound->play(false);
 			}
 			else break;
 		}
-		sound->EffectivenessThread = false;
+		sound->effectiveness_thread = false;
 #ifdef _DEBUG
 		OutputDebugString(TEXT("The thread has terminated.\n"));
 #endif // DEBUG
@@ -71,72 +71,72 @@ private:
 
 public:
 	SimpleSoundDevice(String pass, HWND hwnd = NULL)
-		:Pass(pass), isStop(true), EffectivenessThread(false), hWnd(hwnd), buff(TEXT(""))
+		:pass(pass), is_stop(true), effectiveness_thread(false), hwnd(hwnd), buff(TEXT(""))
 	{
-		AssertMessage(mciSendString(String(TEXT("open ") + Pass).c_str(), NULL, 0U, hWnd));
+		assertMessage(mciSendString(String(TEXT("open ") + pass).c_str(), NULL, 0U, hwnd));
 	}
 
 	virtual ~SimpleSoundDevice()
 	{
-		AssertMessage(Stop());
-		while (EffectivenessThread);
-		AssertMessage(mciSendString(String(TEXT("close ") + Pass).c_str(), NULL, 0u, hWnd));
+		assertMessage(stop());
+		while (effectiveness_thread);
+		assertMessage(mciSendString(String(TEXT("close ") + pass).c_str(), NULL, 0u, hwnd));
 	}
 
-	virtual MCIERROR Play(bool loop = false)
+	virtual MCIERROR play(bool loop = false)
 	{
-		isStop = false;
+		is_stop = false;
 		if (loop)
 		{
-			std::thread L_Thread(SimpleSoundDevice::LoopThread, this);
+			std::thread L_Thread(SimpleSoundDevice::loopThread, this);
 			L_Thread.detach();
 			return 0L;
 		}
-		return mciSendString(String(TEXT("play ") + Pass + TEXT(" from 0")).c_str(), NULL, 0u, hWnd);
+		return mciSendString(String(TEXT("play ") + pass + TEXT(" from 0")).c_str(), NULL, 0u, hwnd);
 	}
 
-	virtual MCIERROR Stop()
+	virtual MCIERROR stop()
 	{
-		isStop = true;
-		return mciSendString(String(_TEXT("stop ") + Pass).c_str(), NULL, 0u, hWnd);
+		is_stop = true;
+		return mciSendString(String(_TEXT("stop ") + pass).c_str(), NULL, 0u, hwnd);
 	}
 
-	virtual MCIERROR Resume()
+	virtual MCIERROR resume()
 	{
-		AssertMessage(GetMode(buff));
-		return (buff == String(_TEXT("paused"))) ? mciSendString(String(_TEXT("resume ") + Pass).c_str(), NULL, 0u, hWnd) : 0L;
+		assertMessage(getMode(buff));
+		return (buff == String(_TEXT("paused"))) ? mciSendString(String(_TEXT("resume ") + pass).c_str(), NULL, 0u, hwnd) : 0L;
 	}
 
-	virtual MCIERROR Pause()
+	virtual MCIERROR pause()
 	{
-		AssertMessage(GetMode(buff));
-		return (buff == String(TEXT("playing"))) ? mciSendString(String(TEXT("pause ") + Pass).c_str(), NULL, 0u, hWnd) : 0L;
+		assertMessage(getMode(buff));
+		return (buff == String(TEXT("playing"))) ? mciSendString(String(TEXT("pause ") + pass).c_str(), NULL, 0u, hwnd) : 0L;
 	}
 
-	virtual MCIERROR GetPosition(int* result)
+	virtual MCIERROR getPosition(int* result)
 	{
-		Character buff[BuffSize];
-		MCIERROR errCord = mciSendString(String(TEXT("status ") + Pass + TEXT(" position")).c_str(), buff, BuffSize, hWnd);
+		Character buff[BUFFER_SIZE];
+		MCIERROR errCord = mciSendString(String(TEXT("status ") + pass + TEXT(" position")).c_str(), buff, BUFFER_SIZE, hwnd);
 		(*result) = StrToInt(buff);
 		return errCord;
 	}
 
-	virtual MCIERROR GetLength(int* result)
+	virtual MCIERROR getLength(int* result)
 	{
-		Character buff[BuffSize];
-		MCIERROR errCord = mciSendString(String(_TEXT("status ") + Pass + _TEXT(" length")).c_str(), buff, BuffSize, hWnd);
+		Character buff[BUFFER_SIZE];
+		MCIERROR errCord = mciSendString(String(_TEXT("status ") + pass + _TEXT(" length")).c_str(), buff, BUFFER_SIZE, hwnd);
 		(*result) = StrToInt(buff);
 		return errCord;
 	}
 
-	virtual MCIERROR GetMode(Character(&result)[BuffSize])
+	virtual MCIERROR getMode(Character(&result)[BUFFER_SIZE])
 	{
-		return mciSendString(String(TEXT("status ") + Pass + TEXT(" mode")).c_str(), result, BuffSize, hWnd);
+		return mciSendString(String(TEXT("status ") + pass + TEXT(" mode")).c_str(), result, BUFFER_SIZE, hwnd);
 	}
 
-	virtual MCIERROR SetTimeFormatMilliseconds()
+	virtual MCIERROR setTimeFormatMilliseconds()
 	{
-		return mciSendString(String(TEXT("set ") + Pass + TEXT(" time format milliseconds")).c_str(), NULL, 0u, hWnd);
+		return mciSendString(String(TEXT("set ") + pass + TEXT(" time format milliseconds")).c_str(), NULL, 0u, hwnd);
 	}
 
 	SimpleSoundDevice& operator=(SimpleSoundDevice&) = default;

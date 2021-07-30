@@ -8,12 +8,12 @@
 #include <memory>
 #include <assert.h>
 
-#include "misc.h"
-#include "high_resolution_timer.h"
-#include "pBlendState.h"
-#include "pDepthStencilState.h"
-#include "pRasterizerState.h"
-#include "pSamplerState.h"
+#include "Misc.h"
+#include "HighResolutionTimer.h"
+#include "BlendState.h"
+#include "DepthStencilState.h"
+#include "RasterizerState.h"
+#include "SamplerState.h"
 #include "ConstantBuffer.h"
 #include "Arithmetic.h"
 #include "../FrameworkConfig.h"
@@ -230,7 +230,7 @@ public:
 			else
 			{
 				tictoc.tick();
-				calculate_frame_stats();
+				calculateFrameStats();
 				update();
 				render();
 			}
@@ -301,12 +301,12 @@ private:
 	bool uninitialize();
 
 private:
-	high_resolution_timer tictoc;
+	HighResolutionTimer tictoc;
 	uint32_t frames{ 0 };
 	float elapsed_time{ 0.0f };
-	void calculate_frame_stats()
+	void calculateFrameStats()
 	{
-		if (++frames, (tictoc.time_stamp() - elapsed_time) >= 1.0f)
+		if (++frames, (tictoc.timeStamp() - elapsed_time) >= 1.0f)
 		{
 			float fps = static_cast<float>(frames);
 			std::wostringstream outs;

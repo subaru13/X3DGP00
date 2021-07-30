@@ -113,7 +113,7 @@ public:
 		by entering 0 or more arguments.
 	*******************************************************/
 	template<class T>
-	bool AddScene(ID3D11Device* device, const SceneName& name)
+	bool addScene(ID3D11Device* device, const SceneName& name)
 	{
 		static_assert(std::is_base_of<SceneBase, T>::value == true, "This type cannot be used.");
 		SceneList::iterator it = SceneDatas.find(name);
@@ -167,9 +167,9 @@ public:
 /// <param name="name">登録するシーンの名前</param>
 /// <returns>登録できた場合true</returns>
 template<class T>
-inline bool AddScene(ID3D11Device* device, const SceneName& name)
+inline bool addScene(ID3D11Device* device, const SceneName& name)
 {
-	return SceneManager::getInstance()->AddScene<T>(device, name);
+	return SceneManager::getInstance()->addScene<T>(device, name);
 }
 
 /// <summary>
@@ -177,7 +177,7 @@ inline bool AddScene(ID3D11Device* device, const SceneName& name)
 /// </summary>
 /// <param name="name">変更先のシーンの名前</param>
 /// <returns>変更できた場合true</returns>
-inline bool ChangeScene(const SceneName& name)
+inline bool changeScene(const SceneName& name)
 {
 	return SceneManager::getInstance()->changeScene(name);
 }

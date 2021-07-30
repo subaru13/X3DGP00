@@ -22,7 +22,7 @@ public:
 		return &ins;
 	}
 
-	void Update()
+	void update()
 	{
 		if (Keys.empty())return;
 		for (auto& it = Keys.begin(); it != Keys.end();)
@@ -40,7 +40,7 @@ public:
 		}
 	}
 
-	std::shared_ptr<KeyObject>& Add(char key)
+	std::shared_ptr<KeyObject>& addKey(char key)
 	{
 		auto it = Keys.find(key);
 		if (it == Keys.end())
@@ -67,7 +67,7 @@ private:
 	short _rel()const { return _obj->l & (~_obj->n); }
 public:
 	Key(Key& k) :_key(k._key), _obj(k._obj) {}
-	Key(char key) :_key(key), _obj(KeyManager::instance()->Add(_key)) {}
+	Key(char key) :_key(key), _obj(KeyManager::instance()->addKey(_key)) {}
 
 	//キーが押されたタイミングでtrue
 	bool down()const

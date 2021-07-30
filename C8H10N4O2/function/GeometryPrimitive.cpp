@@ -1,7 +1,7 @@
-#include "geometry_primitive.h"
+#include "GeometryPrimitive.h"
 #include "CreateComObjectHelpar.h"
 #include "MyHandy.h"
-#include "misc.h"
+#include "Misc.h"
 #include "../FrameworkConfig.h"
 
 GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config) :
@@ -13,7 +13,7 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config) :
 	std::string cso_pass = combinePathsA(CSO_FILE_DIRECTORY, "geometry_primitive_ps.cso");
 	if (isExistFileA(cso_pass))
 	{
-		hr = load_pixel_shader(device, cso_pass, pixel_shader.ReleaseAndGetAddressOf());
+		hr = loadPixelShader(device, cso_pass, pixel_shader.ReleaseAndGetAddressOf());
 	}
 	else
 	{
@@ -42,10 +42,10 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config) :
 			"	float D = dot(L,N);\n"
 			"	return float4(material_color.rgb * max(max(0,light_direction.w),D),material_color.a);\n"
 			"}\n";
-		hr = create_pixel_shader(device, ps, pixel_shader.ReleaseAndGetAddressOf());
+		hr = createPixelShader(device, ps, pixel_shader.ReleaseAndGetAddressOf());
 	}
 
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
 	{
 		{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0,	D3D11_APPEND_ALIGNED_ELEMENT,	D3D11_INPUT_PER_VERTEX_DATA,	0 },
@@ -55,7 +55,7 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config) :
 	cso_pass = combinePathsA(CSO_FILE_DIRECTORY, "geometry_primitive_vs.cso");
 	if (isExistFileA(cso_pass))
 	{
-		hr = load_vertex_shader(device, cso_pass,
+		hr = loadVertexShader(device, cso_pass,
 			vertex_shader.ReleaseAndGetAddressOf(), input_layout.ReleaseAndGetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
 	}
 	else
@@ -88,10 +88,10 @@ GeometryPrimitive::GeometryPrimitive(ID3D11Device* device, GP_CONFIG config) :
 			"	return vout;\n"
 			"}\n";
 
-		hr = create_vertex_shader(device, vs,
+		hr = createVertexShader(device, vs,
 			vertex_shader.ReleaseAndGetAddressOf(), input_layout.ReleaseAndGetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
 	}
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	std::vector<vertex> vertices;
 	std::vector<uint32_t> indices;
@@ -158,14 +158,14 @@ void GeometryPrimitive::create_com_buffers(ID3D11Device* device, vertex* vertice
 	subresource_data.SysMemPitch = 0;
 	subresource_data.SysMemSlicePitch = 0;
 	hr = device->CreateBuffer(&buffer_desc, &subresource_data, vertex_buffer.ReleaseAndGetAddressOf());
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	buffer_desc.ByteWidth = static_cast<UINT>(sizeof(uint32_t) * index_count);
 	buffer_desc.Usage = D3D11_USAGE_DEFAULT;
 	buffer_desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	subresource_data.pSysMem = indices;
 	hr = device->CreateBuffer(&buffer_desc, &subresource_data, index_buffer.ReleaseAndGetAddressOf());
-	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 }
 
 void GeometryPrimitive::create_cube(std::vector<vertex>& vertices, std::vector<uint32_t>& indices)

@@ -2,10 +2,10 @@
 
 #include <windows.h>
 
-class high_resolution_timer
+class HighResolutionTimer
 {
 public:
-	high_resolution_timer()
+	HighResolutionTimer()
 	{
 		LONGLONG counts_per_sec;
 		QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&counts_per_sec));
@@ -15,15 +15,15 @@ public:
 		base_time = this_time;
 		last_time = this_time;
 	}
-	~high_resolution_timer() = default;
-	high_resolution_timer(const high_resolution_timer&) = delete;
-	high_resolution_timer& operator=(const high_resolution_timer&) = delete;
-	high_resolution_timer(high_resolution_timer&&) noexcept = delete;
-	high_resolution_timer& operator=(high_resolution_timer&&) noexcept = delete;
+	~HighResolutionTimer() = default;
+	HighResolutionTimer(const HighResolutionTimer&) = delete;
+	HighResolutionTimer& operator=(const HighResolutionTimer&) = delete;
+	HighResolutionTimer(HighResolutionTimer&&) noexcept = delete;
+	HighResolutionTimer& operator=(HighResolutionTimer&&) noexcept = delete;
 
 	// Returns the total time elapsed since Reset() was called, NOT counting any
 	// time when the clock is stopped.
-	float time_stamp() const  // in seconds
+	float timeStamp() const  // in seconds
 	{
 		// If we are stopped, do not count the time that has passed since we stopped.
 		// Moreover, if we previously already had a pause, the distance
@@ -54,7 +54,7 @@ public:
 		}
 	}
 
-	float time_interval() const  // in seconds
+	float timeInterval() const  // in seconds
 	{
 		return static_cast<float>(delta_time);
 	}
