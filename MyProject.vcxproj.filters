@@ -112,6 +112,15 @@
     <ClCompile Include="C8H10N4O2\function\Sprite.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\Logger.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\GaussianBlur.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\Bloom.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C8H10N4O2\function\SimpleSound.h">
@@ -224,6 +233,18 @@
     </ClInclude>
     <ClInclude Include="C8H10N4O2\Include.h">
       <Filter>C8H10N4O2</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\Logger.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\GamePad.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\GaussianBlur.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\Bloom.h">
+      <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

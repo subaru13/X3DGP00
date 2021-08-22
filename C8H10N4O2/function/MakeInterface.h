@@ -7,6 +7,7 @@
 #include "GeometryPrimitive.h"
 #include "CreateComObjectHelpar.h"
 #include "ConstantBuffer.h"
+#include "Bloom.h"
 #include <memory>
 
 /// <summary>
@@ -120,4 +121,32 @@ inline std::unique_ptr<OffScreen> makeOffScreen(ID3D11Device* device,
 	bool need_renderer = true)
 {
 	return std::make_unique<OffScreen>(device, link_destination, w, h, format, need_renderer);
+}
+
+/// <summary>
+/// ガウシアンフィルターを作成します。
+/// </summary>
+/// <param name="device">有効なデバイス</param>
+/// <param name="w">ビューの横幅</param>
+/// <param name="h">ビューの縦幅</param>
+/// <param name="format">シェーダーリソースビューのフォーマット</param>
+inline std::unique_ptr<GaussianFilter> makeGaussianFilter(ID3D11Device* device,
+	UINT w, UINT h,
+	DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM)
+{
+	return std::make_unique<GaussianFilter>(device, w, h, format);
+}
+
+/// <summary>
+/// ブルームレンダラーを作成します。
+/// </summary>
+/// <param name="device">有効なデバイス</param>
+/// <param name="w">ビューの横幅</param>
+/// <param name="h">ビューの縦幅</param>
+/// <param name="format">シェーダーリソースビューのフォーマット</param>
+inline std::unique_ptr<BloomRenderer> makeBloomRenderer(ID3D11Device* device,
+	UINT w, UINT h,
+	DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM)
+{
+	return std::make_unique<BloomRenderer>(device, w, h, format);
 }

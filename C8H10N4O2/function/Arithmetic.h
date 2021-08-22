@@ -60,6 +60,14 @@ inline float normalizeRadian(float& radian)
 }
 
 /****************************************************************
+	Floating point equality judgment.
+****************************************************************/
+_NODISCARD inline bool nearlyEqual(float a, float b, float e = Constants::Epsilon)
+{
+	return fabsf(a - b) <= e;
+}
+
+/****************************************************************
 	Generates a specified range of random numbers.
 ****************************************************************/
 _NODISCARD inline float random(float min, float max)

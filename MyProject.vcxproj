@@ -187,6 +187,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="C8H10N4O2\function\Bloom.cpp" />
     <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui.cpp" />
     <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui_draw.cpp" />
     <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui_impl_dx11.cpp" />
@@ -197,6 +198,7 @@
     <ClCompile Include="C8H10N4O2\function\CreateComObjectHelpar.cpp" />
     <ClCompile Include="C8H10N4O2\function\Framework.cpp" />
     <ClCompile Include="C8H10N4O2\function\GeometryPrimitive.cpp" />
+    <ClCompile Include="C8H10N4O2\function\Logger.cpp" />
     <ClCompile Include="C8H10N4O2\function\WinMain.cpp" />
     <ClCompile Include="C8H10N4O2\function\OffScreen.cpp" />
     <ClCompile Include="C8H10N4O2\function\SceneConstantBuffer.cpp" />
@@ -206,8 +208,10 @@
     <ClCompile Include="C8H10N4O2\function\SpriteBatch.cpp" />
     <ClCompile Include="C8H10N4O2\function\CameraControl.cpp" />
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="C8H10N4O2\function\GaussianBlur.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C8H10N4O2\function\Bloom.h" />
     <ClInclude Include="C8H10N4O2\External\Include\DirectXTK\DDSTextureLoader.h" />
     <ClInclude Include="C8H10N4O2\External\Include\DirectXTK\WICTextureLoader.h" />
     <ClInclude Include="C8H10N4O2\External\Include\imgui\imconfig.h" />
@@ -227,12 +231,14 @@
     <ClInclude Include="C8H10N4O2\function\GeometryPrimitive.h" />
     <ClInclude Include="C8H10N4O2\function\HighResolutionTimer.h" />
     <ClInclude Include="C8H10N4O2\function\KeyInput.h" />
+    <ClInclude Include="C8H10N4O2\function\Logger.h" />
     <ClInclude Include="C8H10N4O2\function\MakeInterface.h" />
     <ClInclude Include="C8H10N4O2\function\Misc.h" />
     <ClInclude Include="C8H10N4O2\function\MyHandy.h" />
     <ClInclude Include="C8H10N4O2\function\OffScreen.h" />
     <ClInclude Include="C8H10N4O2\function\BlendState.h" />
     <ClInclude Include="C8H10N4O2\function\DepthStencilState.h" />
+    <ClInclude Include="C8H10N4O2\function\GamePad.h" />
     <ClInclude Include="C8H10N4O2\function\RasterizerState.h" />
     <ClInclude Include="C8H10N4O2\function\SamplerState.h" />
     <ClInclude Include="C8H10N4O2\function\SceneConstantBuffer.h" />
@@ -244,6 +250,7 @@
     <ClInclude Include="C8H10N4O2\Include.h" />
     <ClInclude Include="C8H10N4O2\resource\resource.h" />
     <ClInclude Include="C8H10N4O2\function\CameraControl.h" />
+    <ClInclude Include="C8H10N4O2\function\GaussianBlur.h" />
     <ClInclude Include="test.h" />
   </ItemGroup>
   <ItemGroup>

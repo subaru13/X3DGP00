@@ -1,4 +1,5 @@
 #pragma once
+#include <crtdbg.h>
 #include <string>
 #include <stdio.h>
 
@@ -87,4 +88,29 @@ inline void rotate(float& x, float& y, float cx, float cy, float angle)
 	y += cy;
 };
 
+#ifdef _DEBUG
+#define NEW							new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#else //!_DEBUG
+#define NEW							new
+#endif //_DEBUG
 
+#define SAFE_DELETE(pointer)		if(pointer!=NULL){ delete pointer;pointer = NULL; }
+
+#define SAFE_DELETE_ARRAY(pointer)	if(pointer!=NULL){ delete[] pointer;pointer = NULL; }
+
+template<typename T>
+class Singleton
+{
+public:
+	static T* getInstance()
+	{
+		static T instance{};
+		return &instance;
+	}
+};
+
+#define SINGLETON_CLASS(type)		class type : public Singleton<type>
+
+#define GET_INSTANCE(type)			type::getInstance()
+
+#define SWAP_VARIABLE(a,b)			{auto __storage = a; a = b; b = __storage;}

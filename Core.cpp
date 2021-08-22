@@ -42,7 +42,7 @@
 *********************************************************************/
 void initializationProcessBeforeLoop(ID3D11Device* device)
 {
-	addScene<BloomTest>(device, "test");
+	addScene<BloomTest>(device, "a");
 }
 
 /*********************************************************************
@@ -61,6 +61,7 @@ void updateProcess(float elapsed_time)
 *********************************************************************/
 void drawingProcess(ID3D11DeviceContext* immediate_context, float elapsed_time)
 {
+
 }
 
 /*********************************************************************
@@ -82,7 +83,6 @@ void endProcessAfterTheLoopEnds()
 *********************************************************************/
 void debugModeInitializationProcessBeforeLoop(ID3D11Device* device)
 {
-
 }
 
 /*********************************************************************
@@ -92,7 +92,6 @@ void debugModeInitializationProcessBeforeLoop(ID3D11Device* device)
 *********************************************************************/
 void debugModeUpdateProcess(float elapsed_time)
 {
-
 }
 
 /*********************************************************************

@@ -21,4 +21,8 @@
 #include "function/SceneManager.h"
 #include "function/CreateComObjectHelpar.h"
 #include "function/KeyInput.h"
+#include "function/GamePad.h"
 #include "function/CameraControl.h"
+#include "function/Logger.h"
+#include "function/MyHandy.h"
+#include "function/Bloom.h"

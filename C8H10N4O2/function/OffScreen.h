@@ -88,3 +88,5 @@ public:
 		return link_destination;
 	}
 };
+
+using OFFSCREEN_LINK = OffScreen::LINK_DESTINATION;
