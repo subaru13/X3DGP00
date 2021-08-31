@@ -29,16 +29,29 @@ void GaussianFilter::getWeight(FLOAT4* array, int kernel_size, float sigma) cons
 		array[i].z /= sum;
 }
 
+void GaussianFilter::_quad(ID3D11DeviceContext* immediate_context, int kernel_size, float sigma)
+{
+	assert(immediate_context && "The context is invalid.");
+	assert(kernel_size >= 0 && "The kernel_size is invalid.");
+	blur_constant_buffer.data.kernel_size = kernel_size;
+	FLOAT4 weight[GAUSSIAN_BLUR_WEIGHT_SIZE] = {};
+	getWeight(weight, kernel_size, sigma);
+	memcpy(blur_constant_buffer.data.weight, weight, sizeof(FLOAT4) * GAUSSIAN_BLUR_WEIGHT_SIZE);
+	blur_constant_buffer.send(immediate_context, 1, false, true);
+	renderer->blit(immediate_context, render_traget->getRenderTragetShaderResourceView(), blur_pixel_shader.GetAddressOf());
+}
+
 GaussianFilter::GaussianFilter(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format)
-	:constant_buffer(device),
-	render_traget(device, OFFSCREEN_LINK::RENDER_TARGET, w, h, format)
+	:blur_constant_buffer(device),
+	renderer(nullptr),
+	render_traget(nullptr)
 {
 	assert(device && "The device is invalid.");
 	HRESULT hr = S_OK;
 	std::string cso_pass = combinePathsA(CSO_FILE_DIRECTORY, "gaussian_blur_ps.cso");
 	if (isExistFileA(cso_pass))
 	{
-		hr = loadPixelShader(device, cso_pass, pixel_shader.ReleaseAndGetAddressOf());
+		hr = loadPixelShader(device, cso_pass, blur_pixel_shader.ReleaseAndGetAddressOf());
 	}
 	else
 	{
@@ -47,10 +60,6 @@ GaussianFilter::GaussianFilter(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 			"{\n"
 			"    float4 position : SV_POSITION;\n"
 			"    float2 texcoord : TEXCOORD;\n"
-			"};\n"
-			"cbuffer Color : register(b0)\n"
-			"{\n"
-			"    float4 color;\n"
 			"};\n"
 			"#define BUFFER_SIZE 256\n"
 			"cbuffer Parameters : register(b1)\n"
@@ -65,7 +74,7 @@ GaussianFilter::GaussianFilter(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 			"float4 main(VS_OUT input) : SV_TARGET\n"
 			"{\n"
 			"    float4 result = (float4)0;\n"
-			"    result.a = color.a;\n"
+			"    result.a = 1;\n"
 			"    for (int i = 0; i < KernelSize * KernelSize; i++)\n"
 			"    {\n"
 			"        float2 offset = texcel * Weight[i].xy;\n"
@@ -75,35 +84,36 @@ GaussianFilter::GaussianFilter(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 			"    return result;\n"
 			"};\n";
 
-		hr = createPixelShader(device, ps, pixel_shader.ReleaseAndGetAddressOf());
+		hr = createPixelShader(device, ps, blur_pixel_shader.ReleaseAndGetAddressOf());
 	}
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
-	constant_buffer.data.texcel.x = 1.0f / static_cast<float>(w);
-	constant_buffer.data.texcel.y = 1.0f / static_cast<float>(h);
+	blur_constant_buffer.data.texcel.x = 1.0f / static_cast<float>(w);
+	blur_constant_buffer.data.texcel.y = 1.0f / static_cast<float>(h);
+
+	OFFSCREEN_CONFIG config;
+	config.width = w;
+	config.height = h;
+	config.render_traget_format = format;
+	config.depth_stencil_format = DXGI_FORMAT_R24G8_TYPELESS;
+	render_traget = std::make_shared<OffScreen>(device, config);
+	renderer = std::make_shared<FullScreenQuad>(device, nullptr);
 }
 
 void GaussianFilter::beginWriting(ID3D11DeviceContext* immediate_context)
 {
 	assert(immediate_context && "The context is invalid.");
-	render_traget.clear(immediate_context);
-	render_traget.active(immediate_context);
+	render_traget->clear(immediate_context);
+	render_traget->active(immediate_context);
 }
 
 void GaussianFilter::endWriting(ID3D11DeviceContext* immediate_context)
 {
 	assert(immediate_context && "The context is invalid.");
-	render_traget.deactive(immediate_context);
+	render_traget->deactive(immediate_context);
 }
 
 void GaussianFilter::quad(ID3D11DeviceContext* immediate_context, int kernel_size, float sigma)
 {
-	assert(immediate_context && "The context is invalid.");
-	assert(kernel_size >= 0 && "The kernel_size is invalid.");
-	constant_buffer.data.kernel_size = kernel_size;
-	FLOAT4 weight[GAUSSIAN_BLUR_WEIGHT_SIZE] = {};
-	getWeight(weight, kernel_size, sigma);
-	memcpy(constant_buffer.data.weight, weight, sizeof(FLOAT4) * GAUSSIAN_BLUR_WEIGHT_SIZE);
-	constant_buffer.send(immediate_context, 1, false, true);
-	render_traget.quad(immediate_context, pixel_shader.GetAddressOf());
+	_quad(immediate_context, kernel_size, sigma);
 }

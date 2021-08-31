@@ -5,10 +5,10 @@
 #include "../FrameworkConfig.h"
 
 BloomRenderer::BloomRenderer(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format)
-	:blur_filter(device, w / 8, h / 8, format),
-	screen_buffer(device, OFFSCREEN_LINK::RENDER_TARGET, w, h, format),
-	luminance_buffer(device, OFFSCREEN_LINK::RENDER_TARGET, w, h, format),
-	constant_buffer(device)
+	:GaussianFilter(device, w / 8, h / 8, format),
+	screen_buffer(nullptr),
+	luminance_buffer(nullptr),
+	luminance_constant_buffer(device)
 {
 	assert(device && "The device is invalid.");
 	HRESULT hr = S_OK;
@@ -24,10 +24,6 @@ BloomRenderer::BloomRenderer(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT f
 			"{\n"
 			"	float4 position : SV_POSITION;\n"
 			"	float2 texcoord : TEXCOORD;\n"
-			"};\n"
-			"cbuffer Color : register(b0)\n"
-			"{\n"
-			"	float4 color;\n"
 			"};\n"
 			"cbuffer constant : register(b1)\n"
 			"{\n"
@@ -45,7 +41,7 @@ BloomRenderer::BloomRenderer(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT f
 			"float4 main(VS_OUT input) : SV_TARGET0\n"
 			"{\n"
 			"	float4 result = (float4)0;\n"
-			"	result = diffuse_map.Sample(diffuse_map_sampler_state, input.texcoord) * color;\n"
+			"	result = diffuse_map.Sample(diffuse_map_sampler_state, input.texcoord);\n"
 			"	float brightness = getBrightness(result.rgb);\n"
 			"	float contribution = max(0, brightness - Threshold);\n"
 			"	contribution /= brightness;\n"
@@ -70,39 +66,51 @@ BloomRenderer::BloomRenderer(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT f
 	blend_desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 	hr = device->CreateBlendState(&blend_desc, additive_synthesis.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	OFFSCREEN_CONFIG config;
+	config.width = w;
+	config.height = h;
+	config.render_traget_format = format;
+	config.depth_stencil_format = DXGI_FORMAT_R24G8_TYPELESS;
+	screen_buffer = std::make_shared<OffScreen>(device, config);
+	luminance_buffer = std::make_shared<OffScreen>(device, config);
 }
 
 void BloomRenderer::beginWriting(ID3D11DeviceContext* immediate_context)
 {
 	assert(immediate_context && "The context is invalid.");
-	screen_buffer.clear(immediate_context);
-	screen_buffer.active(immediate_context);
+	screen_buffer->clear(immediate_context);
+	screen_buffer->active(immediate_context);
 }
 
 void BloomRenderer::endWriting(ID3D11DeviceContext* immediate_context)
 {
 	assert(immediate_context && "The context is invalid.");
-	screen_buffer.deactive(immediate_context);
+	screen_buffer->deactive(immediate_context);
 }
 
 void BloomRenderer::quad(ID3D11DeviceContext* immediate_context, int kernel_size, float sigma)
 {
 	assert(immediate_context && "The context is invalid.");
 	assert(kernel_size >= 0 && "The kernel_size is invalid.");
-	luminance_buffer.clear(immediate_context);
-	luminance_buffer.active(immediate_context);
-	constant_buffer.send(immediate_context, 1, false, true);
-	screen_buffer.quad(immediate_context, luminance_extraction.GetAddressOf());
-	luminance_buffer.deactive(immediate_context);
-	blur_filter.beginWriting(immediate_context);
-	luminance_buffer.quad(immediate_context, NULL);
-	blur_filter.endWriting(immediate_context);
-	screen_buffer.quad(immediate_context);
+
+	luminance_buffer->clear(immediate_context);
+	luminance_buffer->active(immediate_context);
+	luminance_constant_buffer.send(immediate_context, 1, false, true);
+	renderer->blit(immediate_context, screen_buffer->getRenderTragetShaderResourceView(), luminance_extraction.GetAddressOf());
+	luminance_buffer->deactive(immediate_context);
+
+	render_traget->clear(immediate_context);
+	render_traget->active(immediate_context);
+	renderer->blit(immediate_context, luminance_buffer->getRenderTragetShaderResourceView(), NULL);
+	render_traget->deactive(immediate_context);
+
+	renderer->blit(immediate_context, screen_buffer->getRenderTragetShaderResourceView());
 	Microsoft::WRL::ComPtr<ID3D11BlendState>	cached_blend_state;
 	FLOAT blend_factor[4] = { 1,1,1,1 };
 	UINT sample_mask = 0xffffffff;
 	immediate_context->OMGetBlendState(cached_blend_state.ReleaseAndGetAddressOf(), blend_factor, &sample_mask);
 	immediate_context->OMSetBlendState(additive_synthesis.Get(), nullptr, 0xffffffff);
-	blur_filter.quad(immediate_context, kernel_size, sigma);
+	GaussianFilter::_quad(immediate_context, kernel_size, sigma);
 	immediate_context->OMSetBlendState(cached_blend_state.Get(), blend_factor, sample_mask);
 }

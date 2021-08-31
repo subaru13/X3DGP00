@@ -109,18 +109,20 @@ inline std::unique_ptr<GeometryPrimitive> makeGeometryPrimitive(ID3D11Device* de
 ///	オフスクリーンを作成します。
 /// </summary>
 /// <param name="device">有効なデバイス</param>
-/// <param name="link_destination">シェーダーリソースビューのリンク先</param>
-/// <param name="w">ビューの横幅</param>
-/// <param name="h">ビューの縦幅</param>
-/// <param name="format">シェーダーリソースビューのフォーマット</param>
-/// <param name="need_renderer">レンダラーが必要か。</param>
-inline std::unique_ptr<OffScreen> makeOffScreen(ID3D11Device* device,
-	OffScreen::LINK_DESTINATION link_destination,
-	UINT w, UINT h,
-	DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM,
-	bool need_renderer = true)
+/// <param name="config">オフスクリーンの構成</param>
+inline std::unique_ptr<OffScreen> makeOffScreen(ID3D11Device* device,OFFSCREEN_CONFIG config)
 {
-	return std::make_unique<OffScreen>(device, link_destination, w, h, format, need_renderer);
+	return std::make_unique<OffScreen>(device, config);
+}
+
+/// <summary>
+/// フルスクリーンクワッドを作成します。
+/// </summary>
+/// <param name="device">有効なデバイス</param>
+/// <param name="ps_filename">ピクセルシェーダー(cso)のアドレス</param>
+inline std::unique_ptr<FullScreenQuad> makeFullScreenQuad(ID3D11Device* device, const char* ps_filename = NULL)
+{
+	return std::make_unique<FullScreenQuad>(device, ps_filename);
 }
 
 /// <summary>
@@ -150,3 +152,19 @@ inline std::unique_ptr<BloomRenderer> makeBloomRenderer(ID3D11Device* device,
 {
 	return std::make_unique<BloomRenderer>(device, w, h, format);
 }
+
+template <class T>
+using MyInterface			= std::shared_ptr <T>;
+
+using ISprite				= MyInterface<Sprite>;
+using ISpriteBatch			= MyInterface<SpriteBatch>;
+using ISkinnedMesh			= MyInterface<SkinnedMesh>;
+using IKeyframe				= MyInterface<Keyframe>;
+template <class T>
+using IConstantBuffer		= MyInterface<ConstantBuffer<T>>;
+using ISceneConstant		= MyInterface<SceneConstant>;
+using IGeometryPrimitive	= MyInterface<GeometryPrimitive>;
+using IOffScreen			= MyInterface<OffScreen>;
+using IFullScreenQuad		= MyInterface<FullScreenQuad>;
+using IGaussianFilter		= MyInterface<GaussianFilter>;
+using IBloomRenderer		= MyInterface<BloomRenderer>;

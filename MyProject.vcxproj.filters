@@ -53,6 +53,9 @@
     <Filter Include="Development\シェーダーファイル">
       <UniqueIdentifier>{ea96b2a0-c128-4fda-928d-734efc504c7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="C8H10N4O2\Shaders\full_screen_quad">
+      <UniqueIdentifier>{b15441e5-7b01-497b-a5dd-9662661437a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C8H10N4O2\function\CreateComObjectHelpar.cpp">
@@ -186,9 +189,6 @@
     <ClInclude Include="C8H10N4O2\function\MakeInterface.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="test.h">
-      <Filter>Development\ヘッダーファイル</Filter>
-    </ClInclude>
     <ClInclude Include="C8H10N4O2\function\ASCIIFont.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
@@ -306,6 +306,18 @@
     </FxCompile>
     <FxCompile Include="C8H10N4O2\shader\skinned_mesh_ps.hlsl">
       <Filter>C8H10N4O2\Shaders\skinnd_mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\full_screen_quad_vs.hlsl">
+      <Filter>C8H10N4O2\Shaders\full_screen_quad</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\full_screen_quad_ps.hlsl">
+      <Filter>C8H10N4O2\Shaders\full_screen_quad</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\luminance_extraction_ps.hlsl">
+      <Filter>C8H10N4O2\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\gaussian_blur_ps.hlsl">
+      <Filter>C8H10N4O2\Shaders</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

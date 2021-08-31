@@ -1,28 +1,34 @@
 #pragma once
 #include <wrl.h>
 #include <d3d11.h>
-#include "Sprite.h"
+#include "Arithmetic.h"
+
+struct OFFSCREEN_CONFIG
+{
+	UINT width;
+	UINT height;
+	DXGI_FORMAT render_traget_format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	DXGI_FORMAT depth_stencil_format = DXGI_FORMAT_R24G8_TYPELESS;
+};
 
 class OffScreen
 {
-public:
-	enum class LINK_DESTINATION { RENDER_TARGET, DEPTH_STENCIL };
 protected:
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	associated_shader_resource_view;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	render_traget_shader_resource_view;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	depth_stencil_shader_resource_view;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		render_traget_view;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>		depth_stencil_view;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		original_render_traget_view;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>		original_depth_stencil_view;
-	std::shared_ptr<Sprite>								renderer;
-	const LINK_DESTINATION								link_destination;
 	D3D11_VIEWPORT										viewport;
-	D3D11_VIEWPORT										original_viewport[8];
+	D3D11_VIEWPORT										original_viewport[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
 	UINT												num_views;
-	void _render_traget(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format);
-	void _depth_stencil(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format);
-
+	const OFFSCREEN_CONFIG								config;
+protected:
+	void _render_traget(ID3D11Device* device);
+	void _depth_stencil(ID3D11Device* device);
 public:
-	OffScreen(ID3D11Device* device, LINK_DESTINATION link_destination, UINT w, UINT h, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM, bool need_renderer = true);
+	OffScreen(ID3D11Device* device, const OFFSCREEN_CONFIG& config);
 
 	/// <summary>
 	/// レンダーターゲットビューとデプスステンシルビューをクリアします。
@@ -35,8 +41,7 @@ public:
 	/// レンダーターゲットビューとデプスステンシルビューを切り替えます。
 	/// </summary>
 	/// <param name="immediate_context">有効なコンテキスト</param>
-	/// <param name="usu_depth">デプスステンシルビューを設定するか</param>
-	void active(ID3D11DeviceContext* immediate_context, bool usu_depth = true);
+	void active(ID3D11DeviceContext* immediate_context);
 
 	/// <summary>
 	/// レンダーターゲットビューとデプスステンシルビューを元に戻します。
@@ -45,23 +50,21 @@ public:
 	void deactive(ID3D11DeviceContext* immediate_context);
 
 	/// <summary>
-	/// レンダーターゲットビューまたはデプスステンシルビューに関連付けられた
-	/// シェーダーリソースビューを全画面に描画します。
-	/// </summary>
-	/// <param name="immediate_context">有効なコンテキスト</param>
-	/// <param name="external_pixel_shader">
-	/// 適用するピクセルシェーダー
-	/// NULLで規定のシェーダー
-	/// </param>
-	void quad(ID3D11DeviceContext* immediate_context, ID3D11PixelShader** external_pixel_shader = NULL);
-
-	/// <summary>
-	/// レンダーターゲットビューまたはデプスステンシルビューに関連付けられた
+	/// レンダーターゲットビューに関連付けられた
 	/// シェーダーリソースビューを取得します。
 	/// </summary>
-	ID3D11ShaderResourceView* getAssociatedShaderResourceView()
+	ID3D11ShaderResourceView* getRenderTragetShaderResourceView()
 	{
-		return associated_shader_resource_view.Get();
+		return render_traget_shader_resource_view.Get();
+	}
+
+	/// <summary>
+	/// デプスステンシルビューに関連付けられた
+	/// シェーダーリソースビューを取得します。
+	/// </summary>
+	ID3D11ShaderResourceView* getDepthStencilShaderResourceView()
+	{
+		return depth_stencil_shader_resource_view.Get();
 	}
 
 	/// <summary>
@@ -81,12 +84,26 @@ public:
 	}
 
 	/// <summary>
-	/// シェーダーリソースビューのリンク先を取得します。
+	/// オフスクリーンの構成を取得します。
 	/// </summary>
-	const LINK_DESTINATION& getLinkDestination()const
-	{
-		return link_destination;
-	}
+	const OFFSCREEN_CONFIG& getConfig()const { return config; }
+
 };
 
-using OFFSCREEN_LINK = OffScreen::LINK_DESTINATION;
+
+class FullScreenQuad
+{
+private:
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertex_shader;
+public:
+	FullScreenQuad(ID3D11Device* device, const char* ps_filename = NULL);
+	void blit(ID3D11DeviceContext* immediate_context,
+		ID3D11ShaderResourceView* shader_resource_view,
+		ID3D11PixelShader** external_pixel_shader = NULL)const;
+
+	void blit(ID3D11DeviceContext* immediate_context,
+		ID3D11ShaderResourceView** shader_resource_views,
+		UINT shader_resource_views_count,
+		ID3D11PixelShader** external_pixel_shader = NULL)const;
+};

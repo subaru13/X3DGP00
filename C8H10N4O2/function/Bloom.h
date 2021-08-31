@@ -2,37 +2,36 @@
 
 #include "GaussianBlur.h"
 
-class BloomRenderer
+class BloomRenderer:public GaussianFilter
 {
 private:
-	struct Parameters
+	struct LuminanceParameters
 	{
 		float threshold = 0.5f;
 		FLOAT3 dummy;
 	};
-	GaussianFilter								blur_filter;
-	OffScreen									screen_buffer;
-	OffScreen									luminance_buffer;
-	ConstantBuffer<Parameters>					constant_buffer;
+	std::shared_ptr<OffScreen>					screen_buffer;
+	std::shared_ptr<OffScreen>					luminance_buffer;
+	ConstantBuffer<LuminanceParameters>			luminance_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>	luminance_extraction;
 	Microsoft::WRL::ComPtr<ID3D11BlendState>	additive_synthesis;
 public:
 	BloomRenderer(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 
-	void setThreshold(float threshold) { constant_buffer.data.threshold = threshold; }
-	const float& getThreshold()const { return constant_buffer.data.threshold; }
+	void setThreshold(float threshold) { luminance_constant_buffer.data.threshold = threshold; }
+	const float& getThreshold()const { return luminance_constant_buffer.data.threshold; }
 
 	/// <summary>
 	/// ブルームをかける前の書き込みの開始処理
 	/// </summary>
 	/// <param name="immediate_context">有効なコンテキスト</param>
-	void beginWriting(ID3D11DeviceContext* immediate_context);
+	void beginWriting(ID3D11DeviceContext* immediate_context)override;
 
 	/// <summary>
 	/// ブルームをかける前の書き込みの終了処理
 	/// </summary>
 	/// <param name="immediate_context">有効なコンテキスト</param>
-	void endWriting(ID3D11DeviceContext* immediate_context);
+	void endWriting(ID3D11DeviceContext* immediate_context)override;
 
 	/// <summary>
 	/// ブルームをかけて画面全体に描画します。
@@ -42,6 +41,6 @@ public:
 	/// <param name="sigma">シグマ</param>
 	void quad(ID3D11DeviceContext* immediate_context,
 		int kernel_size = 10,
-		float sigma = 50);
+		float sigma = 50)override;
 };
 

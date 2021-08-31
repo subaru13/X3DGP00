@@ -64,6 +64,36 @@ HRESULT loadPixelShader(ID3D11Device* device, const std::string& cso_name, ID3D1
 	return hr;
 }
 
+HRESULT loadVertexShader(ID3D11Device* device, const std::string& cso_name, ID3D11VertexShader** vertex_shader)
+{
+	auto it = vs_cache.find(cso_name);
+	if (it != vs_cache.end())
+	{
+		*vertex_shader = it->second.shader.Get();
+		(*vertex_shader)->AddRef();
+		return S_OK;
+	}
+
+	FILE* fp = nullptr;
+	fopen_s(&fp, cso_name.c_str(), "rb");
+	_ASSERT_EXPR_A(fp, "CSO File not found");
+
+	fseek(fp, 0, SEEK_END);
+	long cso_sz = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+
+	std::unique_ptr<char[]> cso_data = std::make_unique<char[]>(cso_sz);
+	fread(cso_data.get(), cso_sz, 1, fp);
+	fclose(fp);
+
+	HRESULT hr = device->CreateVertexShader(cso_data.get(), cso_sz, nullptr, vertex_shader);
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	vs_cache.insert(std::make_pair(cso_name, VsCacheData(*vertex_shader, nullptr)));
+
+	return hr;
+}
+
 HRESULT loadVertexShader(ID3D11Device* device, const std::string& cso_name,
 	ID3D11VertexShader** vertex_shader, ID3D11InputLayout** input_layout,
 	const D3D11_INPUT_ELEMENT_DESC* input_element_desc, UINT num_elements)
@@ -173,6 +203,41 @@ HRESULT createVertexShader(ID3D11Device* device, const std::string& shader,
 			input_layout);
 		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 		vs_cache.insert(std::make_pair(shader, VsCacheData(*vertex_shader, *input_layout)));
+	}
+
+	return hr;
+}
+
+HRESULT createVertexShader(ID3D11Device* device, const std::string& shader,
+	ID3D11VertexShader** vertex_shader)
+{
+	assert(device && "The device is invalid.");
+	HRESULT hr = S_OK;
+	auto it = vs_cache.find(shader);
+
+	if (it != vs_cache.end())
+	{
+		*vertex_shader = it->second.shader.Get();
+		(*vertex_shader)->AddRef();
+		return S_OK;
+	}
+	else
+	{
+		DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS;
+#if defined( DEBUG ) || defined( _DEBUG )
+		flags |= D3DCOMPILE_DEBUG;
+		flags |= D3D10_SHADER_SKIP_OPTIMIZATION;
+#endif
+		ComPtr<ID3DBlob> compiled_shader_blob;
+		ComPtr<ID3DBlob> error_message_blob;
+		hr = D3DCompile(shader.c_str(), shader.length(), 0, 0, 0, "main", "vs_5_0",
+			flags, 0, &compiled_shader_blob, &error_message_blob);
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+		hr = device->CreateVertexShader(compiled_shader_blob->GetBufferPointer(),
+			compiled_shader_blob->GetBufferSize(), 0, vertex_shader);
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+		vs_cache.insert(std::make_pair(shader, VsCacheData(*vertex_shader, nullptr)));
 	}
 
 	return hr;
