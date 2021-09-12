@@ -63,3 +63,5 @@ public:
 	static bool destroyInstance();
 	~ASCII();
 };
+
+using ASCII_HANDLE = ASCII::Handle;

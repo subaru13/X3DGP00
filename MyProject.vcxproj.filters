@@ -124,6 +124,9 @@
     <ClCompile Include="C8H10N4O2\function\Bloom.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\Easing.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C8H10N4O2\function\SimpleSound.h">
@@ -244,6 +247,12 @@
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
     <ClInclude Include="C8H10N4O2\function\Bloom.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\CachedComObjects.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\Easing.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
   </ItemGroup>

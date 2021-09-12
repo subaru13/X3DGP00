@@ -26,3 +26,5 @@
 #include "function/Logger.h"
 #include "function/MyHandy.h"
 #include "function/Bloom.h"
+#include "function/CachedComObjects.h"
+#include "function/Easing.h"

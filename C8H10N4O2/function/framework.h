@@ -202,6 +202,11 @@ public:
 		return viewport;
 	}
 
+	static void saveJpeg(const WCHAR* file_name, ID3D11Resource* resource);
+	static void saveJpeg(const WCHAR* file_name, ID3D11RenderTargetView* render_target_view);
+	static void saveJpeg(const WCHAR* file_name, ID3D11DepthStencilView* depth_stencil_view);
+	static void saveJpeg(const WCHAR* file_name, ID3D11ShaderResourceView* shader_resource_view);
+
 	int run()
 	{
 		MSG msg{};
@@ -322,16 +327,16 @@ private:
 	}
 };
 
-#define QuitMainLoop		PostQuitMessage(0)
+#define QUIT_MAIN_LOOP		PostQuitMessage(0)
 
 #define CHANGE_SETTINGS_2D_RENDERING \
 Framework::setDepthStencilState(DEPTH_STENCIL_STATE::DS_FALSE);\
 Framework::setRasterizerState(RASTERIZER_FILL::BACK_SOLID, FALSE);
 
 #define CHANGE_SETTINGS_3D_RENDERING_LHS \
-Framework::setDepthStencilState(DEPTH_STENCIL_STATE::DS_TRHE);\
+Framework::setDepthStencilState(DEPTH_STENCIL_STATE::DS_TRUE);\
 Framework::setRasterizerState(RASTERIZER_FILL::BACK_SOLID, FALSE);
 
 #define CHANGE_SETTINGS_3D_RENDERING_RHS \
-Framework::setDepthStencilState(DEPTH_STENCIL_STATE::DS_TRHE);\
+Framework::setDepthStencilState(DEPTH_STENCIL_STATE::DS_TRUE);\
 Framework::setRasterizerState(RASTERIZER_FILL::BACK_SOLID, TRUE);

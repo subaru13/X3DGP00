@@ -38,12 +38,12 @@ void GaussianFilter::_quad(ID3D11DeviceContext* immediate_context, int kernel_si
 	getWeight(weight, kernel_size, sigma);
 	memcpy(blur_constant_buffer.data.weight, weight, sizeof(FLOAT4) * GAUSSIAN_BLUR_WEIGHT_SIZE);
 	blur_constant_buffer.send(immediate_context, 1, false, true);
-	renderer->blit(immediate_context, render_traget->getRenderTragetShaderResourceView(), blur_pixel_shader.GetAddressOf());
+	blit(immediate_context, render_traget->getRenderTragetShaderResourceView(), blur_pixel_shader.GetAddressOf());
 }
 
 GaussianFilter::GaussianFilter(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format)
-	:blur_constant_buffer(device),
-	renderer(nullptr),
+	:FullScreenQuad(device,nullptr),
+	blur_constant_buffer(device),
 	render_traget(nullptr)
 {
 	assert(device && "The device is invalid.");
@@ -91,13 +91,12 @@ GaussianFilter::GaussianFilter(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 	blur_constant_buffer.data.texcel.x = 1.0f / static_cast<float>(w);
 	blur_constant_buffer.data.texcel.y = 1.0f / static_cast<float>(h);
 
-	OFFSCREEN_CONFIG config;
+	FB_CONFIG config;
 	config.width = w;
 	config.height = h;
 	config.render_traget_format = format;
 	config.depth_stencil_format = DXGI_FORMAT_R24G8_TYPELESS;
-	render_traget = std::make_shared<OffScreen>(device, config);
-	renderer = std::make_shared<FullScreenQuad>(device, nullptr);
+	render_traget = std::make_shared<FrameBuffer>(device, config);
 }
 
 void GaussianFilter::beginWriting(ID3D11DeviceContext* immediate_context)

@@ -9,6 +9,7 @@
 #define GAUSSIAN_BLUR_WEIGHT_SIZE 256
 
 class GaussianFilter
+	:public FullScreenQuad
 {
 protected:
 	struct BlurParameters
@@ -20,8 +21,7 @@ protected:
 	};
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>	blur_pixel_shader;
 	ConstantBuffer<BlurParameters>				blur_constant_buffer;
-	std::shared_ptr<OffScreen>					render_traget;
-	std::shared_ptr<FullScreenQuad>				renderer;
+	std::shared_ptr<FrameBuffer>				render_traget;
 	void getWeight(FLOAT4* array, int kernel_size, float sigma)const;
 	//åpè≥êÊóp
 	void _quad(ID3D11DeviceContext* immediate_context, int kernel_size, float sigma);

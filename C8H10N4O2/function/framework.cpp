@@ -1,7 +1,7 @@
 #include "Framework.h"
 #include "SceneManager.h"
 #include "KeyInput.h"
-#include "DirectXTK/ScreenGrab.h"
+#include <DirectXTK/ScreenGrab.h>
 #include <wincodec.h>
 #include <direct.h>
 #include <filesystem>
@@ -122,6 +122,34 @@ Framework::Framework(HWND hwnd)
 	screenshot_key = std::make_unique<Key>(VK_SNAPSHOT);
 #endif //  USE_SCREEN_SHOT
 
+}
+
+void Framework::saveJpeg(const WCHAR* file_name, ID3D11Resource* resource)
+{
+	assert(instance != nullptr && "No Instance.");
+	HRESULT hr = SaveWICTextureToFile(instance->d3d11_context.Get(), resource, GUID_ContainerFormatJpeg, file_name);
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+}
+
+void Framework::saveJpeg(const WCHAR* file_name, ID3D11RenderTargetView* render_target_view)
+{
+	Microsoft::WRL::ComPtr<ID3D11Resource> resource;
+	render_target_view->GetResource(resource.ReleaseAndGetAddressOf());
+	Framework::saveJpeg(file_name, resource.Get());
+}
+
+void Framework::saveJpeg(const WCHAR* file_name, ID3D11DepthStencilView* depth_stencil_view)
+{
+	Microsoft::WRL::ComPtr<ID3D11Resource> resource;
+	depth_stencil_view->GetResource(resource.ReleaseAndGetAddressOf());
+	Framework::saveJpeg(file_name, resource.Get());
+}
+
+void Framework::saveJpeg(const WCHAR* file_name, ID3D11ShaderResourceView* shader_resource_view)
+{
+	Microsoft::WRL::ComPtr<ID3D11Resource> resource;
+	shader_resource_view->GetResource(resource.ReleaseAndGetAddressOf());
+	Framework::saveJpeg(file_name, resource.Get());
 }
 
 bool Framework::initialize()

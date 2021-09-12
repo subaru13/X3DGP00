@@ -196,6 +196,7 @@
     <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="C8H10N4O2\function\ASCIIFont.cpp" />
     <ClCompile Include="C8H10N4O2\function\CreateComObjectHelpar.cpp" />
+    <ClCompile Include="C8H10N4O2\function\Easing.cpp" />
     <ClCompile Include="C8H10N4O2\function\Framework.cpp" />
     <ClCompile Include="C8H10N4O2\function\GeometryPrimitive.cpp" />
     <ClCompile Include="C8H10N4O2\function\Logger.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="C8H10N4O2\function\ASCIIFont.h" />
     <ClInclude Include="C8H10N4O2\function\ConstantBuffer.h" />
     <ClInclude Include="C8H10N4O2\function\CreateComObjectHelpar.h" />
+    <ClInclude Include="C8H10N4O2\function\Easing.h" />
     <ClInclude Include="C8H10N4O2\function\Framework.h" />
     <ClInclude Include="C8H10N4O2\function\GeometryPrimitive.h" />
     <ClInclude Include="C8H10N4O2\function\HighResolutionTimer.h" />
@@ -251,6 +253,7 @@
     <ClInclude Include="C8H10N4O2\resource\resource.h" />
     <ClInclude Include="C8H10N4O2\function\CameraControl.h" />
     <ClInclude Include="C8H10N4O2\function\GaussianBlur.h" />
+    <ClInclude Include="C8H10N4O2\function\CachedComObjects.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="C8H10N4O2\resource\3dgp.aps" />
@@ -305,20 +308,20 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="C8H10N4O2\shader\geometry_primitive_vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="C8H10N4O2\shader\luminance_extraction_ps.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

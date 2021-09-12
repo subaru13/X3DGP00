@@ -10,12 +10,13 @@ struct VS_IN
 };
 struct VS_OUT
 {
-	float4 position : SV_POSITION;
-	float4 world_position : POSITION;
-	float4 world_normal : NORMAL;
-	float4 world_tangent : TANGENT;
-	float2 texcoord : TEXCOORD;
-	float4 color : COLOR;
+	float4 sv_position		: SV_POSITION;
+	float4 position			: POSITION;
+	float4 world_position	: WORLD_POSITION;
+	float4 world_normal		: NORMAL;
+	float4 world_tangent	: TANGENT;
+	float2 texcoord			: TEXCOORD;
+	float4 color			: COLOR;
 };
 static const int MAX_BONES = 256;
 cbuffer object_constant : register(b0)

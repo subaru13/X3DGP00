@@ -1,9 +1,10 @@
 #include "scene_constant.hlsli"
 struct VS_OUT
 {
-	float4 position : SV_POSITION;
-	float4 world_position : POSITION;
-	float4 normal    : NORMAL;
+	float4 sv_position : SV_POSITION;
+	float4 position : POSITION;
+	float4 world_position : WORLD_POSITION;
+	float4 normal : NORMAL;
 };
 cbuffer object_constant : register(b0)
 {

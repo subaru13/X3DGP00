@@ -10,9 +10,9 @@ VS_OUT main(VS_IN vin)
 	float4 blended_tangent = { 0, 0, 0, 0 };
 	for (int bone_index = 0; bone_index < 4; ++bone_index)
 	{
-		blended_position += vin.bone_weights[bone_index] 
+		blended_position += vin.bone_weights[bone_index]
 		* mul(vin.position, bone_transforms[vin.bone_indices[bone_index]]);
-		blended_normal += vin.bone_weights[bone_index] 
+		blended_normal += vin.bone_weights[bone_index]
 		* mul(vin.normal, bone_transforms[vin.bone_indices[bone_index]]);
 		blended_tangent += vin.bone_weights[bone_index]
 		* mul(vin.tangent, bone_transforms[vin.bone_indices[bone_index]]);
@@ -21,7 +21,8 @@ VS_OUT main(VS_IN vin)
 	vin.normal = float4(blended_normal.xyz, 0.0f);
 	vin.tangent = float4(blended_tangent.xyz, 0.0f);
 	VS_OUT vout;
-	vout.position = mul(vin.position, mul(world, view_projection));
+	vout.sv_position = mul(vin.position, mul(world, view_projection));
+	vout.position = vout.sv_position;
 	vout.world_position = mul(vin.position, world);
 	vin.normal.w = 0;
 	vout.world_normal = normalize(mul(vin.normal, world));

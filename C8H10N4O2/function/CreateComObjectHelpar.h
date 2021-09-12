@@ -5,7 +5,10 @@
 HRESULT loadPixelShader(ID3D11Device*, const std::string&, ID3D11PixelShader**);
 HRESULT loadVertexShader(ID3D11Device*, const std::string&, ID3D11VertexShader**,
 	ID3D11InputLayout**, const D3D11_INPUT_ELEMENT_DESC*, UINT);
-HRESULT loadVertexShader(ID3D11Device*, const std::string&,ID3D11VertexShader**);
+HRESULT loadGeometryShader(ID3D11Device*, const std::string&, ID3D11GeometryShader**);
+HRESULT loadDomainShader(ID3D11Device*, const std::string&, ID3D11DomainShader**);
+HRESULT loadHullShader(ID3D11Device*, const std::string&, ID3D11HullShader**);
+HRESULT loadVertexShader(ID3D11Device*, const std::string&, ID3D11VertexShader**);
 HRESULT createPixelShader(ID3D11Device*, const std::string&, ID3D11PixelShader**);
 HRESULT createVertexShader(ID3D11Device*, const std::string&, ID3D11VertexShader**,
 	ID3D11InputLayout**, const D3D11_INPUT_ELEMENT_DESC*, UINT);

@@ -22,7 +22,10 @@ using namespace Microsoft::WRL;
 
 namespace
 {
-	std::map<std::string, ComPtr<ID3D11PixelShader>>   ps_cache;
+	std::map<std::string, ComPtr<ID3D11PixelShader>>	ps_cache;
+	std::map<std::string, ComPtr<ID3D11GeometryShader>>	gs_cache;
+	std::map<std::string, ComPtr<ID3D11DomainShader>>	ds_cache;
+	std::map<std::string, ComPtr<ID3D11HullShader>>		hs_cache;
 	struct VsCacheData
 	{
 		ComPtr<ID3D11VertexShader>    shader;
@@ -127,6 +130,96 @@ HRESULT loadVertexShader(ID3D11Device* device, const std::string& cso_name,
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	vs_cache.insert(std::make_pair(cso_name, VsCacheData(*vertex_shader, *input_layout)));
+
+	return hr;
+}
+
+HRESULT loadGeometryShader(ID3D11Device* device, const std::string& cso_name, ID3D11GeometryShader** geometry_shader)
+{
+	auto it = gs_cache.find(cso_name);
+	if (it != gs_cache.end())
+	{
+		*geometry_shader = it->second.Get();
+		(*geometry_shader)->AddRef();
+		return S_OK;
+	}
+
+	FILE* fp = nullptr;
+	fopen_s(&fp, cso_name.c_str(), "rb");
+	_ASSERT_EXPR_A(fp, "CSO File not found");
+
+	fseek(fp, 0, SEEK_END);
+	long cso_sz = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+
+	std::unique_ptr<unsigned char[]> cso_data = std::make_unique<unsigned char[]>(cso_sz);
+	fread(cso_data.get(), cso_sz, 1, fp);
+	fclose(fp);
+
+	HRESULT hr = device->CreateGeometryShader(cso_data.get(), cso_sz, nullptr, geometry_shader);
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	gs_cache.insert(std::make_pair(cso_name, *geometry_shader));
+
+	return hr;
+}
+
+HRESULT loadDomainShader(ID3D11Device* device, const std::string& cso_name, ID3D11DomainShader** domain_shader)
+{
+	auto it = ds_cache.find(cso_name);
+	if (it != ds_cache.end())
+	{
+		*domain_shader = it->second.Get();
+		(*domain_shader)->AddRef();
+		return S_OK;
+	}
+
+	FILE* fp = nullptr;
+	fopen_s(&fp, cso_name.c_str(), "rb");
+	_ASSERT_EXPR_A(fp, "CSO File not found");
+
+	fseek(fp, 0, SEEK_END);
+	long cso_sz = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+
+	std::unique_ptr<unsigned char[]> cso_data = std::make_unique<unsigned char[]>(cso_sz);
+	fread(cso_data.get(), cso_sz, 1, fp);
+	fclose(fp);
+
+	HRESULT hr = device->CreateDomainShader(cso_data.get(), cso_sz, nullptr, domain_shader);
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	ds_cache.insert(std::make_pair(cso_name, *domain_shader));
+
+	return hr;
+}
+
+HRESULT loadHullShader(ID3D11Device* device, const std::string& cso_name, ID3D11HullShader** hull_shader)
+{
+	auto it = hs_cache.find(cso_name);
+	if (it != hs_cache.end())
+	{
+		*hull_shader = it->second.Get();
+		(*hull_shader)->AddRef();
+		return S_OK;
+	}
+
+	FILE* fp = nullptr;
+	fopen_s(&fp, cso_name.c_str(), "rb");
+	_ASSERT_EXPR_A(fp, "CSO File not found");
+
+	fseek(fp, 0, SEEK_END);
+	long cso_sz = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+
+	std::unique_ptr<unsigned char[]> cso_data = std::make_unique<unsigned char[]>(cso_sz);
+	fread(cso_data.get(), cso_sz, 1, fp);
+	fclose(fp);
+
+	HRESULT hr = device->CreateHullShader(cso_data.get(), cso_sz, nullptr, hull_shader);
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	hs_cache.insert(std::make_pair(cso_name, *hull_shader));
 
 	return hr;
 }

@@ -56,7 +56,7 @@ inline std::unique_ptr<SpriteBatch> makeSpriteBatch(ID3D11Device* device, size_t
 /// スキンドメッシュを作成します。
 /// </summary>
 /// <param name="device">有効なデバイス</param>
-/// <param name="fbx_filename">メッシュデータのアドレス(fbx,obj,json)</param>
+/// <param name="fbx_filename">メッシュデータのアドレス(fbx,obj,skn)</param>
 /// <param name="triangulate">三角化するか</param>
 /// <param name="sampling_rate">アニメションのサンプリングレート</param>
 inline std::unique_ptr<SkinnedMesh> makeSkinnedMesh(ID3D11Device* device, const char* filename, bool triangulate = false, float sampling_rate = 0.0f)
@@ -106,13 +106,23 @@ inline std::unique_ptr<GeometryPrimitive> makeGeometryPrimitive(ID3D11Device* de
 }
 
 /// <summary>
-///	オフスクリーンを作成します。
+/// フレームバッファを作成します。
 /// </summary>
 /// <param name="device">有効なデバイス</param>
-/// <param name="config">オフスクリーンの構成</param>
-inline std::unique_ptr<OffScreen> makeOffScreen(ID3D11Device* device,OFFSCREEN_CONFIG config)
+/// <param name="config">フレームバッファの構成</param>
+inline std::unique_ptr<FrameBuffer> makeFrameBuffer(ID3D11Device* device,FB_CONFIG config)
 {
-	return std::make_unique<OffScreen>(device, config);
+	return std::make_unique<FrameBuffer>(device, config);
+}
+
+/// <summary>
+/// ジオメトリバッファを作成します。
+/// </summary>
+/// <param name="device">有効なデバイス</param>
+/// <param name="config">ジオメトリバッファの構成</param>
+inline std::unique_ptr<GeometryBuffer> makeGeometryBuffer(ID3D11Device* device, GB_CONFIG config)
+{
+	return std::make_unique<GeometryBuffer>(device, config);
 }
 
 /// <summary>
@@ -153,8 +163,22 @@ inline std::unique_ptr<BloomRenderer> makeBloomRenderer(ID3D11Device* device,
 	return std::make_unique<BloomRenderer>(device, w, h, format);
 }
 
+/// <summary>
+/// ピクセルシェーダーを作成します。
+/// </summary>
+/// <param name="device">有効なデバイス</param>
+/// <param name="cso_filename">ピクセルシェーダー(cso)のアドレス</param>
+inline Microsoft::WRL::ComPtr<ID3D11PixelShader> makePixelShader(ID3D11Device* device, std::string cso_filename)
+{
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader;
+	loadPixelShader(device, cso_filename, pixel_shader.ReleaseAndGetAddressOf());
+	return pixel_shader;
+}
+
 template <class T>
 using MyInterface			= std::shared_ptr <T>;
+template <class T>
+using MyComInterface		= Microsoft::WRL::ComPtr<T>;
 
 using ISprite				= MyInterface<Sprite>;
 using ISpriteBatch			= MyInterface<SpriteBatch>;
@@ -164,7 +188,12 @@ template <class T>
 using IConstantBuffer		= MyInterface<ConstantBuffer<T>>;
 using ISceneConstant		= MyInterface<SceneConstant>;
 using IGeometryPrimitive	= MyInterface<GeometryPrimitive>;
-using IOffScreen			= MyInterface<OffScreen>;
+using IFrameBuffer			= MyInterface<FrameBuffer>;
+using IGeometryBuffer		= MyInterface<GeometryBuffer>;
 using IFullScreenQuad		= MyInterface<FullScreenQuad>;
 using IGaussianFilter		= MyInterface<GaussianFilter>;
 using IBloomRenderer		= MyInterface<BloomRenderer>;
+using IPixelShader			= MyComInterface<ID3D11PixelShader>;
+using IGeometryShader		= MyComInterface<ID3D11GeometryShader>;
+using IDomainShader			= MyComInterface<ID3D11DomainShader>;
+using IHullShader			= MyComInterface<ID3D11HullShader>;

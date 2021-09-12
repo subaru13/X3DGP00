@@ -344,6 +344,13 @@ typedef DirectX::XMMATRIX MATRIX;
 #define _SCALAR_TO_FLOAT3(scalar) (FLOAT3(scalar,scalar,scalar))
 #define _SCALAR_TO_FLOAT4(scalar) (FLOAT4(scalar,scalar,scalar,scalar))
 
+static inline FLOAT4X4 matrixToFloat4x4(const MATRIX& _matrix)
+{
+	FLOAT4X4 _float4x4;
+	DirectX::XMStoreFloat4x4(&_float4x4, _matrix);
+	return _float4x4;
+}
+
 using namespace DirectX;
 
 #endif
