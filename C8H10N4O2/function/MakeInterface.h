@@ -155,12 +155,15 @@ inline std::unique_ptr<GaussianFilter> makeGaussianFilter(ID3D11Device* device,
 /// <param name="device">有効なデバイス</param>
 /// <param name="w">ビューの横幅</param>
 /// <param name="h">ビューの縦幅</param>
+/// <param name="shrink">ブラーバッファーの縮小係数</param>
 /// <param name="format">シェーダーリソースビューのフォーマット</param>
 inline std::unique_ptr<BloomRenderer> makeBloomRenderer(ID3D11Device* device,
 	UINT w, UINT h,
+	UINT shrink = 8,
 	DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM)
 {
-	return std::make_unique<BloomRenderer>(device, w, h, format);
+	if (shrink == 0)shrink = 1;
+	return std::make_unique<BloomRenderer>(device, w, h, shrink, format);
 }
 
 /// <summary>
@@ -193,6 +196,7 @@ using IGeometryBuffer		= MyInterface<GeometryBuffer>;
 using IFullScreenQuad		= MyInterface<FullScreenQuad>;
 using IGaussianFilter		= MyInterface<GaussianFilter>;
 using IBloomRenderer		= MyInterface<BloomRenderer>;
+using IShaderResourceView	= MyComInterface<ID3D11ShaderResourceView>;
 using IPixelShader			= MyComInterface<ID3D11PixelShader>;
 using IGeometryShader		= MyComInterface<ID3D11GeometryShader>;
 using IDomainShader			= MyComInterface<ID3D11DomainShader>;

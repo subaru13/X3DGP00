@@ -2,6 +2,8 @@
 #include "KeyInput.h"
 #include "..//FrameworkConfig.h"
 
+#define SWING_WIDTH toRadian(60.0f)
+
 CameraControl::CameraControl()
 	:pos(0.0f, 0.0f, -10.0f), traget(0.0f, 0.0f, 0.0f), up_vector(0.0f, 1.0f, 0.0f),
 	fov(toRadian(30.0f)), width(static_cast<float>(SCREEN_WIDTH)), height(static_cast<float>(SCREEN_HEIGHT)),
@@ -9,7 +11,6 @@ CameraControl::CameraControl()
 
 FLOAT4X4 CameraControl::getView() const
 {
-	sizeof(CameraControl);
 	XMVECTOR eye{ XMVectorSet(pos.x, pos.y, pos.z, 1.0f) };
 	XMVECTOR focus;
 	if (pos != traget)
@@ -41,7 +42,7 @@ FLOAT4X4 CameraControl::getOrthographic() const
 	return orthographic;
 }
 
-void CameraControl::update(float move_speed, float rotation_speed, float elapsed_time)
+void CameraControl::update(float elapsed_time, float move_speed, float rotation_speed)
 {
 	const Mouse* mouse = Mouse::instance();
 	const Key& l_key = mouse->getL();
@@ -66,6 +67,8 @@ void CameraControl::update(float move_speed, float rotation_speed, float elapsed
 		{
 			attitude.x += drg.y > 0 ? elapsed_time * 0.174533f * rotation_speed : -elapsed_time * 0.174533f * rotation_speed;
 		}
+
+		attitude.x = std::clamp(attitude.x, -SWING_WIDTH, SWING_WIDTH);
 
 		FLOAT4X4 rotation4x4{};
 		XMStoreFloat4x4(&rotation4x4, RotationMatrix(attitude));

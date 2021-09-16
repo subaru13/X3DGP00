@@ -10,13 +10,13 @@ private:
 		float threshold = 0.5f;
 		FLOAT3 dummy;
 	};
-	std::shared_ptr<FrameBuffer>					screen_buffer;
-	std::shared_ptr<FrameBuffer>					luminance_buffer;
+	std::shared_ptr<FrameBuffer>				screen_buffer;
+	std::shared_ptr<FrameBuffer>				luminance_buffer;
 	ConstantBuffer<LuminanceParameters>			luminance_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>	luminance_extraction;
 	Microsoft::WRL::ComPtr<ID3D11BlendState>	additive_synthesis;
 public:
-	BloomRenderer(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
+	BloomRenderer(ID3D11Device* device, UINT w, UINT h, UINT shrink = 8, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 
 	/// <summary>
 	/// ËáílÇê›íËÇµÇ‹Ç∑ÅB

@@ -328,5 +328,8 @@
     <FxCompile Include="C8H10N4O2\shader\gaussian_blur_ps.hlsl">
       <Filter>C8H10N4O2\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="CubeMap_ps.hlsl">
+      <Filter>Development\シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

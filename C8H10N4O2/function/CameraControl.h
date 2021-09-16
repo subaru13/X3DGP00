@@ -39,9 +39,11 @@ public:
 	/// <summary>
 	/// カメラの更新をします。
 	/// </summary>
+	/// <param name="elapsed_time">経過時間</param>
 	/// <param name="move_speed">移動速度</param>
 	/// <param name="rotation_speed">角速度</param>
-	/// <param name="elapsed_time">経過時間</param>
-	void update(float move_speed, float rotation_speed, float elapsed_time);
+	void update(float elapsed_time, 
+		float move_speed = 32.0f, 
+		float rotation_speed = (Pi * 2.0f));
 
 };

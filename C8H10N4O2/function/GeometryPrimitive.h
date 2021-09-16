@@ -23,9 +23,9 @@ enum class GP_SHAPE
 */
 struct GP_CONFIG
 {
-	const GP_SHAPE	shape;
-	const UINT		division;
-	GP_CONFIG(GP_SHAPE shape, UINT division = 32) :shape(shape), division(division) {}
+	GP_SHAPE	shape;
+	UINT		division;
+	GP_CONFIG(GP_SHAPE shape = GP_SHAPE::GP_CUBE, UINT division = 32) :shape(shape), division(division) {}
 };
 
 class GeometryPrimitive

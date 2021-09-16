@@ -4,8 +4,8 @@
 #include "CreateComObjectHelpar.h"
 #include "../FrameworkConfig.h"
 
-BloomRenderer::BloomRenderer(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format)
-	:GaussianFilter(device, w / 8, h / 8, format),
+BloomRenderer::BloomRenderer(ID3D11Device* device, UINT w, UINT h, UINT shrink, DXGI_FORMAT format)
+	:GaussianFilter(device, w / shrink, h / shrink, format),
 	screen_buffer(nullptr),
 	luminance_buffer(nullptr),
 	luminance_constant_buffer(device)

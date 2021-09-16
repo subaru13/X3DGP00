@@ -3,6 +3,7 @@
 #include "CreateComObjectHelpar.h"
 #include "MyHandy.h"
 #include "../FrameworkConfig.h"
+#include <assert.h>
 
 void FrameBuffer::createRenderTraget(ID3D11Device* device)
 {
@@ -109,7 +110,7 @@ FrameBuffer::FrameBuffer(ID3D11Device* device, const CONFIG& _config)
 	viewport.MaxDepth = 1.0f;
 }
 
-void FrameBuffer::clear(ID3D11DeviceContext* immediate_context, FLOAT4 color)
+void FrameBuffer::clear(ID3D11DeviceContext* immediate_context,FLOAT4 color)
 {
 	assert(immediate_context && "The context is invalid.");
 	immediate_context->ClearRenderTargetView(render_traget_view.Get(), &color.x);

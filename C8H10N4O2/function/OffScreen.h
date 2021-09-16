@@ -9,8 +9,8 @@ class FrameBuffer
 public:
 	struct CONFIG
 	{
-		UINT width;
-		UINT height;
+		UINT width=0;
+		UINT height = 0;
 		DXGI_FORMAT render_traget_format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		DXGI_FORMAT depth_stencil_format = DXGI_FORMAT_R24G8_TYPELESS;
 	};

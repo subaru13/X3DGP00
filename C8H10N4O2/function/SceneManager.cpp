@@ -26,13 +26,31 @@ void SceneManager::edit(ID3D11Device* device, float elapsed_time)
 		if (NextScene != NowScene)
 		{
 			SceneList::iterator it = SceneDatas.find(NowScene);
-			if (it != SceneDatas.end() && it->second)it->second->uninitialize();
+			if (it != SceneDatas.end() && it->second)
+			{
+				it->second->uninitialize();
+#ifdef _DEBUG
+				it->second->debugUninitialize();
+#endif
+			}
 			NowScene = NextScene;
 			it = SceneDatas.find(NowScene);
-			if (it != SceneDatas.end() && it->second)it->second->initialize(device);
+			if (it != SceneDatas.end() && it->second)
+			{
+				it->second->initialize(device);
+#ifdef _DEBUG
+				it->second->debugInitialize(device);
+#endif
+			}
 		}
 		SceneList::iterator it = SceneDatas.find(NowScene);
-		if (it != SceneDatas.end() && it->second)it->second->update(elapsed_time);
+		if (it != SceneDatas.end() && it->second)
+		{
+			it->second->update(elapsed_time);
+#ifdef _DEBUG
+			it->second->debugUpdate(elapsed_time);
+#endif
+		}
 	}
 }
 void SceneManager::render(ID3D11DeviceContext* immediate_context, float elapsed_time)
@@ -40,7 +58,13 @@ void SceneManager::render(ID3D11DeviceContext* immediate_context, float elapsed_
 	if (!SceneDatas.empty())
 	{
 		SceneList::iterator it = SceneDatas.find(NowScene);
-		if (it != SceneDatas.end() && it->second)it->second->render(immediate_context, elapsed_time);
+		if (it != SceneDatas.end() && it->second)
+		{
+			it->second->render(immediate_context, elapsed_time);
+#ifdef _DEBUG
+			it->second->debugRender(immediate_context,elapsed_time);
+#endif
+		}
 	}
 }
 void SceneManager::release()
@@ -52,6 +76,9 @@ void SceneManager::release()
 			if (data.second)
 			{
 				data.second->uninitialize();
+#ifdef _DEBUG
+				data.second->debugUninitialize();
+#endif
 				data.second->s_manager = nullptr;
 				delete data.second;
 			}

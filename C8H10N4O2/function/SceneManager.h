@@ -45,14 +45,14 @@ public:
 		The manager provides a pointer to
 		the ID3D11Device registered with the manager.
 	*******************************************************/
-	virtual void initialize(ID3D11Device*) = 0;
+	virtual void initialize(ID3D11Device*) {}
 
 	/*******************************************************
 		It is a scene update process.
 		Called every frame.
 		The manager will provide the elapsed time.
 	*******************************************************/
-	virtual void update(float) = 0;
+	virtual void update(float) {}
 
 	/*******************************************************
 		It is a scene draw process.
@@ -60,7 +60,7 @@ public:
 		The manager provides the elapsed time
 		and the context.
 	*******************************************************/
-	virtual void render(ID3D11DeviceContext*, float) = 0;
+	virtual void render(ID3D11DeviceContext*, float) {}
 
 	/*******************************************************
 		It is the end processing of the scene.
@@ -68,6 +68,44 @@ public:
 		Please create as needed.
 	*******************************************************/
 	virtual void uninitialize() {}
+
+	/*******************************************************
+		@ Debug Only
+		It is the initialization process of the scene.
+		Runs only once when the scene changes.
+		Please do the processing that you want
+		to do only once throughout
+		the whole with the constructor.
+		The manager provides a pointer to
+		the ID3D11Device registered with the manager.
+	*******************************************************/
+	virtual void debugInitialize(ID3D11Device*) {}
+
+	/*******************************************************
+		@ Debug Only
+		It is a scene update process.
+		Called every frame.
+		The manager will provide the elapsed time.
+	*******************************************************/
+	virtual void debugUpdate(float) {}
+
+	/*******************************************************
+		@ Debug Only
+		It is a scene draw process.
+		Called every frame.
+		The manager provides the elapsed time
+		and the context.
+	*******************************************************/
+	virtual void debugRender(ID3D11DeviceContext*, float) {}
+
+	/*******************************************************
+		@ Debug Only
+		It is the end processing of the scene.
+		Runs only once when changing scenes.
+		Please create as needed.
+	*******************************************************/
+	virtual void debugUninitialize() {}
+
 
 	virtual ~SceneBase() {}
 };
