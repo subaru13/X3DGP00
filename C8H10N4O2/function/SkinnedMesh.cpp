@@ -260,7 +260,7 @@ bool SkinnedMesh::appendAnimations(const char* animation_filename, float samplin
 	return true;
 }
 
-void SkinnedMesh::blendAnimations(const Animation::keyframe* keyframes[2], float factor, Animation::keyframe& keyframe)
+void SkinnedMesh::blendAnimations(const Animation::keyframe* keyframes[2], float factor, Animation::keyframe& keyframe)const
 {
 	size_t node_count{ keyframes[0]->nodes.size() };
 	keyframe.nodes.resize(node_count);

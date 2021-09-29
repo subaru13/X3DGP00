@@ -81,8 +81,26 @@ public:
 	/// <summary>
 	/// テクスチャのサイズを取得します。
 	/// </summary>
-	/// <returns></returns>
 	const FLOAT2& getTextrueSize()const { return textrue_size; }
+
+	/// <summary>
+	/// テクスチャをシェーダーに送信します。
+	/// </summary>
+	/// <param name="immediate_context">有効なコンテキスト</param>
+	/// <param name="slot">送信スロット番号</param>
+	/// <param name="use_vs">頂点シェーダーに使用するか</param>
+	/// <param name="use_ps">ピクセルシェーダーに使用するか</param>
+	/// <param name="use_ds">ドメインシェーダーに使用するか</param>
+	/// <param name="use_hs">ハルシェーダーに使用するか</param>
+	/// <param name="use_gs">ジオメトリシェーダーに使用するか</param>
+	void sendTextrue(
+		ID3D11DeviceContext* immediate_context,
+		UINT slot,
+		bool use_vs = true,
+		bool use_ps = true,
+		bool use_ds = true,
+		bool use_hs = true,
+		bool use_gs = true)const;
 
 	virtual ~SpriteBatch() = default;
 };

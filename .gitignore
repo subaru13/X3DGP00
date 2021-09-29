@@ -10,3 +10,7 @@ mrt.hlsl
 test.h
 C8H10N4O2/reference/
 ScreenShot/
+CreateNormalMap.cso
+CreateNormalMap.hlsl
+CubeMap_ps.cso
+geometry_primitive_vs.cso

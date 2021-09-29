@@ -8,8 +8,8 @@
 
 namespace Constants
 {
-	constexpr float Epsilon = 0.000001f;
-	constexpr float Pi = 3.141592654f;
+	constexpr float __epsilon_ = 0.000001f;
+	constexpr float __pi_ = 3.141592654f;
 }
 using namespace Constants;
 
@@ -54,15 +54,15 @@ _NODISCARD inline float toAngle(const float& x)
 ****************************************************************/
 inline float normalizeRadian(float& radian)
 {
-	while (radian > Constants::Pi) { radian -= (Constants::Pi * 2.0f); }
-	while (radian < -Constants::Pi) { radian += (Constants::Pi * 2.0f); }
+	while (radian > Constants::__pi_) { radian -= (Constants::__pi_ * 2.0f); }
+	while (radian < -Constants::__pi_) { radian += (Constants::__pi_ * 2.0f); }
 	return radian;
 }
 
 /****************************************************************
 	Floating point equality judgment.
 ****************************************************************/
-_NODISCARD inline bool nearlyEqual(float a, float b, float e = Constants::Epsilon)
+_NODISCARD inline bool nearlyEqual(float a, float b, float e = Constants::__epsilon_)
 {
 	return fabsf(a - b) <= e;
 }
@@ -175,7 +175,7 @@ _NODISCARD inline float vec2LengthSq(const VECTOR2& v)
 _NODISCARD inline bool vec2IsVertical(const VECTOR2& v1, const VECTOR2& v2)
 {
 	float d = vec2Dot(v1, v2);
-	return (-Constants::Epsilon < d&& d < Constants::Epsilon);
+	return (-Constants::__epsilon_ < d&& d < Constants::__epsilon_);
 }
 
 /****************************************************************
@@ -185,7 +185,7 @@ _NODISCARD inline bool vec2IsParallel(const VECTOR2& v1, const VECTOR2& v2)
 {
 	float d = vec2Cross(v1, v2);
 	d *= d;
-	return (-Constants::Epsilon < d&& d < Constants::Epsilon);
+	return (-Constants::__epsilon_ < d&& d < Constants::__epsilon_);
 }
 
 /****************************************************************
@@ -282,7 +282,7 @@ _NODISCARD inline float vec3LengthSq(const VECTOR3& v)
 _NODISCARD inline bool vec3IsVertical(const VECTOR3& v1, const VECTOR3& v2)
 {
 	float d = vec3Dot(v1, v2);
-	return (-Constants::Epsilon < d&& d < Constants::Epsilon);
+	return (-Constants::__epsilon_ < d&& d < Constants::__epsilon_);
 }
 
 /****************************************************************
@@ -291,7 +291,7 @@ _NODISCARD inline bool vec3IsVertical(const VECTOR3& v1, const VECTOR3& v2)
 _NODISCARD inline bool vec3IsParallel(const VECTOR3& v1, const VECTOR3& v2)
 {
 	float d = vec3LengthSq(vec3Cross(v1, v2));
-	return (-Constants::Epsilon < d&& d < Constants::Epsilon);
+	return (-Constants::__epsilon_ < d&& d < Constants::__epsilon_);
 }
 
 /****************************************************************

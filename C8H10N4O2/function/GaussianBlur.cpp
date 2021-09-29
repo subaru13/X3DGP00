@@ -10,7 +10,7 @@ void GaussianFilter::getWeight(FLOAT4* array, int kernel_size, float sigma) cons
 	int id = 0;
 	float sigmag = (sigma * sigma);
 	float sigmag2 = sigmag * 2.0f;
-	float coefficient = (1.0f / ((Pi * 2.0f) * sigmag));
+	float coefficient = (1.0f / ((__pi_ * 2.0f) * sigmag));
 	int haif_kernel_size = kernel_size / 2;
 	for (int y = -haif_kernel_size; y <= haif_kernel_size; y++)
 	{

@@ -127,6 +127,9 @@
     <ClCompile Include="C8H10N4O2\function\Easing.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\Particle.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C8H10N4O2\function\SimpleSound.h">
@@ -255,6 +258,9 @@
     <ClInclude Include="C8H10N4O2\function\Easing.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\Particle.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="C8H10N4O2\resource\3dgp.aps">
@@ -328,7 +334,7 @@
     <FxCompile Include="C8H10N4O2\shader\gaussian_blur_ps.hlsl">
       <Filter>C8H10N4O2\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="CubeMap_ps.hlsl">
+    <FxCompile Include="CreateNormalMap.hlsl">
       <Filter>Development\シェーダーファイル</Filter>
     </FxCompile>
   </ItemGroup>

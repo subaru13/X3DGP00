@@ -1,4 +1,5 @@
 #pragma once
+#include "SimpleSound.h"
 #include "Sprite.h"
 #include "SpriteBatch.h"
 #include "OffScreen.h"
@@ -8,7 +9,23 @@
 #include "CreateComObjectHelpar.h"
 #include "ConstantBuffer.h"
 #include "Bloom.h"
+#include "Particle.h"
 #include <memory>
+
+
+/// <summary>
+/// サウンドデバイスを作成します。
+/// </summary>
+/// <param name="file_name">サウンドのアドレス</param>
+/// <param name="hwnd">ウィンドウハンドル</param>
+#ifdef UNICODE
+inline std::unique_ptr<SimpleSoundDevice> makeSoundDevice(std::wstring file_name, HWND hwnd = NULL)
+#else
+inline std::unique_ptr<SimpleSoundDevice> makeSoundDevice(std::string file_name, HWND hwnd = NULL)
+#endif // UNICODE
+{
+	return std::make_unique<SimpleSoundDevice>(file_name, hwnd);
+}
 
 /// <summary>
 ///	スプライトを作成します。
@@ -167,6 +184,19 @@ inline std::unique_ptr<BloomRenderer> makeBloomRenderer(ID3D11Device* device,
 }
 
 /// <summary>
+///
+/// </summary>
+/// <param name="device"></param>
+/// <param name="max_sprites"></param>
+/// <param name="file_name"></param>
+/// <returns></returns>
+inline std::unique_ptr<Particle> makeParticle(ID3D11Device* device,
+	size_t max_sprites, const wchar_t* file_name = L"\0")
+{
+	return std::make_unique<Particle>(device, file_name, max_sprites);
+}
+
+/// <summary>
 /// ピクセルシェーダーを作成します。
 /// </summary>
 /// <param name="device">有効なデバイス</param>
@@ -178,11 +208,48 @@ inline Microsoft::WRL::ComPtr<ID3D11PixelShader> makePixelShader(ID3D11Device* d
 	return pixel_shader;
 }
 
+/// <summary>
+/// ジオメトリシェーダーを作成します。
+/// </summary>
+/// <param name="device">有効なデバイス</param>
+/// <param name="cso_filename">ジオメトリシェーダー(cso)のアドレス</param>
+inline Microsoft::WRL::ComPtr<ID3D11GeometryShader> makeGeometryShader(ID3D11Device* device, std::string cso_filename)
+{
+	Microsoft::WRL::ComPtr<ID3D11GeometryShader> geometry_shader;
+	loadGeometryShader(device, cso_filename, geometry_shader.ReleaseAndGetAddressOf());
+	return geometry_shader;
+}
+
+/// <summary>
+/// ドメインシェーダーを作成します。
+/// </summary>
+/// <param name="device">有効なデバイス</param>
+/// <param name="cso_filename">ドメインシェーダー(cso)のアドレス</param>
+inline Microsoft::WRL::ComPtr<ID3D11DomainShader> makeDomainShader(ID3D11Device* device, std::string cso_filename)
+{
+	Microsoft::WRL::ComPtr<ID3D11DomainShader> domain_shader;
+	loadDomainShader(device, cso_filename, domain_shader.ReleaseAndGetAddressOf());
+	return domain_shader;
+}
+
+/// <summary>
+/// ハルシェーダーを作成します。
+/// </summary>
+/// <param name="device">有効なデバイス</param>
+/// <param name="cso_filename">ハルシェーダー(cso)のアドレス</param>
+inline Microsoft::WRL::ComPtr<ID3D11HullShader> makeHullShader(ID3D11Device* device, std::string cso_filename)
+{
+	Microsoft::WRL::ComPtr<ID3D11HullShader> hull_shader;
+	loadHullShader(device, cso_filename, hull_shader.ReleaseAndGetAddressOf());
+	return hull_shader;
+}
+
 template <class T>
 using MyInterface			= std::shared_ptr <T>;
 template <class T>
 using MyComInterface		= Microsoft::WRL::ComPtr<T>;
 
+using ISoundDevice			= MyInterface<SimpleSoundDevice>;
 using ISprite				= MyInterface<Sprite>;
 using ISpriteBatch			= MyInterface<SpriteBatch>;
 using ISkinnedMesh			= MyInterface<SkinnedMesh>;
@@ -196,6 +263,7 @@ using IGeometryBuffer		= MyInterface<GeometryBuffer>;
 using IFullScreenQuad		= MyInterface<FullScreenQuad>;
 using IGaussianFilter		= MyInterface<GaussianFilter>;
 using IBloomRenderer		= MyInterface<BloomRenderer>;
+using IParticle				= MyInterface<Particle>;
 using IShaderResourceView	= MyComInterface<ID3D11ShaderResourceView>;
 using IPixelShader			= MyComInterface<ID3D11PixelShader>;
 using IGeometryShader		= MyComInterface<ID3D11GeometryShader>;

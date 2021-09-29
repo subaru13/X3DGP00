@@ -298,7 +298,7 @@ public:
 	/// 0に近いほど1つ目のキーフレームが使用されます。
 	/// </param>
 	/// <param name="keyframe">合成したキーフレーム</param>
-	void blendAnimations(const Animation::keyframe* keyframes[2], float factor, Animation::keyframe& keyframe);
+	void blendAnimations(const Animation::keyframe* keyframes[2], float factor, Animation::keyframe& keyframe)const;
 	/// <summary>
 	/// シーンビューのデータを取得します。
 	/// </summary>

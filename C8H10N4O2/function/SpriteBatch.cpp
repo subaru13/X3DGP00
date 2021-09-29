@@ -344,3 +344,19 @@ void SpriteBatch::end(ID3D11DeviceContext* immediate_context)
 	immediate_context->IASetInputLayout(input_layout.Get());
 	immediate_context->Draw(static_cast<UINT>(vertex_count), 0);
 }
+
+void SpriteBatch::sendTextrue(ID3D11DeviceContext* immediate_context,
+	UINT slot,
+	bool use_vs,
+	bool use_ps,
+	bool use_ds,
+	bool use_hs,
+	bool use_gs) const
+{
+	assert(immediate_context && "The context is invalid.");
+	if (use_vs)immediate_context->VSSetShaderResources(slot, 1, shader_resource_view.GetAddressOf());
+	if (use_ps)immediate_context->PSSetShaderResources(slot, 1, shader_resource_view.GetAddressOf());
+	if (use_ds)immediate_context->DSSetShaderResources(slot, 1, shader_resource_view.GetAddressOf());
+	if (use_hs)immediate_context->HSSetShaderResources(slot, 1, shader_resource_view.GetAddressOf());
+	if (use_gs)immediate_context->GSSetShaderResources(slot, 1, shader_resource_view.GetAddressOf());
+}

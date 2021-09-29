@@ -357,3 +357,19 @@ void Sprite::quad(ID3D11DeviceContext* immediate_context, ID3D11PixelShader** ex
 	immediate_context->RSGetViewports(&num_viewports, &viewport);
 	render(immediate_context, external_pixel_shader, { 0.0f,0.0f }, { viewport.Width,viewport.Height }, texpos, texsize, 0.0f, color);
 }
+
+void Sprite::sendTextrue(ID3D11DeviceContext* immediate_context,
+	UINT slot,
+	bool use_vs,
+	bool use_ps,
+	bool use_ds,
+	bool use_hs,
+	bool use_gs) const
+{
+	assert(immediate_context && "The context is invalid.");
+	if (use_vs)immediate_context->VSSetShaderResources(slot, 1, shader_resource_view.GetAddressOf());
+	if (use_ps)immediate_context->PSSetShaderResources(slot, 1, shader_resource_view.GetAddressOf());
+	if (use_ds)immediate_context->DSSetShaderResources(slot, 1, shader_resource_view.GetAddressOf());
+	if (use_hs)immediate_context->HSSetShaderResources(slot, 1, shader_resource_view.GetAddressOf());
+	if (use_gs)immediate_context->GSSetShaderResources(slot, 1, shader_resource_view.GetAddressOf());
+}

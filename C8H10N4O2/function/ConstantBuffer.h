@@ -49,12 +49,20 @@ public:
 		The arguments set the destination slot number
 		and type of shader to send.
 	**************************************************************/
-	void send(ID3D11DeviceContext* immediate_context, UINT slot, bool use_vs = true, bool use_ps = true)
+	void send(ID3D11DeviceContext* immediate_context, UINT slot,
+		bool use_vs = true,
+		bool use_ps = true,
+		bool use_ds = true,
+		bool use_hs = true,
+		bool use_gs = true)
 	{
 		assert(immediate_context && "The context is invalid.");
 		immediate_context->UpdateSubresource(buffer.Get(), 0u, nullptr, &data, 0u, 0u);
 		if (use_vs)immediate_context->VSSetConstantBuffers(slot, 1U, buffer.GetAddressOf());
 		if (use_ps)immediate_context->PSSetConstantBuffers(slot, 1U, buffer.GetAddressOf());
+		if (use_ds)immediate_context->DSSetConstantBuffers(slot, 1U, buffer.GetAddressOf());
+		if (use_hs)immediate_context->HSSetConstantBuffers(slot, 1U, buffer.GetAddressOf());
+		if (use_gs)immediate_context->GSSetConstantBuffers(slot, 1U, buffer.GetAddressOf());
 	}
 
 	virtual ~ConstantBuffer() = default;
