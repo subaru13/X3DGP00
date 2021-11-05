@@ -1,4 +1,5 @@
 #pragma once
+#include "../FrameworkConfig.h"
 #include <map>
 #include <Windows.h>
 #include <memory>
@@ -12,7 +13,7 @@ public:
 		short n;
 	};
 private:
-	std::map<char, std::shared_ptr<KeyObject>> Keys;
+	std::map<char, std::shared_ptr<KeyObject>> keys;
 	KeyManager() = default;
 public:
 
@@ -24,8 +25,8 @@ public:
 
 	void update()
 	{
-		if (Keys.empty())return;
-		for (auto& it = Keys.begin(); it != Keys.end();)
+		if (keys.empty())return;
+		for (auto& it = keys.begin(); it != keys.end();)
 		{
 			if (it->second.use_count() > 1)
 			{
@@ -35,24 +36,24 @@ public:
 			}
 			else
 			{
-				it = Keys.erase(it);
+				it = keys.erase(it);
 			}
 		}
 	}
 
 	std::shared_ptr<KeyObject>& addKey(char key)
 	{
-		auto it = Keys.find(key);
-		if (it == Keys.end())
+		auto it = keys.find(key);
+		if (it == keys.end())
 		{
-			it = Keys.emplace(key, std::make_shared<KeyObject>()).first;
+			it = keys.emplace(key, std::make_shared<KeyObject>()).first;
 		}
 		return it->second;
 	}
 
 	~KeyManager()
 	{
-		Keys.clear();
+		keys.clear();
 	}
 };
 
@@ -106,6 +107,12 @@ public:
 	{
 		GetCursorPos(&pos);
 		ScreenToClient(hwnd, &pos);
+		RECT rc;
+		GetClientRect(hwnd, &rc);
+		float screen_w = (float)(rc.right - rc.left);
+		float screen_h = (float)(rc.bottom - rc.top);
+		pos.x = static_cast<LONG>((float)pos.x * ((float)SCREEN_WIDTH / screen_w));
+		pos.y = static_cast<LONG>((float)pos.y * ((float)SCREEN_HEIGHT / screen_h));
 	}
 
 	const POINT& getPos()const { return pos; }

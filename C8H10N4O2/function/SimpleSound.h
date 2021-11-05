@@ -1,146 +1,247 @@
 #ifndef INCLUDE_SIMPLE_SOUND_DEVICE
 #define INCLUDE_SIMPLE_SOUND_DEVICE
 
-#pragma comment (lib,"winmm.lib")
-#pragma comment (lib,"shlwapi.lib")
-#include <wchar.h>
-#include <string>
-#include <mmsystem.h>
-#include <shlwapi.h>
-#include <thread>
-#include <Windows.h>
+#pragma comment ( lib, "winmm.lib" )
+#pragma comment ( lib, "Xaudio2.lib")
 
-/*********************************************************************************************
-**						This is a device that just makes a simple sound.					**
-**						If there is a space in the file path,								**
-**						the file cannot be opened properly.									**
-**						"wav" and "mp3" are supported.										**
-**						All member functions return 0 on success.							**
-**						If it fails, it returns anything else.								**
-*********************************************************************************************/
-class SimpleSoundDevice
+#include <xaudio2.h>
+#include <memory>
+#include <assert.h>
+
+#ifdef _XBOX //Big-Endian
+#define fourccRIFF 'RIFF'
+#define fourccDATA 'data'
+#define fourccFMT 'fmt '
+#define fourccWAVE 'WAVE'
+#define fourccXWMA 'XWMA'
+#define fourccDPDS 'dpds'
+#endif
+
+#ifndef _XBOX //Little-Endian
+#define fourccRIFF 'FFIR'
+#define fourccDATA 'atad'
+#define fourccFMT ' tmf'
+#define fourccWAVE 'EVAW'
+#define fourccXWMA 'AMWX'
+#define fourccDPDS 'sdpd'
+#endif
+
+class CXAMaster
 {
-public:
-	static constexpr unsigned int BUFFER_SIZE = 256U;
 private:
-#ifdef UNICODE
-	typedef std::wstring String;
-	typedef wchar_t Character;
-#else
-	typedef std::string String;
-	typedef char Character;
-#endif // UNICODE
-	static void assertMessage(MCIERROR errCord)
+	IXAudio2* p_ixaudio2 = nullptr;
+	IXAudio2MasteringVoice* p_master_voice = nullptr;
+	CXAMaster()
 	{
-		if (errCord != 0L)
-		{
-			Character buff[BUFFER_SIZE] = {};
-			mciGetErrorString(errCord, buff, BUFFER_SIZE);
-			if (MessageBox(NULL, buff, TEXT("ERROR!!"), MB_ICONHAND) == IDOK)
-			{
-				exit(0);
-			}
-		}
+		HRESULT hr = S_OK;
+		hr = XAudio2Create(&p_ixaudio2);
+		assert(hr == S_OK);
+		hr = p_ixaudio2->CreateMasteringVoice(&p_master_voice);
+		assert(hr == S_OK);
 	}
-	const String pass;
-	bool is_stop;
-	bool effectiveness_thread;
-	HWND hwnd;
-	Character buff[BUFFER_SIZE];
-	static void loopThread(SimpleSoundDevice* sound)
-	{
-#ifdef _DEBUG
-		OutputDebugString(TEXT("The thread has started.\n"));
-#endif // DEBUG
-		sound->effectiveness_thread = true;
-		Character buff[BUFFER_SIZE] = {};
-		while (true)
-		{
-			if (!sound->is_stop)
-			{
-				assertMessage(sound->getMode(buff));
-				if (buff == String(TEXT("stopped")))sound->play(false);
-			}
-			else break;
-		}
-		sound->effectiveness_thread = false;
-#ifdef _DEBUG
-		OutputDebugString(TEXT("The thread has terminated.\n"));
-#endif // DEBUG
-	}
-
 public:
-	SimpleSoundDevice(String pass, HWND hwnd = NULL)
-		:pass(pass), is_stop(true), effectiveness_thread(false), hwnd(hwnd), buff(TEXT(""))
+	~CXAMaster()
 	{
-		assertMessage(mciSendString(String(TEXT("open ") + pass).c_str(), NULL, 0U, hwnd));
-	}
-
-	virtual ~SimpleSoundDevice()
-	{
-		assertMessage(stop());
-		while (effectiveness_thread);
-		assertMessage(mciSendString(String(TEXT("close ") + pass).c_str(), NULL, 0u, hwnd));
-	}
-
-	virtual MCIERROR play(bool loop = false)
-	{
-		is_stop = false;
-		if (loop)
+		if (p_master_voice != nullptr)
 		{
-			std::thread L_Thread(SimpleSoundDevice::loopThread, this);
-			L_Thread.detach();
-			return 0L;
+			p_master_voice->DestroyVoice();
+			p_master_voice = nullptr;
 		}
-		return mciSendString(String(TEXT("play ") + pass + TEXT(" from 0")).c_str(), NULL, 0u, hwnd);
+		if (p_ixaudio2 != nullptr)
+		{
+			p_ixaudio2->Release();
+			p_ixaudio2 = nullptr;
+		}
 	}
 
-	virtual MCIERROR stop()
+	static std::shared_ptr<CXAMaster>& getInstance()
 	{
-		is_stop = true;
-		return mciSendString(String(_TEXT("stop ") + pass).c_str(), NULL, 0u, hwnd);
+		static std::shared_ptr<CXAMaster> ins{ new CXAMaster() };
+		return ins;
 	}
 
-	virtual MCIERROR resume()
+	void createSourceVoice(
+		IXAudio2SourceVoice** source_voice,
+		WAVEFORMATEX* wformat)
 	{
-		assertMessage(getMode(buff));
-		return (buff == String(_TEXT("paused"))) ? mciSendString(String(_TEXT("resume ") + pass).c_str(), NULL, 0u, hwnd) : 0L;
+		HRESULT hr = p_ixaudio2->CreateSourceVoice(source_voice, wformat);
+		assert(hr == S_OK);
 	}
 
-	virtual MCIERROR pause()
+	void enableMute()
 	{
-		assertMessage(getMode(buff));
-		return (buff == String(TEXT("playing"))) ? mciSendString(String(TEXT("pause ") + pass).c_str(), NULL, 0u, hwnd) : 0L;
+		HRESULT hr = p_master_voice->SetVolume(0.0f);
+		assert(hr == S_OK);
 	}
 
-	virtual MCIERROR getPosition(int* result)
+	void disableMute()
 	{
-		Character buff[BUFFER_SIZE];
-		MCIERROR errCord = mciSendString(String(TEXT("status ") + pass + TEXT(" position")).c_str(), buff, BUFFER_SIZE, hwnd);
-		(*result) = StrToInt(buff);
-		return errCord;
+		HRESULT hr = p_master_voice->SetVolume(1.0f);
+		assert(hr == S_OK);
 	}
 
-	virtual MCIERROR getLength(int* result)
-	{
-		Character buff[BUFFER_SIZE];
-		MCIERROR errCord = mciSendString(String(_TEXT("status ") + pass + _TEXT(" length")).c_str(), buff, BUFFER_SIZE, hwnd);
-		(*result) = StrToInt(buff);
-		return errCord;
-	}
-
-	virtual MCIERROR getMode(Character(&result)[BUFFER_SIZE])
-	{
-		return mciSendString(String(TEXT("status ") + pass + TEXT(" mode")).c_str(), result, BUFFER_SIZE, hwnd);
-	}
-
-	virtual MCIERROR setTimeFormatMilliseconds()
-	{
-		return mciSendString(String(TEXT("set ") + pass + TEXT(" time format milliseconds")).c_str(), NULL, 0u, hwnd);
-	}
-
-	SimpleSoundDevice& operator=(SimpleSoundDevice&) = default;
-	SimpleSoundDevice(SimpleSoundDevice&) = default;
 };
 
+class CXAudio
+{
+protected:
+	std::shared_ptr<CXAMaster>	cxa_master;
+	IXAudio2SourceVoice*		source_voice;
+	WAVEFORMATEXTENSIBLE		wformat;
+	BYTE*						chunk_data;
+	XAUDIO2_BUFFER				xaudio2_buffer;
+	float						volume;
+protected:
+	HRESULT findChunk(HANDLE hFile, DWORD fourcc, DWORD& dwChunkSize, DWORD& dwChunkDataPosition)
+	{
+		HRESULT hr = S_OK;
+		if (INVALID_SET_FILE_POINTER == SetFilePointer(hFile, 0, NULL, FILE_BEGIN))
+			return HRESULT_FROM_WIN32(GetLastError());
+		DWORD dwChunkType;
+		DWORD dwChunkDataSize;
+		DWORD dwRIFFDataSize = 0;
+		DWORD dwFileType;
+		DWORD bytesRead = 0;
+		DWORD dwOffset = 0;
+		while (hr == S_OK)
+		{
+			DWORD dwRead;
+			if (FALSE == ReadFile(hFile, &dwChunkType, sizeof(DWORD), &dwRead, NULL))
+				hr = HRESULT_FROM_WIN32(GetLastError());
+			if (FALSE == ReadFile(hFile, &dwChunkDataSize, sizeof(DWORD), &dwRead, NULL))
+				hr = HRESULT_FROM_WIN32(GetLastError());
+			switch (dwChunkType)
+			{
+			case fourccRIFF:
+				dwRIFFDataSize = dwChunkDataSize;
+				dwChunkDataSize = 4;
+				if (FALSE == ReadFile(hFile, &dwFileType, sizeof(DWORD), &dwRead, NULL))
+					hr = HRESULT_FROM_WIN32(GetLastError());
+				break;
+			default:
+				if (INVALID_SET_FILE_POINTER == SetFilePointer(hFile, dwChunkDataSize, NULL, FILE_CURRENT))
+					return HRESULT_FROM_WIN32(GetLastError());
+			}
+			dwOffset += sizeof(DWORD) * 2;
+			if (dwChunkType == fourcc)
+			{
+				dwChunkSize = dwChunkDataSize;
+				dwChunkDataPosition = dwOffset;
+				return S_OK;
+			}
+			dwOffset += dwChunkDataSize;
+			if (bytesRead >= dwRIFFDataSize) return S_FALSE;
+		}
+		return S_OK;
+	}
+	HRESULT readChunkData(HANDLE hFile, void* buffer, DWORD buffersize, DWORD bufferoffset)
+	{
+		HRESULT hr = S_OK;
+		if (INVALID_SET_FILE_POINTER == SetFilePointer(hFile, bufferoffset, NULL, FILE_BEGIN))
+			return HRESULT_FROM_WIN32(GetLastError());
+		DWORD dwRead;
+		if (FALSE == ReadFile(hFile, buffer, buffersize, &dwRead, NULL))
+			hr = HRESULT_FROM_WIN32(GetLastError());
+		return hr;
+	}
+public:
+	CXAudio(const wchar_t* filename, float volume = 1.0f)
+		:cxa_master(CXAMaster::getInstance()),
+		source_voice(nullptr), wformat(),
+		chunk_data(nullptr), xaudio2_buffer(),
+		volume(volume)
+	{
+		HANDLE file = CreateFileW(
+			filename,
+			GENERIC_READ,
+			FILE_SHARE_READ,
+			NULL, OPEN_EXISTING,
+			NULL, NULL);
+		assert(INVALID_HANDLE_VALUE != file);
+		assert(INVALID_SET_FILE_POINTER != SetFilePointer(file, NULL, NULL, FILE_BEGIN));
+		DWORD chunk_size;
+		DWORD chunk_position;
+		findChunk(file, fourccRIFF, chunk_size, chunk_position);
+		DWORD filetype;
+		readChunkData(file, &filetype, sizeof(DWORD), chunk_position);
+		assert(filetype == fourccWAVE);
+		findChunk(file, fourccFMT, chunk_size, chunk_position);
+		readChunkData(file, &wformat, chunk_size, chunk_position);
+		findChunk(file, fourccDATA, chunk_size, chunk_position);
+		chunk_data = new BYTE[chunk_size];
+		readChunkData(file, chunk_data, chunk_size, chunk_position);
+		xaudio2_buffer.AudioBytes = chunk_size;
+		xaudio2_buffer.pAudioData = chunk_data;
+		xaudio2_buffer.Flags = XAUDIO2_END_OF_STREAM;
+		cxa_master->createSourceVoice(&source_voice, &wformat.Format);
+	}
+
+	virtual void play(bool loop = true)
+	{
+		stop();
+		HRESULT hr = S_OK;
+		xaudio2_buffer.LoopCount = loop ? XAUDIO2_LOOP_INFINITE : FALSE;
+		hr = source_voice->SubmitSourceBuffer(&xaudio2_buffer);
+		assert(hr == S_OK);
+		hr = source_voice->Start();
+		assert(hr == S_OK);
+		hr = source_voice->SetVolume(volume);
+		assert(hr == S_OK);
+	}
+
+	virtual void stop()
+	{
+		HRESULT hr = S_OK;
+		hr = source_voice->Stop();
+		assert(hr == S_OK);
+		hr = source_voice->FlushSourceBuffers();
+		assert(hr == S_OK);
+	}
+
+	virtual void pause()
+	{
+		HRESULT hr = S_OK;
+		hr = source_voice->Stop();
+		assert(hr == S_OK);
+	}
+
+	virtual void resume()
+	{
+		HRESULT hr = S_OK;
+		hr = source_voice->Start();
+		assert(hr == S_OK);
+	}
+
+	virtual void setVolume(float _volume)
+	{
+		volume = _volume;
+		HRESULT hr = S_OK;
+		hr = source_voice->SetVolume(volume);
+		assert(hr == S_OK);
+	}
+
+	virtual const float& getVolume()const { return volume; }
+
+	virtual ~CXAudio()
+	{
+		if (source_voice != nullptr)
+		{
+			source_voice->DestroyVoice();
+			source_voice = nullptr;
+		}
+		if (chunk_data != nullptr)
+		{
+			delete[] chunk_data;
+			chunk_data = nullptr;
+		}
+		cxa_master.reset();
+	}
+};
+
+#undef fourccRIFF
+#undef fourccDATA
+#undef fourccFMT
+#undef fourccWAVE
+#undef fourccXWMA
+#undef fourccDPDS
 #endif // !INCLUDE_SIMPLE_SOUND_DEVICE

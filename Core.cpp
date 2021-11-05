@@ -50,7 +50,6 @@ void initializationProcessBeforeLoop(ID3D11Device* device)
 void updateProcess(float elapsed_time)
 {
 }
-
 /*********************************************************************
 			＠描画処理
 			シーンマネージャーの描画処理とは別に実行されます。

@@ -70,7 +70,7 @@ BloomRenderer::BloomRenderer(ID3D11Device* device, UINT w, UINT h, UINT shrink, 
 	FB_CONFIG config;
 	config.width = w;
 	config.height = h;
-	config.render_traget_format = format;
+	config.render_target_format = format;
 	config.depth_stencil_format = DXGI_FORMAT_R24G8_TYPELESS;
 	screen_buffer = std::make_shared<FrameBuffer>(device, config);
 	luminance_buffer = std::make_shared<FrameBuffer>(device, config);
@@ -97,15 +97,15 @@ void BloomRenderer::quad(ID3D11DeviceContext* immediate_context, int kernel_size
 	luminance_buffer->clear(immediate_context);
 	luminance_buffer->active(immediate_context);
 	luminance_constant_buffer.send(immediate_context, 1, false, true);
-	blit(immediate_context, screen_buffer->getRenderTragetShaderResourceView(), luminance_extraction.GetAddressOf());
+	blit(immediate_context, screen_buffer->getRenderTargetShaderResourceView(), luminance_extraction.GetAddressOf());
 	luminance_buffer->deactive(immediate_context);
 
-	render_traget->clear(immediate_context);
-	render_traget->active(immediate_context);
-	blit(immediate_context, luminance_buffer->getRenderTragetShaderResourceView(), NULL);
-	render_traget->deactive(immediate_context);
+	render_target->clear(immediate_context);
+	render_target->active(immediate_context);
+	blit(immediate_context, luminance_buffer->getRenderTargetShaderResourceView(), NULL);
+	render_target->deactive(immediate_context);
 
-	blit(immediate_context, screen_buffer->getRenderTragetShaderResourceView());
+	blit(immediate_context, screen_buffer->getRenderTargetShaderResourceView());
 	Microsoft::WRL::ComPtr<ID3D11BlendState>	cached_blend_state;
 	FLOAT blend_factor[4] = { 1,1,1,1 };
 	UINT sample_mask = 0xffffffff;

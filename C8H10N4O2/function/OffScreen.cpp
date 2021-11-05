@@ -5,43 +5,41 @@
 #include "../FrameworkConfig.h"
 #include <assert.h>
 
-void FrameBuffer::createRenderTraget(ID3D11Device* device)
+void FrameBuffer::createRenderTarget(ID3D11Device* device)
 {
 	HRESULT hr = S_OK;
-	{
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> render_traget_buffer;
-		D3D11_TEXTURE2D_DESC texture2d_desc{};
-		ZeroMemory(&texture2d_desc, sizeof(texture2d_desc));
-		texture2d_desc.Width = config.width;
-		texture2d_desc.Height = config.height;
-		texture2d_desc.MipLevels = 1;
-		texture2d_desc.ArraySize = 1;
-		texture2d_desc.Format = config.render_traget_format;
-		texture2d_desc.SampleDesc.Count = 1;
-		texture2d_desc.Usage = D3D11_USAGE_DEFAULT;
-		texture2d_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		texture2d_desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> render_target_buffer;
+	D3D11_TEXTURE2D_DESC texture2d_desc{};
+	ZeroMemory(&texture2d_desc, sizeof(texture2d_desc));
+	texture2d_desc.Width = config.width;
+	texture2d_desc.Height = config.height;
+	texture2d_desc.MipLevels = 1;
+	texture2d_desc.ArraySize = 1;
+	texture2d_desc.Format = config.render_target_format;
+	texture2d_desc.SampleDesc.Count = 1;
+	texture2d_desc.Usage = D3D11_USAGE_DEFAULT;
+	texture2d_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	texture2d_desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
-		hr = device->CreateTexture2D(&texture2d_desc, NULL, render_traget_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+	hr = device->CreateTexture2D(&texture2d_desc, NULL, render_target_buffer.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
-		D3D11_RENDER_TARGET_VIEW_DESC rtvd;
-		ZeroMemory(&rtvd, sizeof(rtvd));
-		rtvd.Format = config.render_traget_format;
-		rtvd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		rtvd.Texture2D.MipSlice = 0;
-		hr = device->CreateRenderTargetView(render_traget_buffer.Get(), &rtvd, render_traget_view.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+	D3D11_RENDER_TARGET_VIEW_DESC rtvd;
+	ZeroMemory(&rtvd, sizeof(rtvd));
+	rtvd.Format = config.render_target_format;
+	rtvd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	rtvd.Texture2D.MipSlice = 0;
+	hr = device->CreateRenderTargetView(render_target_buffer.Get(), &rtvd, render_target_view.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
-		D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
-		ZeroMemory(&srvd, sizeof(srvd));
-		srvd.Format = config.render_traget_format;
-		srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-		srvd.Texture2D.MostDetailedMip = 0;
-		srvd.Texture2D.MipLevels = 1;
-		hr = device->CreateShaderResourceView(render_traget_buffer.Get(), &srvd, render_traget_shader_resource_view.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
-	}
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
+	ZeroMemory(&srvd, sizeof(srvd));
+	srvd.Format = config.render_target_format;
+	srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvd.Texture2D.MostDetailedMip = 0;
+	srvd.Texture2D.MipLevels = 1;
+	hr = device->CreateShaderResourceView(render_target_buffer.Get(), &srvd, render_target_shader_resource_view.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 }
 
 void FrameBuffer::createDepthStencil(ID3D11Device* device)
@@ -86,12 +84,94 @@ void FrameBuffer::createDepthStencil(ID3D11Device* device)
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 }
 
+void FrameBuffer::createRenderTargetCube(ID3D11Device* device)
+{
+	HRESULT hr = S_OK;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> render_target_buffer;
+	D3D11_TEXTURE2D_DESC texture2d_desc{};
+	ZeroMemory(&texture2d_desc, sizeof(texture2d_desc));
+	texture2d_desc.Width = config.width;
+	texture2d_desc.Height = config.height;
+	texture2d_desc.MipLevels = 1;
+	texture2d_desc.ArraySize = 6;
+	texture2d_desc.Format = config.render_target_format;
+	texture2d_desc.SampleDesc.Count = 1;
+	texture2d_desc.Usage = D3D11_USAGE_DEFAULT;
+	texture2d_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	texture2d_desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	texture2d_desc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS | D3D11_RESOURCE_MISC_TEXTURECUBE;
+	hr = device->CreateTexture2D(&texture2d_desc, NULL, render_target_buffer.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	D3D11_RENDER_TARGET_VIEW_DESC rtvd;
+	ZeroMemory(&rtvd, sizeof(rtvd));
+	rtvd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+	rtvd.Texture2DArray.FirstArraySlice = 0;
+	rtvd.Texture2DArray.MipSlice = 0;
+	rtvd.Texture2DArray.ArraySize = 6;
+	hr = device->CreateRenderTargetView(render_target_buffer.Get(), &rtvd, render_target_view.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
+	ZeroMemory(&srvd, sizeof(srvd));
+	srvd.Format = config.render_target_format;
+	srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	srvd.TextureCube.MostDetailedMip = 0;
+	srvd.TextureCube.MipLevels = 1;
+	hr = device->CreateShaderResourceView(render_target_buffer.Get(), &srvd, render_target_shader_resource_view.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+}
+
+void FrameBuffer::createDepthStencilCube(ID3D11Device* device)
+{
+	HRESULT hr = S_OK;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> depth_stencil_buffer{};
+	D3D11_TEXTURE2D_DESC texture2d_desc{};
+	//	テクスチャ作成
+	ZeroMemory(&texture2d_desc, sizeof(texture2d_desc));
+	texture2d_desc.Width = config.width;
+	texture2d_desc.Height = config.height;
+	texture2d_desc.MipLevels = 1;
+	texture2d_desc.ArraySize = 6;
+	texture2d_desc.Format = config.depth_stencil_format;
+	texture2d_desc.SampleDesc.Count = 1;
+	texture2d_desc.SampleDesc.Quality = 0;
+	texture2d_desc.Usage = D3D11_USAGE_DEFAULT;
+	texture2d_desc.CPUAccessFlags = 0;
+	texture2d_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	texture2d_desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+	hr = device->CreateTexture2D(&texture2d_desc, NULL, depth_stencil_buffer.GetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	//	デプスステンシルビュー作成
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
+	ZeroMemory(&dsvd, sizeof(dsvd));
+	dsvd.Format = config.depth_stencil_format;
+	dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+	dsvd.Texture2DArray.FirstArraySlice = 0;
+	dsvd.Texture2DArray.ArraySize = 6;
+	dsvd.Texture2DArray.MipSlice = 0;
+	dsvd.Flags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+	hr = device->CreateDepthStencilView(depth_stencil_buffer.Get(), NULL, depth_stencil_view.GetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
+	ZeroMemory(&srvd, sizeof(srvd));
+	srvd.Format = config.depth_stencil_format;
+	srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	srvd.TextureCube.MostDetailedMip = 0;
+	srvd.TextureCube.MipLevels = 1;
+	hr = device->CreateShaderResourceView(depth_stencil_buffer.Get(), &srvd, depth_stencil_shader_resource_view.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+}
+
 FrameBuffer::FrameBuffer(ID3D11Device* device, const CONFIG& _config)
-	:render_traget_shader_resource_view(nullptr),
+	:render_target_shader_resource_view(nullptr),
 	depth_stencil_shader_resource_view(nullptr),
-	render_traget_view(nullptr),
+	render_target_view(nullptr),
 	depth_stencil_view(nullptr),
-	original_render_traget_view(nullptr),
+	original_render_target_view(nullptr),
 	original_depth_stencil_view(nullptr),
 	viewport(),
 	original_viewport(),
@@ -99,8 +179,18 @@ FrameBuffer::FrameBuffer(ID3D11Device* device, const CONFIG& _config)
 	config(_config)
 {
 	assert(device && "The device is invalid.");
-	createRenderTraget(device);
-	createDepthStencil(device);
+	if (config.is_cube_map)
+	{
+		config.width = config.height;
+		config.depth_stencil_format = DXGI_FORMAT_D32_FLOAT;
+		createRenderTargetCube(device);
+		createDepthStencilCube(device);
+	}
+	else
+	{
+		createRenderTarget(device);
+		createDepthStencil(device);
+	}
 
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
@@ -113,7 +203,7 @@ FrameBuffer::FrameBuffer(ID3D11Device* device, const CONFIG& _config)
 void FrameBuffer::clear(ID3D11DeviceContext* immediate_context,FLOAT4 color)
 {
 	assert(immediate_context && "The context is invalid.");
-	immediate_context->ClearRenderTargetView(render_traget_view.Get(), &color.x);
+	immediate_context->ClearRenderTargetView(render_target_view.Get(), &color.x);
 	immediate_context->ClearDepthStencilView(depth_stencil_view.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
@@ -124,54 +214,54 @@ void FrameBuffer::active(ID3D11DeviceContext* immediate_context)
 	num_views = ARRAYSIZE(original_viewport);
 	immediate_context->RSGetViewports(&num_views, original_viewport);
 	immediate_context->RSSetViewports(1, &viewport);
-	immediate_context->OMGetRenderTargets(1, original_render_traget_view.ReleaseAndGetAddressOf(),
+	immediate_context->OMGetRenderTargets(1, original_render_target_view.ReleaseAndGetAddressOf(),
 		original_depth_stencil_view.ReleaseAndGetAddressOf());
-	immediate_context->OMSetRenderTargets(1, render_traget_view.GetAddressOf(), depth_stencil_view.Get());
+	immediate_context->OMSetRenderTargets(1, render_target_view.GetAddressOf(), depth_stencil_view.Get());
 }
 
 void FrameBuffer::deactive(ID3D11DeviceContext* immediate_context)
 {
 	assert(immediate_context && "The context is invalid.");
-	immediate_context->OMSetRenderTargets(1, original_render_traget_view.GetAddressOf(), original_depth_stencil_view.Get());
+	immediate_context->OMSetRenderTargets(1, original_render_target_view.GetAddressOf(), original_depth_stencil_view.Get());
 	immediate_context->RSSetViewports(num_views, original_viewport);
 }
 
-void GeometryBuffer::createRenderTragets(ID3D11Device* device)
+void GeometryBuffer::createRenderTargets(ID3D11Device* device)
 {
 	HRESULT hr = S_OK;
 	for (UINT i = 0; i < SCREEN_COUNT; ++i)
 	{
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> render_traget_buffer;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> render_target_buffer;
 		D3D11_TEXTURE2D_DESC texture2d_desc{};
 		ZeroMemory(&texture2d_desc, sizeof(texture2d_desc));
 		texture2d_desc.Width = config.width;
 		texture2d_desc.Height = config.height;
 		texture2d_desc.MipLevels = 1;
 		texture2d_desc.ArraySize = 1;
-		texture2d_desc.Format = config.render_traget_formats[i];
+		texture2d_desc.Format = config.render_target_formats[i];
 		texture2d_desc.SampleDesc.Count = 1;
 		texture2d_desc.Usage = D3D11_USAGE_DEFAULT;
 		texture2d_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		texture2d_desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
-		hr = device->CreateTexture2D(&texture2d_desc, NULL, render_traget_buffer.ReleaseAndGetAddressOf());
+		hr = device->CreateTexture2D(&texture2d_desc, NULL, render_target_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		D3D11_RENDER_TARGET_VIEW_DESC rtvd;
 		ZeroMemory(&rtvd, sizeof(rtvd));
-		rtvd.Format = config.render_traget_formats[i];
+		rtvd.Format = config.render_target_formats[i];
 		rtvd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		rtvd.Texture2D.MipSlice = 0;
-		hr = device->CreateRenderTargetView(render_traget_buffer.Get(), &rtvd, render_traget_views[i].ReleaseAndGetAddressOf());
+		hr = device->CreateRenderTargetView(render_target_buffer.Get(), &rtvd, render_target_views[i].ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
 		ZeroMemory(&srvd, sizeof(srvd));
-		srvd.Format = config.render_traget_formats[i];
+		srvd.Format = config.render_target_formats[i];
 		srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		srvd.Texture2D.MostDetailedMip = 0;
 		srvd.Texture2D.MipLevels = 1;
-		hr = device->CreateShaderResourceView(render_traget_buffer.Get(), &srvd, render_traget_shader_resource_views[i].ReleaseAndGetAddressOf());
+		hr = device->CreateShaderResourceView(render_target_buffer.Get(), &srvd, render_target_shader_resource_views[i].ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 }
@@ -218,14 +308,97 @@ void GeometryBuffer::createDepthStencil(ID3D11Device* device)
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 }
 
+void GeometryBuffer::createRenderTargetsCube(ID3D11Device* device)
+{
+	HRESULT hr = S_OK;
+	for (UINT i = 0; i < SCREEN_COUNT; ++i)
+	{
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> render_target_buffer;
+		D3D11_TEXTURE2D_DESC texture2d_desc{};
+		ZeroMemory(&texture2d_desc, sizeof(texture2d_desc));
+		texture2d_desc.Width = config.width;
+		texture2d_desc.Height = config.height;
+		texture2d_desc.MipLevels = 1;
+		texture2d_desc.ArraySize = 6;
+		texture2d_desc.Format = config.render_target_formats[i];
+		texture2d_desc.SampleDesc.Count = 1;
+		texture2d_desc.Usage = D3D11_USAGE_DEFAULT;
+		texture2d_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		texture2d_desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+		texture2d_desc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS | D3D11_RESOURCE_MISC_TEXTURECUBE;
+		hr = device->CreateTexture2D(&texture2d_desc, NULL, render_target_buffer.ReleaseAndGetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
+		D3D11_RENDER_TARGET_VIEW_DESC rtvd;
+		ZeroMemory(&rtvd, sizeof(rtvd));
+		rtvd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+		rtvd.Texture2DArray.FirstArraySlice = 0;
+		rtvd.Texture2DArray.MipSlice = 0;
+		rtvd.Texture2DArray.ArraySize = 6;
+		hr = device->CreateRenderTargetView(render_target_buffer.Get(), &rtvd, render_target_views[i].ReleaseAndGetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
+		ZeroMemory(&srvd, sizeof(srvd));
+		srvd.Format = config.render_target_formats[i];
+		srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+		srvd.TextureCube.MostDetailedMip = 0;
+		srvd.TextureCube.MipLevels = 1;
+		hr = device->CreateShaderResourceView(render_target_buffer.Get(), &srvd, render_target_shader_resource_views[i].ReleaseAndGetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+	}
+}
+
+void GeometryBuffer::createDepthStencilCube(ID3D11Device* device)
+{
+	HRESULT hr = S_OK;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> depth_stencil_buffer{};
+	D3D11_TEXTURE2D_DESC texture2d_desc{};
+	//	テクスチャ作成
+	ZeroMemory(&texture2d_desc, sizeof(texture2d_desc));
+	texture2d_desc.Width = config.width;
+	texture2d_desc.Height = config.height;
+	texture2d_desc.MipLevels = 1;
+	texture2d_desc.ArraySize = 6;
+	texture2d_desc.Format = config.depth_stencil_format;
+	texture2d_desc.SampleDesc.Count = 1;
+	texture2d_desc.SampleDesc.Quality = 0;
+	texture2d_desc.Usage = D3D11_USAGE_DEFAULT;
+	texture2d_desc.CPUAccessFlags = 0;
+	texture2d_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	texture2d_desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+	hr = device->CreateTexture2D(&texture2d_desc, NULL, depth_stencil_buffer.GetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	//	デプスステンシルビュー作成
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
+	ZeroMemory(&dsvd, sizeof(dsvd));
+	dsvd.Format = config.depth_stencil_format;
+	dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+	dsvd.Texture2DArray.FirstArraySlice = 0;
+	dsvd.Texture2DArray.ArraySize = 6;
+	dsvd.Texture2DArray.MipSlice = 0;
+	dsvd.Flags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+	hr = device->CreateDepthStencilView(depth_stencil_buffer.Get(), NULL, depth_stencil_view.GetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
+	ZeroMemory(&srvd, sizeof(srvd));
+	srvd.Format = config.depth_stencil_format;
+	srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	srvd.TextureCube.MostDetailedMip = 0;
+	srvd.TextureCube.MipLevels = 1;
+	hr = device->CreateShaderResourceView(depth_stencil_buffer.Get(), &srvd, depth_stencil_shader_resource_view.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
+}
 
 GeometryBuffer::GeometryBuffer(ID3D11Device* device, const CONFIG& _config)
-	:render_traget_shader_resource_views(),
+	:render_target_shader_resource_views(),
 	depth_stencil_shader_resource_view(nullptr),
-	render_traget_views(),
+	render_target_views(),
 	depth_stencil_view(nullptr),
-	original_render_traget_view(nullptr),
+	original_render_target_view(nullptr),
 	original_depth_stencil_view(nullptr),
 	viewport(),
 	original_viewport(),
@@ -233,8 +406,19 @@ GeometryBuffer::GeometryBuffer(ID3D11Device* device, const CONFIG& _config)
 	config(_config)
 {
 	assert(device && "The device is invalid.");
-	createRenderTragets(device);
-	createDepthStencil(device);
+
+	if (config.is_cube_map)
+	{
+		config.width = config.height;
+		config.depth_stencil_format = DXGI_FORMAT_D32_FLOAT;
+		createRenderTargetsCube(device);
+		createDepthStencilCube(device);
+	}
+	else
+	{
+		createRenderTargets(device);
+		createDepthStencil(device);
+	}
 
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
@@ -247,7 +431,7 @@ GeometryBuffer::GeometryBuffer(ID3D11Device* device, const CONFIG& _config)
 void GeometryBuffer::clear(ID3D11DeviceContext* immediate_context, FLOAT4 color)
 {
 	assert(immediate_context && "The context is invalid.");
-	for (auto rtv : render_traget_views)
+	for (auto rtv : render_target_views)
 	{
 		immediate_context->ClearRenderTargetView(rtv.Get(), &color.x);
 	}
@@ -261,7 +445,7 @@ void GeometryBuffer::active(ID3D11DeviceContext* immediate_context)
 	num_views = ARRAYSIZE(original_viewport);
 	immediate_context->RSGetViewports(&num_views, original_viewport);
 	immediate_context->RSSetViewports(1, &viewport);
-	immediate_context->OMGetRenderTargets(1, original_render_traget_view.ReleaseAndGetAddressOf(),
+	immediate_context->OMGetRenderTargets(1, original_render_target_view.ReleaseAndGetAddressOf(),
 		original_depth_stencil_view.ReleaseAndGetAddressOf());
 	immediate_context->OMSetRenderTargets(SCREEN_COUNT, getRenderTargetViews().data(), depth_stencil_view.Get());
 }
@@ -269,13 +453,13 @@ void GeometryBuffer::active(ID3D11DeviceContext* immediate_context)
 void GeometryBuffer::deactive(ID3D11DeviceContext* immediate_context)
 {
 	assert(immediate_context && "The context is invalid.");
-	immediate_context->OMSetRenderTargets(1, original_render_traget_view.GetAddressOf(), original_depth_stencil_view.Get());
+	immediate_context->OMSetRenderTargets(1, original_render_target_view.GetAddressOf(), original_depth_stencil_view.Get());
 	immediate_context->RSSetViewports(num_views, original_viewport);
 }
 
 
 
-FullScreenQuad::FullScreenQuad(ID3D11Device* device, const char* ps_filename)
+Peinter::Peinter(ID3D11Device* device, const char* ps_filename)
 	: pixel_shader(nullptr), vertex_shader(nullptr)
 {
 	assert(device && "The device is invalid.");
@@ -334,14 +518,14 @@ FullScreenQuad::FullScreenQuad(ID3D11Device* device, const char* ps_filename)
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 }
 
-void FullScreenQuad::blit(ID3D11DeviceContext* immediate_context,
+void Peinter::blit(ID3D11DeviceContext* immediate_context,
 	ID3D11ShaderResourceView* shader_resource_view,
 	ID3D11PixelShader** external_pixel_shader) const
 {
 	blit(immediate_context, &shader_resource_view, 1, external_pixel_shader);
 }
 
-void FullScreenQuad::blit(ID3D11DeviceContext* immediate_context,
+void Peinter::blit(ID3D11DeviceContext* immediate_context,
 	ID3D11ShaderResourceView** shader_resource_views,
 	UINT shader_resource_views_count,
 	ID3D11PixelShader** external_pixel_shader) const

@@ -40,7 +40,7 @@ private:
 
 	ComPtr<ID3D11Device>				d3d11_device;
 	ComPtr<ID3D11DeviceContext>			d3d11_context;
-	ComPtr<ID3D11RenderTargetView>		d3d11_render_traget_view;
+	ComPtr<ID3D11RenderTargetView>		d3d11_render_target_view;
 	ComPtr<ID3D11DepthStencilView>		d3d11_depth_stencil_view;
 	std::unique_ptr<BlendStates>		d3d11_blend_states;
 	std::unique_ptr<DepthStencilStates>	d3d11_depth_stencil_states;
@@ -92,7 +92,7 @@ public:
 	static ID3D11RenderTargetView* getRenderTargetView()
 	{
 		assert(instance != nullptr && "No Instance.");
-		return instance->d3d11_render_traget_view.Get();
+		return instance->d3d11_render_target_view.Get();
 	}
 
 	/// <summary>

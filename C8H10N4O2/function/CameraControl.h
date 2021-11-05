@@ -6,7 +6,7 @@ class CameraControl
 {
 private:
 	FLOAT3 pos;
-	FLOAT3 traget;
+	FLOAT3 target;
 	FLOAT3 up_vector;
 
 	float fov;
@@ -23,7 +23,7 @@ public:
 	CameraControl();
 
 	FLOAT3* getPos()	{ return &pos; }
-	FLOAT3* getTraget()	{ return &traget; }
+	FLOAT3* getTarget()	{ return &target; }
 	FLOAT3* getUp()		{ return &up_vector; }
 
 	float* getFov()		{ return &fov; }

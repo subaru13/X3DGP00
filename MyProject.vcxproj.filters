@@ -85,9 +85,6 @@
     <ClCompile Include="C8H10N4O2\function\SceneManager.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Core.cpp">
-      <Filter>Development\ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="C8H10N4O2\function\OffScreen.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
     </ClCompile>
@@ -129,6 +126,9 @@
     </ClCompile>
     <ClCompile Include="C8H10N4O2\function\Particle.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Development\ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -333,9 +333,6 @@
     </FxCompile>
     <FxCompile Include="C8H10N4O2\shader\gaussian_blur_ps.hlsl">
       <Filter>C8H10N4O2\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="CreateNormalMap.hlsl">
-      <Filter>Development\シェーダーファイル</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

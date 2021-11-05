@@ -22,7 +22,7 @@ void debugModeEndProcessAfterTheLoopEnds();
 
 Framework::Framework(HWND hwnd)
 	:hwnd(hwnd), d3d11_device(nullptr), d3d11_context(nullptr),
-	d3d11_render_traget_view(nullptr), d3d11_depth_stencil_view(nullptr),
+	d3d11_render_target_view(nullptr), d3d11_depth_stencil_view(nullptr),
 	idxgi_swapchain(nullptr), d3d11_blend_states(nullptr), screenshot_key(nullptr)
 {
 	assert(instance == nullptr && "No more instances can be created.");
@@ -30,7 +30,7 @@ Framework::Framework(HWND hwnd)
 
 	HRESULT hr{ S_OK };
 
-	hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_MULTITHREADED);
+	hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED );
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	//Creating a device and swap chain
@@ -70,7 +70,7 @@ Framework::Framework(HWND hwnd)
 		ComPtr<ID3D11Texture2D> back_buffer{};
 		hr = idxgi_swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(back_buffer.ReleaseAndGetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
-		hr = d3d11_device->CreateRenderTargetView(back_buffer.Get(), NULL, d3d11_render_traget_view.ReleaseAndGetAddressOf());
+		hr = d3d11_device->CreateRenderTargetView(back_buffer.Get(), NULL, d3d11_render_target_view.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 	}
 
@@ -174,7 +174,7 @@ void Framework::update()
 	if (screenshot_key->down())
 	{
 		Microsoft::WRL::ComPtr<ID3D11Resource> resource;
-		d3d11_render_traget_view->GetResource(resource.ReleaseAndGetAddressOf());
+		d3d11_render_target_view->GetResource(resource.ReleaseAndGetAddressOf());
 		time_t t = time(NULL);
 		tm time_stamp{};
 		errno_t err = localtime_s(&time_stamp, &t);
@@ -201,10 +201,10 @@ void Framework::render()
 {
 	HRESULT hr{ S_OK };
 
-	d3d11_context->ClearRenderTargetView(d3d11_render_traget_view.Get(), FILL_COLOR);
+	d3d11_context->ClearRenderTargetView(d3d11_render_target_view.Get(), FILL_COLOR);
 	d3d11_context->ClearDepthStencilView(d3d11_depth_stencil_view.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	d3d11_context->OMSetRenderTargets(1, d3d11_render_traget_view.GetAddressOf(), d3d11_depth_stencil_view.Get());
+	d3d11_context->OMSetRenderTargets(1, d3d11_render_target_view.GetAddressOf(), d3d11_depth_stencil_view.Get());
 
 	ID3D11ShaderResourceView* null_srv[16] = { nullptr };
 

@@ -144,6 +144,31 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device,
 		traverse(fbx_scene->GetRootNode());
 		fetchMeshes(fbx_scene, meshes);
 		fetchMaterials(fbx_scene, materials);
+		std::string directory = std::filesystem::path(fbx_filename).filename().replace_extension("fbm").string();
+
+		for (auto iterator = materials.begin(); iterator != materials.end(); ++iterator)
+		{
+			if (iterator->second.texture_filenames[0].size() > 0)
+			{
+				size_t offset = iterator->second.texture_filenames[0].find(directory);
+				if (offset != std::string::npos)
+				{
+					std::string re_path = iterator->second.texture_filenames[0].substr(offset);
+					iterator->second.texture_filenames[0] =
+						std::filesystem::path(re_path).relative_path().string();
+				}
+			}
+			if (iterator->second.texture_filenames[1].size() > 0)
+			{
+				size_t offset = iterator->second.texture_filenames[1].find(directory);
+				if (offset != std::string::npos)
+				{
+					std::string re_path = iterator->second.texture_filenames[1].substr(offset);
+					iterator->second.texture_filenames[1] =
+						std::filesystem::path(re_path).relative_path().string();
+				}
+			}
+		}
 		fetchAnimations(fbx_scene, animation_clips, sampling_rate);
 
 		fbx_manager->Destroy();

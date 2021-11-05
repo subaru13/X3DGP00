@@ -9,25 +9,28 @@ class FrameBuffer
 public:
 	struct CONFIG
 	{
-		UINT width=0;
-		UINT height = 0;
-		DXGI_FORMAT render_traget_format = DXGI_FORMAT_R8G8B8A8_UNORM;
-		DXGI_FORMAT depth_stencil_format = DXGI_FORMAT_R24G8_TYPELESS;
+		UINT		width					= 0;
+		UINT		height					= 0;
+		DXGI_FORMAT	render_target_format	= DXGI_FORMAT_R8G8B8A8_UNORM;
+		DXGI_FORMAT	depth_stencil_format	= DXGI_FORMAT_R24G8_TYPELESS;
+		BOOL		is_cube_map				= FALSE;
 	};
 protected:
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	render_traget_shader_resource_view;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	render_target_shader_resource_view;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	depth_stencil_shader_resource_view;
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		render_traget_view;
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		render_target_view;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>		depth_stencil_view;
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		original_render_traget_view;
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		original_render_target_view;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>		original_depth_stencil_view;
 	D3D11_VIEWPORT										viewport;
 	D3D11_VIEWPORT										original_viewport[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
 	UINT												num_views;
-	const CONFIG										config;
+	CONFIG												config;
 protected:
-	void createRenderTraget(ID3D11Device* device);
+	void createRenderTarget(ID3D11Device* device);
 	void createDepthStencil(ID3D11Device* device);
+	void createRenderTargetCube(ID3D11Device* device);
+	void createDepthStencilCube(ID3D11Device* device);
 public:
 	FrameBuffer(ID3D11Device* device, const CONFIG& config);
 
@@ -54,9 +57,9 @@ public:
 	/// レンダーターゲットビューに関連付けられた
 	/// シェーダーリソースビューを取得します。
 	/// </summary>
-	ID3D11ShaderResourceView* getRenderTragetShaderResourceView()
+	ID3D11ShaderResourceView* getRenderTargetShaderResourceView()
 	{
-		return render_traget_shader_resource_view.Get();
+		return render_target_shader_resource_view.Get();
 	}
 
 	/// <summary>
@@ -73,7 +76,7 @@ public:
 	/// </summary>
 	ID3D11RenderTargetView* getRenderTargetView()
 	{
-		return render_traget_view.Get();
+		return render_target_view.Get();
 	}
 
 	/// <summary>
@@ -99,25 +102,28 @@ public:
 	static constexpr UINT SCREEN_COUNT = 3;
 	struct CONFIG
 	{
-		UINT width;
-		UINT height;
-		DXGI_FORMAT render_traget_formats[SCREEN_COUNT] = { DXGI_FORMAT_R8G8B8A8_UNORM,DXGI_FORMAT_R8G8B8A8_UNORM,DXGI_FORMAT_R8G8B8A8_UNORM };
-		DXGI_FORMAT depth_stencil_format = DXGI_FORMAT_R24G8_TYPELESS;
+		UINT		width								= 0;
+		UINT		height								= 0;
+		DXGI_FORMAT	render_target_formats[SCREEN_COUNT] = { DXGI_FORMAT_R8G8B8A8_UNORM,DXGI_FORMAT_R8G8B8A8_UNORM,DXGI_FORMAT_R8G8B8A8_UNORM };
+		DXGI_FORMAT	depth_stencil_format				= DXGI_FORMAT_R24G8_TYPELESS;
+		BOOL		is_cube_map							= FALSE;
 	};
 protected:
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	render_traget_shader_resource_views[SCREEN_COUNT];
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	render_target_shader_resource_views[SCREEN_COUNT];
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	depth_stencil_shader_resource_view;
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		render_traget_views[SCREEN_COUNT];
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		render_target_views[SCREEN_COUNT];
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>		depth_stencil_view;
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		original_render_traget_view;
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		original_render_target_view;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>		original_depth_stencil_view;
 	D3D11_VIEWPORT										viewport;
 	D3D11_VIEWPORT										original_viewport[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
 	UINT												num_views;
-	const CONFIG										config;
+	CONFIG												config;
 protected:
-	void createRenderTragets(ID3D11Device* device);
+	void createRenderTargets(ID3D11Device* device);
 	void createDepthStencil(ID3D11Device* device);
+	void createRenderTargetsCube(ID3D11Device* device);
+	void createDepthStencilCube(ID3D11Device* device);
 public:
 	GeometryBuffer(ID3D11Device* device, const CONFIG& config);
 
@@ -144,14 +150,14 @@ public:
 	/// レンダーターゲットビューに関連付けられた
 	/// シェーダーリソースビューを取得します。
 	/// </summary>
-	std::vector<ID3D11ShaderResourceView*> getRenderTragetShaderResourceViews()
+	std::vector<ID3D11ShaderResourceView*> getRenderTargetShaderResourceViews()
 	{
-		std::vector<ID3D11ShaderResourceView*> _render_traget_shader_resource_views{};
-		for (auto rtsrv : render_traget_shader_resource_views)
+		std::vector<ID3D11ShaderResourceView*> _render_target_shader_resource_views{};
+		for (auto rtsrv : render_target_shader_resource_views)
 		{
-			_render_traget_shader_resource_views.push_back(rtsrv.Get());
+			_render_target_shader_resource_views.push_back(rtsrv.Get());
 		}
-		return _render_traget_shader_resource_views;
+		return _render_target_shader_resource_views;
 	}
 
 	/// <summary>
@@ -168,12 +174,12 @@ public:
 	/// </summary>
 	std::vector<ID3D11RenderTargetView*> getRenderTargetViews()
 	{
-		std::vector<ID3D11RenderTargetView*> _render_traget_views{};
-		for (auto rtv : render_traget_views)
+		std::vector<ID3D11RenderTargetView*> _render_target_views{};
+		for (auto rtv : render_target_views)
 		{
-			_render_traget_views.push_back(rtv.Get());
+			_render_target_views.push_back(rtv.Get());
 		}
-		return _render_traget_views;
+		return _render_target_views;
 	}
 
 	/// <summary>
@@ -193,13 +199,13 @@ public:
 
 using GB_CONFIG = GeometryBuffer::CONFIG;
 
-class FullScreenQuad
+class Peinter
 {
 private:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader;
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertex_shader;
 public:
-	FullScreenQuad(ID3D11Device* device, const char* ps_filename = NULL);
+	Peinter(ID3D11Device* device, const char* ps_filename = NULL);
 
 	/// <summary>
 	/// 全画面にSRVを描画します。

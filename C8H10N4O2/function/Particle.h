@@ -21,7 +21,7 @@ public:
 		FLOAT	attenuation_alpha = 0.0f;
 		FLOAT	timer = 0.0f;
 		FLOAT	animation_timer = 0.0f;
-		INT		chip_num = 0;
+		INT		chip_num = -1;
 	};
 
 private:

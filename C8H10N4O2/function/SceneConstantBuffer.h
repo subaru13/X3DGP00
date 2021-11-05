@@ -63,3 +63,11 @@ public:
 	/// <param name="immediate_context">有効なコンテキスト</param>
 	void send(ID3D11DeviceContext* immediate_context);
 };
+
+struct View360Degree
+{
+	FLOAT4X4 view_matrices[6] = {};
+	FLOAT4X4 projection_matrix;
+	View360Degree() : view_matrices{}, projection_matrix(){setPosition({ 0,0,0 }); }
+	void setPosition(const FLOAT3& position);
+};

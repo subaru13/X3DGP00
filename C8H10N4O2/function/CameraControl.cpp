@@ -5,7 +5,7 @@
 #define SWING_WIDTH toRadian(60.0f)
 
 CameraControl::CameraControl()
-	:pos(0.0f, 0.0f, -10.0f), traget(0.0f, 0.0f, 0.0f), up_vector(0.0f, 1.0f, 0.0f),
+	:pos(0.0f, 0.0f, -10.0f), target(0.0f, 0.0f, 0.0f), up_vector(0.0f, 1.0f, 0.0f),
 	fov(toRadian(30.0f)), width(static_cast<float>(SCREEN_WIDTH)), height(static_cast<float>(SCREEN_HEIGHT)),
 	znear(0.1f), zfar(1000.0f), l_fulcrum(), r_fulcrum(), c_fulcrum(){}
 
@@ -13,9 +13,9 @@ FLOAT4X4 CameraControl::getView() const
 {
 	XMVECTOR eye{ XMVectorSet(pos.x, pos.y, pos.z, 1.0f) };
 	XMVECTOR focus;
-	if (pos != traget)
+	if (pos != target)
 	{
-		focus = XMVectorSet(traget.x, traget.y, traget.z, 1.0f);
+		focus = XMVectorSet(target.x, target.y, target.z, 1.0f);
 	}
 	else
 	{
@@ -72,7 +72,7 @@ void CameraControl::update(float elapsed_time, float move_speed, float rotation_
 
 		FLOAT4X4 rotation4x4{};
 		XMStoreFloat4x4(&rotation4x4, RotationMatrix(attitude));
-		traget = pos + vec3Normalize(VECTOR3(rotation4x4._31, rotation4x4._32, rotation4x4._33));
+		target = pos + vec3Normalize(VECTOR3(rotation4x4._31, rotation4x4._32, rotation4x4._33));
 		up_vector = vec3Normalize(VECTOR3(rotation4x4._21, rotation4x4._22, rotation4x4._23));
 	}
 
@@ -99,7 +99,7 @@ void CameraControl::update(float elapsed_time, float move_speed, float rotation_
 			pos += drg.y > 0 ? -elapsed_time * forward * move_speed : elapsed_time * forward * move_speed;
 		}
 
-		traget = pos + forward;
+		target = pos + forward;
 	}
 
 
@@ -126,6 +126,6 @@ void CameraControl::update(float elapsed_time, float move_speed, float rotation_
 			pos += drg.y > 0 ? -elapsed_time * up_vector * move_speed : elapsed_time * up_vector * move_speed;
 		}
 
-		traget = pos + forward;
+		target = pos + forward;
 	}
 }

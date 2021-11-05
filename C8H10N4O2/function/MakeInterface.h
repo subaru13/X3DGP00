@@ -14,17 +14,13 @@
 
 
 /// <summary>
-/// サウンドデバイスを作成します。
+/// サウンドを作成します。
 /// </summary>
-/// <param name="file_name">サウンドのアドレス</param>
-/// <param name="hwnd">ウィンドウハンドル</param>
-#ifdef UNICODE
-inline std::unique_ptr<SimpleSoundDevice> makeSoundDevice(std::wstring file_name, HWND hwnd = NULL)
-#else
-inline std::unique_ptr<SimpleSoundDevice> makeSoundDevice(std::string file_name, HWND hwnd = NULL)
-#endif // UNICODE
+/// <param name="filename">サウンドのアドレス</param>
+/// <param name="volume">ボリューム</param>
+inline std::unique_ptr<CXAudio> makeSound(const wchar_t* filename, float volume = 1.0f)
 {
-	return std::make_unique<SimpleSoundDevice>(file_name, hwnd);
+	return std::make_unique<CXAudio>(filename, volume);
 }
 
 /// <summary>
@@ -143,13 +139,13 @@ inline std::unique_ptr<GeometryBuffer> makeGeometryBuffer(ID3D11Device* device, 
 }
 
 /// <summary>
-/// フルスクリーンクワッドを作成します。
+/// ペインターを作成します。
 /// </summary>
 /// <param name="device">有効なデバイス</param>
 /// <param name="ps_filename">ピクセルシェーダー(cso)のアドレス</param>
-inline std::unique_ptr<FullScreenQuad> makeFullScreenQuad(ID3D11Device* device, const char* ps_filename = NULL)
+inline std::unique_ptr<Peinter> makePeinter(ID3D11Device* device, const char* ps_filename = NULL)
 {
-	return std::make_unique<FullScreenQuad>(device, ps_filename);
+	return std::make_unique<Peinter>(device, ps_filename);
 }
 
 /// <summary>
@@ -249,7 +245,7 @@ using MyInterface			= std::shared_ptr <T>;
 template <class T>
 using MyComInterface		= Microsoft::WRL::ComPtr<T>;
 
-using ISoundDevice			= MyInterface<SimpleSoundDevice>;
+using ISound				= MyInterface<CXAudio>;
 using ISprite				= MyInterface<Sprite>;
 using ISpriteBatch			= MyInterface<SpriteBatch>;
 using ISkinnedMesh			= MyInterface<SkinnedMesh>;
@@ -260,7 +256,7 @@ using ISceneConstant		= MyInterface<SceneConstant>;
 using IGeometryPrimitive	= MyInterface<GeometryPrimitive>;
 using IFrameBuffer			= MyInterface<FrameBuffer>;
 using IGeometryBuffer		= MyInterface<GeometryBuffer>;
-using IFullScreenQuad		= MyInterface<FullScreenQuad>;
+using IPeinter				= MyInterface<Peinter>;
 using IGaussianFilter		= MyInterface<GaussianFilter>;
 using IBloomRenderer		= MyInterface<BloomRenderer>;
 using IParticle				= MyInterface<Particle>;

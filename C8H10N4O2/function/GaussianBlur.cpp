@@ -38,13 +38,13 @@ void GaussianFilter::_quad(ID3D11DeviceContext* immediate_context, int kernel_si
 	getWeight(weight, kernel_size, sigma);
 	memcpy(blur_constant_buffer.data.weight, weight, sizeof(FLOAT4) * GAUSSIAN_BLUR_WEIGHT_SIZE);
 	blur_constant_buffer.send(immediate_context, 1, false, true);
-	blit(immediate_context, render_traget->getRenderTragetShaderResourceView(), blur_pixel_shader.GetAddressOf());
+	blit(immediate_context, render_target->getRenderTargetShaderResourceView(), blur_pixel_shader.GetAddressOf());
 }
 
 GaussianFilter::GaussianFilter(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT format)
-	:FullScreenQuad(device,nullptr),
+	:Peinter(device,nullptr),
 	blur_constant_buffer(device),
-	render_traget(nullptr)
+	render_target(nullptr)
 {
 	assert(device && "The device is invalid.");
 	HRESULT hr = S_OK;
@@ -94,22 +94,22 @@ GaussianFilter::GaussianFilter(ID3D11Device* device, UINT w, UINT h, DXGI_FORMAT
 	FB_CONFIG config;
 	config.width = w;
 	config.height = h;
-	config.render_traget_format = format;
+	config.render_target_format = format;
 	config.depth_stencil_format = DXGI_FORMAT_R24G8_TYPELESS;
-	render_traget = std::make_shared<FrameBuffer>(device, config);
+	render_target = std::make_shared<FrameBuffer>(device, config);
 }
 
 void GaussianFilter::beginWriting(ID3D11DeviceContext* immediate_context)
 {
 	assert(immediate_context && "The context is invalid.");
-	render_traget->clear(immediate_context);
-	render_traget->active(immediate_context);
+	render_target->clear(immediate_context);
+	render_target->active(immediate_context);
 }
 
 void GaussianFilter::endWriting(ID3D11DeviceContext* immediate_context)
 {
 	assert(immediate_context && "The context is invalid.");
-	render_traget->deactive(immediate_context);
+	render_target->deactive(immediate_context);
 }
 
 void GaussianFilter::quad(ID3D11DeviceContext* immediate_context, int kernel_size, float sigma)

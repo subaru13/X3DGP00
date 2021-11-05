@@ -217,7 +217,7 @@ bool Particle::setVertex(innovation_vertex data)
 
 size_t Particle::setVertexs(size_t num, std::function<void(innovation_vertex&)> setter)
 {
-	for (size_t i = 0; i < max_vertex; i++)
+	for (size_t i = 0, e = num; i < e; i++)
 	{
 		if (vertex_data[i].chip_num >= 0)continue;
 		innovation_vertex data;
