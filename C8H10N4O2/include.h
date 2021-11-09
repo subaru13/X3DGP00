@@ -16,7 +16,7 @@
 #include "function/GeometryPrimitive.h"
 #include "function/ASCIIFont.h"
 #include "function/Arithmetic.h"
-#include "function/SimpleSound.h"
+#include "function/CXAUDIO.h"
 #include "function/SceneConstantBuffer.h"
 #include "function/SceneManager.h"
 #include "function/CreateComObjectHelpar.h"

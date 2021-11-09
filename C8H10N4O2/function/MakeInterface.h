@@ -1,5 +1,5 @@
 #pragma once
-#include "SimpleSound.h"
+#include "CXAUDIO.h"
 #include "Sprite.h"
 #include "SpriteBatch.h"
 #include "OffScreen.h"
@@ -14,13 +14,46 @@
 
 
 /// <summary>
-/// サウンドを作成します。
+/// オーディオリソースを作成します。
 /// </summary>
-/// <param name="filename">サウンドのアドレス</param>
-/// <param name="volume">ボリューム</param>
-inline std::unique_ptr<CXAudio> makeSound(const wchar_t* filename, float volume = 1.0f)
+/// <param name="filename">オーディオのアドレス</param>
+inline std::unique_ptr<AudioResource> makeAudioResource(std::string filename)
 {
-	return std::make_unique<CXAudio>(filename, volume);
+	return std::make_unique<AudioResource>(filename);
+}
+
+/// <summary>
+/// オーディオデバイスを作成します。
+/// </summary>
+inline std::unique_ptr<CXADevice> makeAudioDevice()
+{
+	return std::make_unique<CXADevice>();
+}
+
+template<class T, class... Args, std::enable_if_t<std::is_base_of<CXAPO, T>::value == true, int> = 0 >
+inline std::unique_ptr<T> makeAPO(CXADevice* device, Args... args)
+{
+	return std::make_unique<T>(device, args...);
+}
+
+/// <summary>
+/// オーディオを作成します。
+/// </summary>
+/// <param name="device">オーディオデバイス</param>
+/// <param name="filename">オーディオのアドレス</param>
+inline std::unique_ptr<CXAudio> makeAudio(CXADevice* device, std::string filename)
+{
+	return std::make_unique<CXAudio>(device, filename);
+}
+
+/// <summary>
+/// オーディオを作成します。
+/// </summary>
+/// <param name="device">オーディオデバイス</param>
+/// <param name="resource">オーディオリソース</param>
+inline std::unique_ptr<CXAudio> makeAudio(CXADevice* device,std::shared_ptr<AudioResource> resource)
+{
+	return std::make_unique<CXAudio>(device, resource);
 }
 
 /// <summary>
@@ -245,7 +278,12 @@ using MyInterface			= std::shared_ptr <T>;
 template <class T>
 using MyComInterface		= Microsoft::WRL::ComPtr<T>;
 
-using ISound				= MyInterface<CXAudio>;
+using IAudioResource		= MyInterface<AudioResource>;
+using IAudioDevice			= MyInterface<CXADevice>;
+template <class T>
+using IAPO					= MyInterface<T>;
+using IAudio				= MyInterface<CXAudio>;
+
 using ISprite				= MyInterface<Sprite>;
 using ISpriteBatch			= MyInterface<SpriteBatch>;
 using ISkinnedMesh			= MyInterface<SkinnedMesh>;

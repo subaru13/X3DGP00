@@ -130,11 +130,11 @@
     <ClCompile Include="Core.cpp">
       <Filter>Development\ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\CXAUDIO.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C8H10N4O2\function\SimpleSound.h">
-      <Filter>C8H10N4O2\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="C8H10N4O2\function\Arithmetic.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
@@ -259,6 +259,9 @@
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
     <ClInclude Include="C8H10N4O2\function\Particle.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\CXAUDIO.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -196,6 +196,7 @@
     <ClCompile Include="C8H10N4O2\External\Include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="C8H10N4O2\function\ASCIIFont.cpp" />
     <ClCompile Include="C8H10N4O2\function\CreateComObjectHelpar.cpp" />
+    <ClCompile Include="C8H10N4O2\function\CXAUDIO.cpp" />
     <ClCompile Include="C8H10N4O2\function\Easing.cpp" />
     <ClCompile Include="C8H10N4O2\function\Framework.cpp" />
     <ClCompile Include="C8H10N4O2\function\GeometryPrimitive.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="C8H10N4O2\function\ASCIIFont.h" />
     <ClInclude Include="C8H10N4O2\function\ConstantBuffer.h" />
     <ClInclude Include="C8H10N4O2\function\CreateComObjectHelpar.h" />
+    <ClInclude Include="C8H10N4O2\function\CXAUDIO.h" />
     <ClInclude Include="C8H10N4O2\function\Easing.h" />
     <ClInclude Include="C8H10N4O2\function\Framework.h" />
     <ClInclude Include="C8H10N4O2\function\GeometryPrimitive.h" />
@@ -247,7 +249,6 @@
     <ClInclude Include="C8H10N4O2\function\SamplerState.h" />
     <ClInclude Include="C8H10N4O2\function\SceneConstantBuffer.h" />
     <ClInclude Include="C8H10N4O2\function\SceneManager.h" />
-    <ClInclude Include="C8H10N4O2\function\SimpleSound.h" />
     <ClInclude Include="C8H10N4O2\function\SkinnedMesh.h" />
     <ClInclude Include="C8H10N4O2\function\Sprite.h" />
     <ClInclude Include="C8H10N4O2\function\SpriteBatch.h" />
