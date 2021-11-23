@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <map>
 
 class AudioResource;
 class CXADevice;
@@ -45,11 +46,9 @@ public:
 
 class CXAPO
 {
-protected:
-	const XAUDIO2_VOICE_DETAILS device_details;
 public:
-	CXAPO(CXADevice* device);
-	virtual void process(IXAudio2SourceVoice*, const AudioResource*) = 0;
+	CXAPO() {}
+	virtual void process(IXAudio2SourceVoice*, const AudioResource*, const XAUDIO2_VOICE_DETAILS&) = 0;
 	virtual ~CXAPO() {}
 };
 
@@ -58,10 +57,11 @@ class CXAudio
 private:
 	IXAudio2SourceVoice*			source_voice;
 	std::shared_ptr<AudioResource>	resource;
+	const XAUDIO2_VOICE_DETAILS		device_details;
 public:
 	CXAudio(CXADevice* device, std::string filename);
 	CXAudio(CXADevice* device, std::shared_ptr<AudioResource> resource);
-	virtual void update(CXAPO* apo = NULL);
+	virtual void process(CXAPO* apo);
 	virtual void play(CXAPO* apo = NULL, bool loop = false);
 	virtual void stop();
 	virtual void pause();

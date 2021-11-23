@@ -219,7 +219,9 @@ public:
 #if USE_IMGUI
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-		ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\consola.ttf", IMGUI_FONT_SIZE, nullptr, glyphRangesJapanese);
+		ImGuiIO& io = ImGui::GetIO();
+		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\consola.ttf", IMGUI_FONT_SIZE, nullptr, glyphRangesJapanese);
+		io.ConfigFlags |= 1 << 6;
 		ImGui_ImplWin32_Init(hwnd);
 		ImGui_ImplDX11_Init(d3d11_device.Get(), d3d11_context.Get());
 		ImGui::StyleColorsDark();

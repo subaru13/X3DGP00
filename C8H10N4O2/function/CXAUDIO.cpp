@@ -61,7 +61,7 @@ CXADevice::CXADevice()
 HRESULT CXADevice::createSourceVoice(IXAudio2SourceVoice** source_voice,
 	const WAVEFORMATEX* source_format) const
 {
-	return engine->CreateSourceVoice(source_voice, source_format);
+	return engine->CreateSourceVoice(source_voice, source_format, XAUDIO2_VOICE_USEFILTER);
 }
 
 HRESULT CXADevice::enableMute() const { return mastering_voice->SetVolume(0.0f); }
@@ -88,34 +88,40 @@ CXADevice::~CXADevice()
 	if (engine) engine->Release();
 }
 
-CXAPO::CXAPO(CXADevice* device)
-	:device_details(device ? device->getDetails() : XAUDIO2_VOICE_DETAILS{ 0,0,0,0 })
-{
-}
-
 CXAudio::CXAudio(CXADevice* device, std::string filename)
-	:source_voice(NULL), resource(new AudioResource(filename))
+	:source_voice(NULL), resource(new AudioResource(filename)),device_details(device->getDetails())
 {
-	assert(device);
 	assert(resource);
 	HRESULT hr = device->createSourceVoice(&source_voice, &resource->getWaveFormat());
 	assert(hr == S_OK);
 }
 
 CXAudio::CXAudio(CXADevice* device, std::shared_ptr<AudioResource> _resource)
-	:source_voice(NULL), resource(_resource)
+	:source_voice(NULL), resource(_resource), device_details(device->getDetails())
 {
-	assert(device);
 	assert(resource);
 	HRESULT hr = device->createSourceVoice(&source_voice, &resource->getWaveFormat());
 	assert(hr == S_OK);
 }
 
-void CXAudio::update(CXAPO* apo)
+void CXAudio::process(CXAPO* apo)
 {
-	HRESULT hr = source_voice->SetEffectChain(NULL);
-	assert(hr == S_OK);
-	if (apo) apo->process(source_voice, resource.get());
+	if (apo) apo->process(source_voice, resource.get(), device_details);
+	else
+	{
+		HRESULT hr = source_voice->SetEffectChain(NULL);
+		assert(hr == S_OK);
+		XAUDIO2_FILTER_PARAMETERS filter_parameter{ XAUDIO2_DEFAULT_FILTER_TYPE ,XAUDIO2_DEFAULT_FILTER_FREQUENCY ,XAUDIO2_DEFAULT_FILTER_ONEOVERQ };
+		hr = source_voice->SetFilterParameters(&filter_parameter);
+		assert(hr == S_OK);
+		int matrix_size = (int)device_details.InputChannels * resource->getWaveFormat().nChannels;
+		float* output_matrix = new float[matrix_size];
+		for (int i = 0; i < matrix_size; i++) { output_matrix[i] = 0.5f; }
+		source_voice->SetOutputMatrix(NULL,
+			resource->getWaveFormat().nChannels,
+			device_details.InputChannels, output_matrix);
+		delete[] output_matrix;
+	}
 }
 
 void CXAudio::play(CXAPO* apo, bool loop)
@@ -135,9 +141,22 @@ void CXAudio::play(CXAPO* apo, bool loop)
 	assert(hr == S_OK);
 	hr = source_voice->Start();
 	assert(hr == S_OK);
-	hr = source_voice->SetEffectChain(NULL);
-	assert(hr == S_OK);
-	if (apo) apo->process(source_voice, resource.get());
+	if (apo)apo->process(source_voice, resource.get(), device_details);
+	else
+	{
+		hr = source_voice->SetEffectChain(NULL);
+		assert(hr == S_OK);
+		XAUDIO2_FILTER_PARAMETERS filter_parameter{ XAUDIO2_DEFAULT_FILTER_TYPE ,XAUDIO2_DEFAULT_FILTER_FREQUENCY ,XAUDIO2_DEFAULT_FILTER_ONEOVERQ };
+		hr = source_voice->SetFilterParameters(&filter_parameter);
+		assert(hr == S_OK);
+		int matrix_size = (int)device_details.InputChannels * resource->getWaveFormat().nChannels;
+		float* output_matrix = new float[matrix_size];
+		for (int i = 0; i < matrix_size; i++) { output_matrix[i] = 0.5f; }
+		source_voice->SetOutputMatrix(NULL,
+			resource->getWaveFormat().nChannels,
+			device_details.InputChannels, output_matrix);
+		delete[] output_matrix;
+	}
 }
 
 void CXAudio::stop()
@@ -145,8 +164,6 @@ void CXAudio::stop()
 	HRESULT hr = source_voice->Stop();
 	assert(hr == S_OK);
 	hr = source_voice->FlushSourceBuffers();
-	assert(hr == S_OK);
-	hr = source_voice->SetEffectChain(NULL);
 	assert(hr == S_OK);
 }
 
@@ -184,3 +201,4 @@ CXAudio::~CXAudio()
 	if (source_voice)source_voice->DestroyVoice();
 	if (resource) resource.reset();
 }
+

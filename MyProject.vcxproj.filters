@@ -133,6 +133,12 @@
     <ClCompile Include="C8H10N4O2\function\CXAUDIO.cpp">
       <Filter>C8H10N4O2\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="collision_editer.cpp">
+      <Filter>Development\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="C8H10N4O2\function\DepthShadow.cpp">
+      <Filter>C8H10N4O2\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C8H10N4O2\function\Arithmetic.h">
@@ -264,6 +270,12 @@
     <ClInclude Include="C8H10N4O2\function\CXAUDIO.h">
       <Filter>C8H10N4O2\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="collision_editer.h">
+      <Filter>Development\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="C8H10N4O2\function\DepthShadow.h">
+      <Filter>C8H10N4O2\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="C8H10N4O2\resource\3dgp.aps">
@@ -283,6 +295,9 @@
     </None>
     <None Include="C8H10N4O2\shader\skinned_mesh.hlsli">
       <Filter>C8H10N4O2\Shaders\skinnd_mesh</Filter>
+    </None>
+    <None Include="C8H10N4O2\shader\depth_shadow.hlsli">
+      <Filter>C8H10N4O2\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -336,6 +351,12 @@
     </FxCompile>
     <FxCompile Include="C8H10N4O2\shader\gaussian_blur_ps.hlsl">
       <Filter>C8H10N4O2\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\geometry_primitive_fetch_depth_shadow_ps.hlsl">
+      <Filter>C8H10N4O2\Shaders\geometry_primitive</Filter>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\skinned_mesh_fetch_depth_shadow_ps.hlsl">
+      <Filter>C8H10N4O2\Shaders\skinnd_mesh</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

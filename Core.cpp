@@ -2,7 +2,7 @@
 /*							インクルード							*/
 /********************************************************************/
 #include "C8H10N4O2/Include.h"
-
+#include <fstream>
 /********************************************************************/
 /*							プロトタイプ宣言						*/
 /********************************************************************/
@@ -35,65 +35,25 @@
 *********************************************************************/
 
 
-
-#include <xaudio2fx.h>
-
-class Reverb :public CXAPO
-{
-public:
-	XAUDIO2FX_REVERB_PARAMETERS parameter{};
-public:
-	Reverb(CXADevice* device) :CXAPO(device) {}
-
-	virtual void process(IXAudio2SourceVoice* source_voice, const AudioResource* resource)override
-	{
-		IUnknown* unknown;
-		XAudio2CreateReverb(&unknown);
-		XAUDIO2FX_REVERB_I3DL2_PARAMETERS i3dl2 = XAUDIO2FX_I3DL2_PRESET_GENERIC;
-		ReverbConvertI3DL2ToNative(&i3dl2, &parameter);
-		XAUDIO2_EFFECT_DESCRIPTOR descriptor{};
-		descriptor.InitialState = TRUE;
-		descriptor.OutputChannels = resource->getWaveFormat().nChannels;
-		descriptor.pEffect = unknown;
-		XAUDIO2_EFFECT_CHAIN chain{};
-		chain.EffectCount = 1;
-		chain.pEffectDescriptors = &descriptor;
-		source_voice->SetEffectChain(&chain);
-		source_voice->SetEffectParameters(0, &parameter, sizeof(XAUDIO2FX_REVERB_PARAMETERS));
-		unknown->Release();
-		int matrix_size = (int)device_details.InputChannels * resource->getWaveFormat().nChannels;
-		float* output_matrix = new float[matrix_size];
-		output_matrix[0] = 0.0f;
-		output_matrix[1] = 1.0f;
-		output_matrix[2] = 0.0f;
-		output_matrix[3] = 1.0f;
-		source_voice->SetOutputMatrix(NULL,
-			resource->getWaveFormat().nChannels,
-			device_details.InputChannels, output_matrix);
-
-		delete[] output_matrix;
-	}
-	virtual ~Reverb()override {}
-};
-
-IAudioDevice				mmm_device;
-IAudio						mmm_audio;
-IAPO<Reverb>				mmm_reverb;
-IAudioResource				mmm_resource;
-
-
+IDepthShadowMap	shadow_map;
+ISceneConstant	scene_constant;
+ISkinnedMesh	skinned_meshes[2];
+FLOAT4X4		world[2];
+FLOAT3			dir;
+float			dis = 10.0f;
+CameraControl	camera;
+Key lock{ 'L' };
+bool flag = false;
 /*********************************************************************
 			＠ゲームループ前に行う初期化処理
 			シーンの追加などを記入してください。
 *********************************************************************/
 void initializationProcessBeforeLoop(ID3D11Device* device)
 {
-	mmm_device = makeAudioDevice();
-	mmm_resource = makeAudioResource("wwww.wav");
-	mmm_resource->read();
-	mmm_reverb = makeAPO<Reverb>(mmm_device.get());
-	mmm_audio = makeAudio(mmm_device.get(), mmm_resource);
-	mmm_audio->play(mmm_reverb.get());
+	shadow_map = makeDepthShadowMap(device, SCREEN_WIDTH, SCREEN_HEIGHT);
+	scene_constant = makeSceneConstant(device);
+	skinned_meshes[0] = makeSkinnedMesh(device, "data/Slime.fbx");
+	skinned_meshes[1] = makeSkinnedMesh(device, "data/cube.001.2.fbx");
 }
 
 /*********************************************************************
@@ -103,18 +63,16 @@ void initializationProcessBeforeLoop(ID3D11Device* device)
 *********************************************************************/
 void updateProcess(float elapsed_time)
 {
-	ImGui::Text(mmm_device->isEnableMute() ? "mmm_device->isEnableMute() == true" : "mmm_device->isEnableMute() == false");
-	
-	if (ImGui::Button("mute"))mmm_device->enableMute();
-	ImGui::SameLine();
-	if (ImGui::Button("no mute"))mmm_device->disableMute();
-	if (ImGui::Button("stop"))mmm_audio->stop();
-	ImGui::SameLine();
-	if (ImGui::Button("play"))mmm_audio->play(mmm_reverb.get());
-	ImGui::SameLine();
-	if (ImGui::Button("pause"))mmm_audio->pause();
-	ImGui::SameLine();
-	if (ImGui::Button("resume"))mmm_audio->resume();
+	static float bias = shadow_map->getBias() * 10.0f;
+	static FLOAT3 shadow_color = shadow_map->getShadowColor();
+	ImGui::ColorEdit3("shadow_color", &shadow_color.x);
+	ImGui::SliderFloat3("dir", &dir.x, -1.0f, 1.0f);
+	ImGui::SliderFloat("bias", &bias, 0.001f, 1, "%.6f / 10");
+	ImGui::SliderFloat("dis", &dis, 1.f, 300.0f, "%.6f");
+	if (flag)camera.update(elapsed_time);
+	if (lock.down())flag = !flag;
+	scene_constant->setView(camera.getView());
+	scene_constant->setProjection(camera.getProjection());
 }
 /*********************************************************************
 			＠描画処理
@@ -123,6 +81,13 @@ void updateProcess(float elapsed_time)
 *********************************************************************/
 void drawingProcess(ID3D11DeviceContext* immediate_context, float elapsed_time)
 {
+	scene_constant->send(immediate_context);
+	shadow_map->blit(immediate_context ,
+		[&](ID3D11PixelShader** pixel_shader[2])
+	{
+		skinned_meshes[0]->render(immediate_context, pixel_shader[DepthShadow::FETCH_PIXEL_SHADER_ID::FPSI_SKINNED_MESH], world[0], NULL);
+		skinned_meshes[1]->render(immediate_context, pixel_shader[DepthShadow::FETCH_PIXEL_SHADER_ID::FPSI_SKINNED_MESH], world[1], NULL);
+	}, dir, dis);
 }
 
 /*********************************************************************
@@ -131,10 +96,6 @@ void drawingProcess(ID3D11DeviceContext* immediate_context, float elapsed_time)
 *********************************************************************/
 void endProcessAfterTheLoopEnds()
 {
-	mmm_audio.reset();
-	mmm_reverb.reset();
-	mmm_resource.reset();
-	mmm_device.reset();
 }
 
 #ifdef _DEBUG

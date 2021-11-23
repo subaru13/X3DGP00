@@ -210,8 +210,10 @@
     <ClCompile Include="C8H10N4O2\function\Sprite.cpp" />
     <ClCompile Include="C8H10N4O2\function\SpriteBatch.cpp" />
     <ClCompile Include="C8H10N4O2\function\CameraControl.cpp" />
+    <ClCompile Include="collision_editer.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="C8H10N4O2\function\GaussianBlur.cpp" />
+    <ClCompile Include="C8H10N4O2\function\DepthShadow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C8H10N4O2\function\Bloom.h" />
@@ -257,6 +259,8 @@
     <ClInclude Include="C8H10N4O2\function\CameraControl.h" />
     <ClInclude Include="C8H10N4O2\function\GaussianBlur.h" />
     <ClInclude Include="C8H10N4O2\function\CachedComObjects.h" />
+    <ClInclude Include="collision_editer.h" />
+    <ClInclude Include="C8H10N4O2\function\DepthShadow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="C8H10N4O2\resource\3dgp.aps" />
@@ -265,6 +269,7 @@
     <None Include="C8H10N4O2\shader\skinned_mesh.hlsli" />
     <None Include="C8H10N4O2\shader\sprite.hlsli" />
     <None Include="C8H10N4O2\shader\sprite_batch.hlsli" />
+    <None Include="C8H10N4O2\shader\depth_shadow.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="C8H10N4O2\resource\3dgp.rc" />
@@ -391,6 +396,26 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\geometry_primitive_fetch_depth_shadow_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="C8H10N4O2\shader\skinned_mesh_fetch_depth_shadow_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

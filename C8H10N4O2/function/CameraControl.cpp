@@ -9,6 +9,73 @@ CameraControl::CameraControl()
 	fov(toRadian(30.0f)), width(static_cast<float>(SCREEN_WIDTH)), height(static_cast<float>(SCREEN_HEIGHT)),
 	znear(0.1f), zfar(1000.0f), l_fulcrum(), r_fulcrum(), c_fulcrum(){}
 
+void CameraControl::fit()
+{
+	FLOAT4X4 view{}, matrix{};
+	view = getView();
+	for (size_t y = 0; y < 3; ++y)
+	{
+		for (size_t x = 0; x < 3; ++x)
+		{
+			matrix.m[y][x] = view.m[x][y];
+		}
+	}
+
+	XMVECTOR q = DirectX::XMQuaternionRotationMatrix(DirectX::XMLoadFloat4x4(&matrix));
+	float x = DirectX::XMVectorGetX(q);
+	float y = DirectX::XMVectorGetY(q);
+	float z = DirectX::XMVectorGetZ(q);
+	float w = DirectX::XMVectorGetW(q);
+
+	float x2 = x * x;
+	float y2 = y * y;
+	float z2 = z * z;
+
+	float xy = x * y;
+	float xz = x * z;
+	float yz = y * z;
+	float wx = w * x;
+	float wy = w * y;
+	float wz = w * z;
+
+	// 1 - 2y^2 - 2z^2
+	float m00 = 1.0f - (2.0f * y2) - (2.0f * z2);
+
+	// 2xy + 2wz
+	float m01 = (2.0f * xy) + (2.0f * wz);
+
+	// 2xy - 2wz
+	float m10 = (2.0f * xy) - (2.0f * wz);
+
+	// 1 - 2x^2 - 2z^2
+	float m11 = 1.0f - (2.0f * x2) - (2.0f * z2);
+
+	// 2xz + 2wy
+	float m20 = (2.0f * xz) + (2.0f * wy);
+
+	// 2yz+2wx
+	float m21 = (2.0f * yz) - (2.0f * wx);
+
+	// 1 - 2x^2 - 2y^2
+	float m22 = 1.0f - (2.0f * x2) - (2.0f * y2);
+
+	if (nearlyEqual(m21, 1.0f))
+	{
+		attitude.x = __pi_ / 2.0f;
+		attitude.y = 0;
+	}
+	else if (nearlyEqual(m21, -1.0f))
+	{
+		attitude.x = -__pi_ / 2.0f;
+		attitude.y = 0;
+	}
+	else
+	{
+		attitude.x = std::asin(-m21);
+		attitude.y = std::atan2(m20, m22);
+	}
+}
+
 FLOAT4X4 CameraControl::getView() const
 {
 	XMVECTOR eye{ XMVectorSet(pos.x, pos.y, pos.z, 1.0f) };

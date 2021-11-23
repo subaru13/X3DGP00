@@ -138,7 +138,7 @@ void GeometryPrimitive::render(ID3D11DeviceContext* immediate_context, ID3D11Pix
 
 	constants data{ world, material_color };
 	constant_buffer = data;
-	constant_buffer.send(immediate_context, 0, true, true);
+	constant_buffer.send(immediate_context, 0, true, true,false,false,false);
 
 	D3D11_BUFFER_DESC buffer_desc{};
 	index_buffer->GetDesc(&buffer_desc);

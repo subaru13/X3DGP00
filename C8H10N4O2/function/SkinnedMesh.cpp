@@ -241,7 +241,7 @@ void SkinnedMesh::render(ID3D11DeviceContext* immediate_context,
 			const material& material{ materials.at(subset.material_unique_id) };
 			XMStoreFloat4(&data.material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&material.Kd));
 			constant_buffer = data;
-			constant_buffer.send(immediate_context, 0, true, true);
+			constant_buffer.send(immediate_context, 0, true, true, false, false, false);
 
 			immediate_context->PSSetShaderResources(0, 1, material.shader_resource_views[0].GetAddressOf());
 			immediate_context->PSSetShaderResources(1, 1, material.shader_resource_views[1].GetAddressOf());

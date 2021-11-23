@@ -32,6 +32,8 @@ public:
 	float* getWidth()	{ return &width; }
 	float* getHeight()	{ return &height; }
 
+	void fit();
+
 	FLOAT4X4 getView()const;
 	FLOAT4X4 getProjection()const;
 	FLOAT4X4 getOrthographic()const;
@@ -42,8 +44,8 @@ public:
 	/// <param name="elapsed_time">Œo‰ßŽžŠÔ</param>
 	/// <param name="move_speed">ˆÚ“®‘¬“x</param>
 	/// <param name="rotation_speed">Šp‘¬“x</param>
-	void update(float elapsed_time, 
-		float move_speed = 32.0f, 
+	void update(float elapsed_time,
+		float move_speed = 32.0f,
 		float rotation_speed = (__pi_ * 2.0f));
 
 };

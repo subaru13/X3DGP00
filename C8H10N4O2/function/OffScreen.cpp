@@ -70,7 +70,7 @@ void FrameBuffer::createDepthStencil(ID3D11Device* device)
 	dsvd.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	dsvd.Texture2D.MipSlice = 0;
-	hr = device->CreateDepthStencilView(depth_stencil_buffer.Get(), &dsvd, depth_stencil_view.GetAddressOf());
+	hr = device->CreateDepthStencilView(depth_stencil_buffer.Get(), &dsvd, depth_stencil_view.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	//	シェーダーリソースビュー作成
@@ -80,7 +80,7 @@ void FrameBuffer::createDepthStencil(ID3D11Device* device)
 	srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvd.Texture2D.MostDetailedMip = 0;
 	srvd.Texture2D.MipLevels = 1;
-	hr = device->CreateShaderResourceView(depth_stencil_buffer.Get(), &srvd, depth_stencil_shader_resource_view.GetAddressOf());
+	hr = device->CreateShaderResourceView(depth_stencil_buffer.Get(), &srvd, depth_stencil_shader_resource_view.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 }
 
@@ -141,7 +141,7 @@ void FrameBuffer::createDepthStencilCube(ID3D11Device* device)
 	texture2d_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	texture2d_desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
 
-	hr = device->CreateTexture2D(&texture2d_desc, NULL, depth_stencil_buffer.GetAddressOf());
+	hr = device->CreateTexture2D(&texture2d_desc, NULL, depth_stencil_buffer.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	//	デプスステンシルビュー作成
@@ -153,7 +153,7 @@ void FrameBuffer::createDepthStencilCube(ID3D11Device* device)
 	dsvd.Texture2DArray.ArraySize = 6;
 	dsvd.Texture2DArray.MipSlice = 0;
 	dsvd.Flags = D3D11_RESOURCE_MISC_TEXTURECUBE;
-	hr = device->CreateDepthStencilView(depth_stencil_buffer.Get(), NULL, depth_stencil_view.GetAddressOf());
+	hr = device->CreateDepthStencilView(depth_stencil_buffer.Get(), NULL, depth_stencil_view.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), hrTrace(hr));
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;

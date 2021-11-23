@@ -10,6 +10,7 @@
 #include "ConstantBuffer.h"
 #include "Bloom.h"
 #include "Particle.h"
+#include "DepthShadow.h"
 #include <memory>
 
 
@@ -31,9 +32,9 @@ inline std::unique_ptr<CXADevice> makeAudioDevice()
 }
 
 template<class T, class... Args, std::enable_if_t<std::is_base_of<CXAPO, T>::value == true, int> = 0 >
-inline std::unique_ptr<T> makeAPO(CXADevice* device, Args... args)
+inline std::unique_ptr<T> makeAPO( Args... args)
 {
-	return std::make_unique<T>(device, args...);
+	return std::make_unique<T>(args...);
 }
 
 /// <summary>
@@ -159,6 +160,18 @@ inline std::unique_ptr<GeometryPrimitive> makeGeometryPrimitive(ID3D11Device* de
 inline std::unique_ptr<FrameBuffer> makeFrameBuffer(ID3D11Device* device,FB_CONFIG config)
 {
 	return std::make_unique<FrameBuffer>(device, config);
+}
+
+/// <summary>
+/// 深度シャードマップを作成します
+/// </summary>
+/// <param name="device">有効なデバイス</param>
+/// <param name="width">シャードマップの横幅</param>
+/// <param name="height">シャードマップの縦幅</param>
+/// <param name="zfar">Zfar 書き込み可能範囲</param>
+inline std::unique_ptr<DepthShadow> makeDepthShadowMap(ID3D11Device* device, UINT width, UINT height, FLOAT zfar = 200.0f)
+{
+	return std::make_unique<DepthShadow>(device, width, height, zfar);
 }
 
 /// <summary>
@@ -293,6 +306,7 @@ using IConstantBuffer		= MyInterface<ConstantBuffer<T>>;
 using ISceneConstant		= MyInterface<SceneConstant>;
 using IGeometryPrimitive	= MyInterface<GeometryPrimitive>;
 using IFrameBuffer			= MyInterface<FrameBuffer>;
+using IDepthShadowMap		= MyInterface<DepthShadow>;
 using IGeometryBuffer		= MyInterface<GeometryBuffer>;
 using IPeinter				= MyInterface<Peinter>;
 using IGaussianFilter		= MyInterface<GaussianFilter>;
